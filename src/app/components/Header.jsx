@@ -12,7 +12,7 @@ const Header = () => {
                     </button>
                 </div>
                 <div className="flex-1">
-                    <a className="btn btn-ghost text-xl" href="/order">On Table</a>
+                    <a className="btn btn-ghost text-xl" href="./order">On Table</a>
                 </div>
                 <div className="flex-none margin-right-4">
                     <button className="btn btn-square btn-ghost">
