@@ -1,0 +1,1 @@
+export const orderingSteps = ["Order", "Review", "Pay", "Enjoy"];
