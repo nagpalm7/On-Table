@@ -1,11 +1,6 @@
 import Logo from '@/app/components/Logo';
 
-export const metadata = {
-  title: "On Table",
-  description: "powered by On Table",
-};
-
-export default function RootLayout({ children }) {
+export default function CustomerLayout({ children }) {
   return (
       <div>
         <Logo />

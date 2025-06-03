@@ -11,8 +11,9 @@ const Dashboard = () => {
     const alertMessage = searchParams.get("alertMessage");
 
     return (
-        <div>
+        <div className='min-h-screen flex flex-col items-center justify-center'>
             {alertMessage && <Toast message={alertMessage} />}
+            <center>Welcome to the admin dashboard</center>
         </div>
     )
 }

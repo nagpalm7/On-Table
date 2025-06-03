@@ -1,3 +1,4 @@
+import 'server-only';
 import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 
@@ -8,7 +9,7 @@ export async function encrypt(payload) {
     return new SignJWT(payload)
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
-        .setExpirationTime("7d")
+        .setExpirationTime("1d")
         .sign(encodedKey);
 }
 
@@ -23,9 +24,10 @@ export async function decrypt(session) {
     }
 }
 
-export async function createSession(userId) {
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    const session = await encrypt({ userId, expiresAt });
+export async function createSession(userId, userType) {
+    const SESSION_EXPIRY_TIME = 1 * 24 * 60 * 60 * 1000; // 1 day in milliseconds
+    const expiresAt = new Date(Date.now() + SESSION_EXPIRY_TIME);
+    const session = await encrypt({ userId, userType, expiresAt });
     const cookieStore = await cookies();
 
     cookieStore.set("session", session, {

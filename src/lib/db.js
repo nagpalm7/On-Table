@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
 import 'server-only';
+import mongoose from 'mongoose';
 
 if (!process.env.DB_URI) {
     throw new Error('DB_URI environment variable is not set');

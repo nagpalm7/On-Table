@@ -1,24 +1,25 @@
 import React from 'react';
-import { FiShoppingCart } from "react-icons/fi";
 import { AiOutlineMenu } from "react-icons/ai";
+import LogoutButton from '@/app/components/LogoutButton';
+import Link from 'next/link';
+import getAuthUser from '@/lib/getAuthUser';
 
-const Header = () => {
+const Header = async () => {
+    const authUser = await getAuthUser();
     return (
-        <header className="sticky top-0 z-50 w-full bg-base-100">
+        <header className="sticky top-0 z-1 w-full bg-base-100">
             <div className="navbar shadow-sm">
-                <div className="flex-none">
-                    <button className="btn btn-square btn-ghost">
-                        <AiOutlineMenu className="text-xl" />
-                    </button>
-                </div>
+                {authUser &&
+                    <div className="flex-none">
+                        <label htmlFor="my-drawer-2" className="btn btn-square btn-ghost drawer-button lg:hidden">
+                            <AiOutlineMenu className="text-xl" />
+                        </label>
+                    </div>
+                }
                 <div className="flex-1">
-                    <a className="btn btn-ghost text-xl" href="./order">On Table</a>
+                    <Link className="btn btn-ghost text-xl" href="/">On Table</Link>
                 </div>
-                <div className="flex-none margin-right-4">
-                    <button className="btn btn-square btn-ghost">
-                        {/* <FiShoppingCart className="text-xl" /> */}
-                    </button>
-                </div>
+                <LogoutButton />
             </div>
         </header>
     );

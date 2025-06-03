@@ -1,10 +1,13 @@
 "use server";
 
+import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import { getDatabaseConnection } from '@/lib/db';
-import bcrypt from "bcrypt";
-import User from '@/model/user';
+import { createSession } from "@/lib/session";
+import { cookies } from "next/headers";
 import { LoginFormSchema, RegisterFormSchema } from "@/lib/rules";
+
+import User from '@/model/user';
 
 // Signup action
 export const signup = async (state, formData) => {
@@ -55,6 +58,9 @@ export const signup = async (state, formData) => {
     const user = new User({ name, email, mobile, userType, password: hashedPassword });
     await user.save();
 
+    // Create a session
+    await createSession(user._id.toString(), user.userType);
+
     // Redirect
     redirect(`/auth/login?alertMessage=Registration successful! Please login to continue.`);
 };
@@ -103,11 +109,15 @@ export const login = async (state, formData ) => {
             },
         };
     };
+
+    // Create a session
+    await createSession(user._id.toString(), user.userType);
     
     redirect(`/admin/dashboard?alertMessage=Login successful! Welcome back, ${user.name}.`);
 };
 
-// Logout action
-export const logout = async () => {
-    return { message: 'Logout successful' };
-};
+export async function logout() {
+  const cookieStore = await cookies();
+  cookieStore.delete("session");
+  redirect("/auth/login");
+}
