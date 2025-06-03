@@ -12,9 +12,11 @@ const authRoutes = [
 ]
 
 export default async function middleware(req) {
+  console.log("Middleware triggered for:", req.nextUrl.pathname);
   const path = req.nextUrl.pathname;
   const isProtected = protectedRoutes.some(route => path.startsWith(route));  
   const isAuth = authRoutes.some(route => path.startsWith(route));
+  console.log("isProtected:", isProtected, "isAuth:", isAuth);
 
   const user = await getAuthUser();
   const userId = user?.userId;

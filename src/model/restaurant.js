@@ -13,7 +13,7 @@ const restaurantSchema = new Schema(
         status: {
             type: String,
             enum: ['active', 'inactive'],
-            default: 'active',
+            default: 'inactive',
         },
         onboardingStatus: {
             type: String,
@@ -21,7 +21,9 @@ const restaurantSchema = new Schema(
             default: 'pending',
         },
         logo: {
-            type: String
+            type: String,
+            default: null,
+            required: false,
         },
         owners: [
             {

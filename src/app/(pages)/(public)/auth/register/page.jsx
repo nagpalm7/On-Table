@@ -8,7 +8,6 @@ const Register = () => {
 
     const [state, action, isPending] = useActionState(signup, undefined);
 
-    console.log(state);
     return (
         <div className="min-h-[80vh] flex items-center justify-center bg-base-200 p-4">
             <form

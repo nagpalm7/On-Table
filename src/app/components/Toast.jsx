@@ -20,7 +20,7 @@ const Toast = ({
   if (!visible) return null;
 
   return (
-    <div className={"toast py-[10vh] z-100" + ` ${position}`}>
+    <div className={"toast my-[10vh] z-100" + ` ${position}`}>
       <div className={"alert" + ` ${type}`}>
         {icon}
         <span>{message}</span>
