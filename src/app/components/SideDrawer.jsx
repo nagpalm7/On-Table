@@ -24,8 +24,8 @@ const SideDrawer = ({ pageContent }) => {
                 User
               </a>
                 <ul>
-                  <li><a href="/admin/restaurant/list">View Users</a></li>
-                  <li><a href="/admin/restaurant/add">Add User</a></li>
+                  <li><a href="/admin/user/list">View Users</a></li>
+                  <li><a href="/admin/user/add">Add User</a></li>
                 </ul>
             </li>
             <li>

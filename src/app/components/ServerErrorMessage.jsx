@@ -1,9 +1,13 @@
 import React from 'react'
 
-const ServerErrorMessage = ({errorMessage}) => {
+const ServerErrorMessage = ({ errors }) => {
   return (
     <ul className="list-disc validator-hint visible text-error px-4">
-        <li>{errorMessage}</li>
+      {
+        errors.map((error, index) => (
+          <li key={index}>{error}</li>
+        ))
+      }
     </ul>
   )
 }

@@ -1,11 +1,13 @@
 import 'server-only';
 import { z } from "zod";
 
+// Login
 export const LoginFormSchema = z.object({
     email: z.string().email({ message: "Please enter a valid email." }).trim(),
     password: z.string().min(1, { message: "Password is required." }).trim(),
 });
 
+// User Registration
 export const RegisterFormSchema = z
     .object({
         name: z
@@ -40,3 +42,12 @@ export const RegisterFormSchema = z
             });
         }
     });
+
+// Restaurant Registration
+export const RestaurantFormSchema = z.object({
+    name: z.string().min(1, { message: "Restaurant name is required." }).trim(),
+    location: z.string().min(1, { message: "Location is required." }).trim(),
+    owners: z
+        .array(z.string())
+        .min(1, { message: "At least one owner must be selected." }),
+});

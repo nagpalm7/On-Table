@@ -31,11 +31,8 @@ const Login = () => {
                         autoComplete="email"
                         defaultValue={state?.email}
                     />
-                    {state?.errors?.email && (
-                        state.errors.email.map((error, index) => (
-                            <ServerErrorMessage key={index} errorMessage={error} />
-                        ))
-                    )}
+                    {state?.errors?.email && <ServerErrorMessage errors={state.errors.email} />}
+
                     <div className="validator-hint hidden">Enter valid email address.</div>
                 </label>
 
@@ -50,11 +47,8 @@ const Login = () => {
                         autoComplete="new-password"
                         defaultValue={state?.password}
                     />
-                    {state?.errors?.password && (
-                        state.errors.password.map((error, index) => (
-                            <ServerErrorMessage key={index} errorMessage={error} />
-                        ))
-                    )}
+                    {state?.errors?.password && <ServerErrorMessage errors={state.errors.password} />}
+
                     <div className="validator-hint hidden">Enter valid password.</div>
                 </label>
                 

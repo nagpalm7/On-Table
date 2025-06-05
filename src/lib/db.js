@@ -34,8 +34,3 @@ export async function getDatabaseConnection() {
     console.log("Using cached database connection");
     return cachedConnection;
 }
-
-// export async function getCollection(collectionName) {
-//     const db = await getDatabaseConnection();
-//     return db.collection(collectionName);
-// }

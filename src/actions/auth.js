@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import { getDatabaseConnection } from '@/lib/db';
 import { createSession } from "@/lib/session";
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
 import { LoginFormSchema, RegisterFormSchema } from "@/lib/rules";
 
 import User from '@/model/user';
