@@ -1,4 +1,4 @@
-import { fetchUsers } from '@/actions/user';
+import { deleteUser, fetchUsers } from '@/actions/user';
 import Card from '@/app/components/Card'
 import Table from '@/app/components/Table';
 import React from 'react'
@@ -11,6 +11,7 @@ const UserListPage = async () => {
             title={"Users"} 
             body={
                 <Table 
+                  deleteAction={deleteUser}
                   header = {["Name", "Email", "Mobile", "User Type", "ID"]}
                   rows = {users.map(user => ({
                     "Name": user.name, 

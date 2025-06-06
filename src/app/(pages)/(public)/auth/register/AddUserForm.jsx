@@ -6,7 +6,7 @@ const AddUserForm = ({action, state, isPending, title, buttonText}) => {
     return (
         <>
             <form
-                className="card w-full max-w-md shadow-xl bg-base-100 p-8 gap-4"
+                className="card w-full bg-base-100 gap-4"
                 action={action}
             >
                 <h2 className="text-2xl font-bold text-center">{title}</h2>

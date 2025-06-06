@@ -8,7 +8,7 @@ const LogoutButton = async () => {
   const authUser = await getAuthUser();
 
   if (!authUser) {
-    return null; // or handle unauthenticated state
+    return null;
   }
 
   return (
@@ -16,7 +16,6 @@ const LogoutButton = async () => {
         <form action={logout}>
             <button className="btn btn-ghost">
                 Log out
-                {/* <FiShoppingCart className="text-xl" /> */}
             </button>
         </form>
     </div>

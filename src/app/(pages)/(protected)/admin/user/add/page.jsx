@@ -3,20 +3,26 @@
 import AddUserForm from '@/app/(pages)/(public)/auth/register/AddUserForm';
 import React , { useActionState } from "react";
 import { addUser } from "@/actions/user";
+import Card from '@/app/components/Card';
 
 const AddUser = () => {
 
     const [state, action, isPending] = useActionState(addUser, undefined);
     
     return (
-        <div className='min-h-[80vh] flex items-center justify-center bg-base-200 p-4'>
-            <AddUserForm
-                state={state}
-                action={action}
-                isPending={isPending}
-                title="Add User"
-                buttonText="Add User"
+        <div>
+            <Card 
+                title = {"Add User"}
+                body = {
+                    <AddUserForm
+                        state={state}
+                        action={action}
+                        isPending={isPending}
+                        buttonText="Add User"
+                    />
+                }
             />
+            
         </div>
     )
 }

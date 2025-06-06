@@ -5,13 +5,17 @@ import { redirect } from "next/navigation";
 import { getDatabaseConnection } from '@/lib/db';
 import { RegisterFormSchema } from '@/lib/rules';
 import User from '@/model/user';
+import { revalidatePath } from "next/cache";
 
 export const fetchUsers = async (userType = null) => {
     await getDatabaseConnection();
-    const query = userType ? { userType: userType } : {};
-    const users = await User.find(query).sort({ updatedAt: -1 }).select("-password -__v");
+    const filter = userType ? { userType } : {};
+    const users = await User.find(filter)
+        .sort('-updatedAt')
+        .select('-password -__v')
+        .lean();
     return JSON.parse(JSON.stringify(users));
-}
+};
 
 export const addUser = async (state, formData) => {
     // validate form data
@@ -63,4 +67,24 @@ export const addUser = async (state, formData) => {
 
     // Redirect
     redirect(`/admin/user/list`);
+};
+
+export const deleteUser = async (formData) => {
+    await getDatabaseConnection();
+    const userId = formData.get('id');
+
+    // Remove user
+    const user = await User.findByIdAndDelete(userId);
+    if (!user) {
+        throw new Error("User not found");
+    }
+    // Remove references to this user in restaurants' owners array
+    const Restaurant = (await import('@/model/restaurant')).default;
+    await Restaurant.updateMany(
+        { owners: userId },
+        { $pull: { owners: userId } }
+    );
+    
+    // Revalidate the restaurant list page
+    revalidatePath(`/admin/user/list`);
 };

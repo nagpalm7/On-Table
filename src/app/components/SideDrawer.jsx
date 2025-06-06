@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
+import { FaUser, FaUsers, FaUserPlus, FaPlus, FaListUl } from "react-icons/fa";
+import { IoRestaurant } from "react-icons/io5";
 
 const SideDrawer = ({ pageContent }) => {
   return (
@@ -9,39 +11,46 @@ const SideDrawer = ({ pageContent }) => {
         {/* Page content here */}
         {pageContent}
       </div>
-      <div className="drawer-side min-h-[100vh]">
-        
+      <div className="drawer-side">
+
         <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-        <div className="flex flex-col h-full bg-base-200">
-          {/* Sidebar content here */}
-          <div className="navbar bg-neutral text-neutral-content shadow-sm">
-            <Link className="text-xl mx-4 font-semibold" href="">On Table</Link>
+        {/* <div className='sticky top-0 z-10'>
+          <div className="navbar bg-base-200 text-base-content shadow-sm">
+            <Link className="text-xl mx-4 font-semibold" href="/">On Table</Link>
           </div>
-          <ul className="menu text-base-content min-h-full w-80 p-4">
+        </div> */}
+        <aside class="bg-base-100 min-h-screen w-80">
+          <div className="navbar sticky top-0 z-20 flex shadow-xs">
+            <Link className="text-xl mx-4 font-semibold" href="/">On Table</Link>
+          </div>
+          <div className='h-4'/>
+          <ul className="menu backdrop-blur min-h-full px-4 py-0 w-full">
             {/* User Nav Links */}
             <li>
               <a href="/admin/user/list">
-                User
+                <FaUser /> User
               </a>
-                <ul>
-                  <li><a href="/admin/user/list">View Users</a></li>
-                  <li><a href="/admin/user/add">Add User</a></li>
-                </ul>
+              <ul>
+                <li><a href="/admin/user/list"><FaUsers /> View Users</a></li>
+                <li><a href="/admin/user/add"><FaUserPlus /> Add User</a></li>
+              </ul>
             </li>
             <li>
               <a href="/admin/restaurant/list">
-                Restaurant
+                <IoRestaurant /> Restaurant
               </a>
-                <ul>
-                  <li><a href="/admin/restaurant/list">View Restaurants</a></li>
-                  <li><a href="/admin/restaurant/add">Add Restaurant</a></li>
-                </ul>
+              <ul>
+                <li><a href="/admin/restaurant/list"><FaListUl /> View Restaurants</a></li>
+                <li><a href="/admin/restaurant/add"><FaPlus /> Add Restaurant</a></li>
+              </ul>
             </li>
             <li><a href='/admin/dashboard'>Menu</a></li>
           </ul>
-        </div>
+        </aside>
+              
         
-        
+
+
       </div>
     </div>
   )

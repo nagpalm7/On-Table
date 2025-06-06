@@ -7,8 +7,8 @@ import getAuthUser from '@/lib/getAuthUser';
 const Header = async () => {
     const authUser = await getAuthUser();
     return (
-        <header className="sticky top-0 z-1 w-full bg-base-200">
-            <div className="navbar shadow-sm">
+        <header className="sticky top-0 z-1 w-full bg-base-100 backdrop-blur">
+            <div className="navbar shadow-xs">
                 {authUser &&
                     <div className="flex-none">
                         <label htmlFor="my-drawer-2" className="btn btn-square btn-ghost drawer-button lg:hidden">
@@ -17,7 +17,7 @@ const Header = async () => {
                     </div>
                 }
                 <div className="flex-1">
-                    <Link className="btn btn-ghost text-xl" href="/">On Table</Link>
+                    <Link className={"text-xl mx-4 font-semibold" + (authUser ? " lg:hidden" : "")} href="/">On Table</Link>
                 </div>
                 <LogoutButton />
             </div>

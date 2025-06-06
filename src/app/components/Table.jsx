@@ -1,6 +1,9 @@
+"use server";
+
+import Link from 'next/link'
 import React from 'react'
 
-const Table = ({header, rows}) => {
+const Table = ({header, rows, deleteAction, editAction}) => {
 
     return (
         <div>
@@ -27,6 +30,17 @@ const Table = ({header, rows}) => {
                                         <td key={cellIndex}>{row[col]}</td>
                                     ))
                                 }
+                                <th>
+                                    <div className="flex gap-2">
+                                        <Link href={`edit/${row.ID}`}>
+                                            <button className="btn btn-xs btn-soft btn-primary">Edit</button>
+                                        </Link>
+                                        <form action={deleteAction}>
+                                            <input type="hidden" name="id" value={row.ID} />
+                                            <button className="btn btn-xs btn-soft btn-error">Delete</button>
+                                        </form>
+                                    </div>
+                                </th>
                             </tr>
                         ))
                     }

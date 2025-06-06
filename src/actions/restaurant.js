@@ -4,16 +4,18 @@ import { getDatabaseConnection } from "@/lib/db";
 import { RestaurantFormSchema } from "@/lib/rules";
 import Restaurant from "@/model/restaurant";
 import user from "@/model/user";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const fetchRestaurants = async () => {
     await getDatabaseConnection();
     const restaurants = await Restaurant.find({})
-        .sort({ updatedAt: -1 })
+        .sort("-updatedAt")
         .select("-__v")
-        .populate("owners");
+        .populate("owners", "-password -__v")
+        .lean();
     return JSON.parse(JSON.stringify(restaurants));
-}
+};
 
 export const addRestaurant = async (state, formData) => {
     // validate form data
@@ -43,7 +45,6 @@ export const addRestaurant = async (state, formData) => {
     let errors = [];
     let validatedOwners = [];
     for (const ownerId of owners) {
-        console.log(`Checking owner with ID: ${ownerId}`);
         const existingUser = await user.findOne({ _id: ownerId });
 
         if (!existingUser) {
@@ -82,4 +83,29 @@ export const addRestaurant = async (state, formData) => {
 
     // Redirect
     redirect(`/admin/restaurant/list`);
+};
+
+export const deleteRestaurant = async (formData) => {
+    await getDatabaseConnection();
+    const restaurantId = formData.get('id');
+
+    // Find the restaurant and get owners in one query
+    const restaurant = await Restaurant.findById(restaurantId).select("owners");
+    if (!restaurant) {
+        throw new Error("Restaurant not found");
+    }
+
+    // Remove restaurant reference from all owners in one operation
+    if (restaurant.owners?.length) {
+        await user.updateMany(
+            { _id: { $in: restaurant.owners } },
+            { $pull: { restaurants: restaurantId } }
+        );
+    }
+
+    // Delete the restaurant
+    await Restaurant.deleteOne({ _id: restaurantId });
+
+    // Revalidate the restaurant list page
+    revalidatePath(`/admin/restaurant/list`);
 };

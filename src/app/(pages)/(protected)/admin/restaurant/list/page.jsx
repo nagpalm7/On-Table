@@ -1,4 +1,4 @@
-import { fetchRestaurants } from '@/actions/restaurant';
+import { deleteRestaurant, fetchRestaurants } from '@/actions/restaurant';
 import Card from '@/app/components/Card'
 import Table from '@/app/components/Table';
 import React from 'react'
@@ -7,7 +7,7 @@ const RestaurantListPage = async () => {
   const restaurants = await fetchRestaurants();
   console.log(restaurants);
   return (
-    <div>
+    <div className='min-h-[90vh]'>
       <Card
         title={"Restaurants"}
         body={
@@ -21,6 +21,7 @@ const RestaurantListPage = async () => {
                 "ID": restaurant._id,
               })
             )}
+            deleteAction={deleteRestaurant}
         />
         }
       />
