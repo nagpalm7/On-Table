@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === 'production';
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -7,10 +6,13 @@ const nextConfig = {
   },
   assetPrefix: '',
   basePath: '',
-  logging: {
-    level: isProd ? 'warn' : 'info',
-    include: ['db'],
-  },
+  logger: {
+    level: 'info',
+    // You can add more logger options here if needed
+    timestamp: true,
+    color: true,
+    db: true
+  }
 };
 
 export default nextConfig;

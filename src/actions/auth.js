@@ -119,5 +119,5 @@ export const login = async (state, formData ) => {
 export async function logout() {
   const cookieStore = await cookies();
   await cookieStore.delete("session");
-  return redirect("/auth/login");
+  redirect("/auth/login");
 }

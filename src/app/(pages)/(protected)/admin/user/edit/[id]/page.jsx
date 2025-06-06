@@ -5,8 +5,8 @@ const EditUser = () => {
   return (
     <div>
         <Card 
-            title={"Edit User"}
-            
+            title = {"Edit User"}
+            body = {""}
         />
     </div>
   )

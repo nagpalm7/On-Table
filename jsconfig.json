@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
+    "checkJs": true,
+    "jsx": "react",
     "paths": {
       "@/*": ["./src/*"]
     }
-  }
+  },
+  "exclude": ["node_modules", "**/node_modules/*"]
 }

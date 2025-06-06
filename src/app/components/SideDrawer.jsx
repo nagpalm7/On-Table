@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { FaUser, FaUsers, FaUserPlus, FaPlus, FaListUl } from "react-icons/fa";
-import { IoRestaurant } from "react-icons/io5";
+import { IoRestaurant, IoStatsChartSharp } from "react-icons/io5";
 
 const SideDrawer = ({ pageContent }) => {
   return (
@@ -14,17 +14,18 @@ const SideDrawer = ({ pageContent }) => {
       <div className="drawer-side">
 
         <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-        {/* <div className='sticky top-0 z-10'>
-          <div className="navbar bg-base-200 text-base-content shadow-sm">
-            <Link className="text-xl mx-4 font-semibold" href="/">On Table</Link>
-          </div>
-        </div> */}
-        <aside class="bg-base-100 min-h-screen w-80">
+        <aside className="bg-base-100 min-h-screen w-80 lg:w-70">
           <div className="navbar sticky top-0 z-20 flex shadow-xs">
             <Link className="text-xl mx-4 font-semibold" href="/">On Table</Link>
           </div>
           <div className='h-4'/>
           <ul className="menu backdrop-blur min-h-full px-4 py-0 w-full">
+            {/* User Nav Links */}
+            <li>
+              <a href="/admin/dashboard">
+                <IoStatsChartSharp /> Dashboard
+              </a>
+            </li>
             {/* User Nav Links */}
             <li>
               <a href="/admin/user/list">
@@ -35,6 +36,7 @@ const SideDrawer = ({ pageContent }) => {
                 <li><a href="/admin/user/add"><FaUserPlus /> Add User</a></li>
               </ul>
             </li>
+            {/* Restaurant Nav Links */}
             <li>
               <a href="/admin/restaurant/list">
                 <IoRestaurant /> Restaurant

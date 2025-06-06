@@ -2,14 +2,13 @@ import React from 'react'
 
 import ServerErrorMessage from "@/app/components/ServerErrorMessage";
 
-const UserForm = ({action, state, isPending, title, buttonText}) => {
+const UserForm = ({action, state, isPending, buttonText}) => {
     return (
         <>
             <form
-                className="card w-full bg-base-100 gap-4"
+                className="card w-full bg-base-100 gap-4 my-4"
                 action={action}
             >
-                <h2 className="text-2xl font-bold text-center">{title}</h2>
                 <label className="floating-label">
                     <span>Full Name</span>
                     <input

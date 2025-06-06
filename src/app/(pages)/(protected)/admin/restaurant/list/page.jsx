@@ -7,7 +7,7 @@ const RestaurantListPage = async () => {
   const restaurants = await fetchRestaurants();
   console.log(restaurants);
   return (
-    <div className='min-h-[90vh]'>
+    <div>
       <Card
         title={"Restaurants"}
         body={
@@ -22,6 +22,7 @@ const RestaurantListPage = async () => {
               })
             )}
             deleteAction={deleteRestaurant}
+            editAction={""}
         />
         }
       />
