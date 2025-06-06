@@ -1,6 +1,6 @@
 "use client";
 
-import AddUserForm from '@/app/(pages)/(public)/auth/register/AddUserForm';
+import UserForm from '@/app/components/UserForm';
 import React , { useActionState } from "react";
 import { addUser } from "@/actions/user";
 import Card from '@/app/components/Card';
@@ -14,7 +14,7 @@ const AddUser = () => {
             <Card 
                 title = {"Add User"}
                 body = {
-                    <AddUserForm
+                    <UserForm
                         state={state}
                         action={action}
                         isPending={isPending}

@@ -2,7 +2,7 @@
 
 import React, { useActionState } from "react";
 import { signup } from "@/actions/auth";
-import AddUserForm from "./AddUserForm";
+import UserForm from "@/app/components/UserForm";
 import Card from "@/app/components/Card";
 
 const Register = () => {
@@ -14,7 +14,7 @@ const Register = () => {
             <Card
                 title={"Register"}
                 body={
-                    <AddUserForm
+                    <UserForm
                         state={state}
                         action={action}
                         isPending={isPending}

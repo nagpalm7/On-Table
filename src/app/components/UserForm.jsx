@@ -2,7 +2,7 @@ import React from 'react'
 
 import ServerErrorMessage from "@/app/components/ServerErrorMessage";
 
-const AddUserForm = ({action, state, isPending, title, buttonText}) => {
+const UserForm = ({action, state, isPending, title, buttonText}) => {
     return (
         <>
             <form
@@ -118,4 +118,4 @@ const AddUserForm = ({action, state, isPending, title, buttonText}) => {
     )
 }
 
-export default AddUserForm;
+export default UserForm;

@@ -6,7 +6,11 @@ const nextConfig = {
     unoptimized: true, // Disable default image optimization
   },
   assetPrefix: '',
-  basePath: ''
+  basePath: '',
+  logging: {
+    level: isProd ? 'warn' : 'info',
+    include: ['db'],
+  },
 };
 
 export default nextConfig;
