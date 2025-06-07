@@ -1,11 +1,12 @@
 "use client";
 
+import React from "react";
 import { useState, useEffect, useRef } from "react";
 
 export default function MultiSelect({
   formFieldName,
   options,
-  onChange = () => {},
+  onChange = (values) => {},
   defaultValues = [],
   prompt = "Select one or more options",
 }) {
