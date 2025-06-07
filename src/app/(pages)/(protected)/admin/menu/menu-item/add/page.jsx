@@ -11,6 +11,8 @@ import RestaurantForm from "@/app/components/RestaurantForm";
 const AddRestaurant = () => {
 
     const [state, action, isPending] = useActionState(addRestaurant, undefined);
+
+
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 

@@ -1,10 +1,13 @@
 import React from "react";
 import ServerErrorMessage from "@/app/components/ServerErrorMessage";
 import MultiSelect from "@/app/components/MultiSelect";
+import Spinner from "./Spinner";
 
-const RestaurantForm = ({ state, action, isPending, users, buttonText, id=null }) => {
+const RestaurantForm = ({ state, action, isPending, users, buttonText, id="" }) => {
     const ALLOWED_FILE_TYPES = ".jpeg,.jpg,.png,.webp,image/jpeg,image/jpg," +
         "image/png,image/webp";
+
+    if (isPending) return <Spinner />
     return (
         <form
             action={action}

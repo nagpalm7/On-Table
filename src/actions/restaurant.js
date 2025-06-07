@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 export const fetchRestaurants = async () => {
     await getDatabaseConnection();
     const restaurants = await Restaurant.find({})
-        .sort("-updatedAt")
+        .sort({name: 1})
         .select("-__v")
         .populate("owners", "-password -__v")
         .lean();

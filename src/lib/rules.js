@@ -70,3 +70,8 @@ export const RestaurantFormSchema = z.object({
         .array(z.string())
         .min(1, { message: "At least one owner must be selected." }),
 });
+
+export const CategoryFormSchema = z.object({
+    name: z.string().min(1, { message: "Category name is required." }).trim(),
+    restaurant: z.string().min(1, { message: "Location is required." }).trim(),
+});

@@ -1,9 +1,8 @@
-"use server";
 
 import Link from 'next/link'
 import React from 'react'
 
-const Table = ({header, rows, deleteAction}) => {
+const Table = ({header, rows, deleteAction, actionLink = null, actionText = ""}) => {
 
     return (
         <div>
@@ -39,6 +38,11 @@ const Table = ({header, rows, deleteAction}) => {
                                             <input type="hidden" name="id" value={row.ID} />
                                             <button className="btn btn-xs btn-soft btn-error">Delete</button>
                                         </form>
+                                        {actionLink &&
+                                            <Link href={`${actionLink}${row.ID}`}>
+                                                <button className="btn btn-xs btn-soft btn-primary">{actionText}</button>
+                                            </Link>
+                                        }
                                     </div>
                                 </th>
                             </tr>
@@ -49,9 +53,9 @@ const Table = ({header, rows, deleteAction}) => {
                         <tr>
                             <th></th>
                             {
-                                header.map((col, index) => (
-                                    <th key={index}>{col}</th>
-                                ))
+                                header.map((col, index) => {
+                                    if (col !== "ID") return (<th key={index}>{col}</th>)
+                                })
                             }
                             <th>Actions</th>
                         </tr>

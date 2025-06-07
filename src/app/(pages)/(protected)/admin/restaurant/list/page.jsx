@@ -11,7 +11,7 @@ const RestaurantListPage = async () => {
         title={"Restaurants"}
         body={
           <Table
-            header={["Name", "Location", "Owner", "Logo", "ID"]}
+            header={["Name", "Location", "Owner", "Logo"]}
             rows={restaurants.map(restaurant => ({
                 "Name": restaurant.name,
                 "Location": restaurant.location,
@@ -21,6 +21,8 @@ const RestaurantListPage = async () => {
               })
             )}
             deleteAction={deleteRestaurant}
+            actionLink={"/admin/menu/category/list?rid="}
+            actionText={"View Categories"}
         />
         }
       />

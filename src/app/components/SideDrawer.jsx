@@ -2,6 +2,9 @@ import Link from 'next/link'
 import React from 'react'
 import { FaUser, FaUsers, FaUserPlus, FaPlus, FaListUl } from "react-icons/fa";
 import { IoRestaurant, IoStatsChartSharp } from "react-icons/io5";
+import { MdFastfood } from "react-icons/md";
+import { RiDrinksFill } from "react-icons/ri";
+import { PiWineFill } from "react-icons/pi";
 
 const SideDrawer = ({ pageContent }) => {
   return (
@@ -58,7 +61,18 @@ const SideDrawer = ({ pageContent }) => {
               </details>
               
             </li>
-            <li><a href='/admin/dashboard'>Menu</a></li>
+            <li>
+              <details open={true}>
+                <summary className="group">
+                  <span><MdFastfood /></span> Food Menu
+                </summary>
+                <ul>
+                <li><a href="/admin/menu/category/add"><RiDrinksFill /> Add Category</a></li>
+                <li><a href="/admin/menu/menu-item/add"><PiWineFill /> Add Food Item</a></li>
+              </ul>
+              </details>
+              
+            </li>
           </ul>
         </aside>
       </div>
