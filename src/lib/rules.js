@@ -43,6 +43,25 @@ export const RegisterFormSchema = z
         }
     });
 
+// User Registration
+export const UpdateUserFormSchema = z
+    .object({
+        name: z
+            .string()
+            .min(1, { message: "Name is required." })
+            .trim(),
+        email: z.string().email({ message: "Please enter a valid email." }).trim(),
+        mobile: z
+            .string()
+            .min(10, { message: "Mobile number must be at least 10 digits." })
+            .max(10, { message: "Mobile number must not exceed 10 digits." })
+            .regex(/^[0-9]+$/, { message: "Mobile number must contain only digits." })  
+            .trim(),
+        userType: z.enum(["admin", "user", "rest_owner"], {
+            message: "Please select a valid user type.",
+        })
+    });
+
 // Restaurant Registration
 export const RestaurantFormSchema = z.object({
     name: z.string().min(1, { message: "Restaurant name is required." }).trim(),

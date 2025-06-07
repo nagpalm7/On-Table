@@ -10,7 +10,7 @@ const RestaurantForm = ({ state, action, isPending, users, buttonText, id=null }
             action={action}
             className="card w-full gap-6 my-4"
         >
-            <input name="id" className="hidden" value={id} />
+            <input name="id" type="hidden" value={id} />
             <label className="floating-label">
                 <span>Restaurant Name</span>
                 <input

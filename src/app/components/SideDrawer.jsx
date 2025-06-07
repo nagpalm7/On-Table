@@ -28,23 +28,35 @@ const SideDrawer = ({ pageContent }) => {
             </li>
             {/* User Nav Links */}
             <li>
-              <a href="/admin/user/list">
-                <FaUser /> User
-              </a>
-              <ul>
-                <li><a href="/admin/user/list"><FaUsers /> View Users</a></li>
-                <li><a href="/admin/user/add"><FaUserPlus /> Add User</a></li>
-              </ul>
+              <details open={true}>
+                <summary className="group">
+                  <span><FaUser /></span> User
+                </summary>
+                <ul>
+                  <li>
+                    <a href="/admin/user/list" className="flex items-center gap-2">
+                      <FaUsers /> <span>View Users</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/admin/user/add" className="flex items-center gap-2">
+                      <FaUserPlus /> <span>Add User</span>
+                    </a>
+                  </li>
+                </ul>
+              </details>
             </li>
-            {/* Restaurant Nav Links */}
             <li>
-              <a href="/admin/restaurant/list">
-                <IoRestaurant /> Restaurant
-              </a>
-              <ul>
+              <details open={true}>
+                <summary className="group">
+                  <span><IoRestaurant /></span> Restaurant
+                </summary>
+                <ul>
                 <li><a href="/admin/restaurant/list"><FaListUl /> View Restaurants</a></li>
                 <li><a href="/admin/restaurant/add"><FaPlus /> Add Restaurant</a></li>
               </ul>
+              </details>
+              
             </li>
             <li><a href='/admin/dashboard'>Menu</a></li>
           </ul>
