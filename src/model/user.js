@@ -29,11 +29,7 @@ const userSchema = new Schema({
         type: String,
         enum: ['admin', 'user', 'rest_owner'],
         required: true
-    },
-    restaurants: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Restaurant'
-    }]
+    }
 }, {
     timestamps: true
 });

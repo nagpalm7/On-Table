@@ -6,6 +6,7 @@ import { getDatabaseConnection } from '@/lib/db';
 import { RegisterFormSchema } from '@/lib/rules';
 import User from '@/model/user';
 import { revalidatePath } from "next/cache";
+import restaurant from "@/model/restaurant";
 
 export const fetchUsers = async (userType = null) => {
     await getDatabaseConnection();
@@ -78,9 +79,9 @@ export const deleteUser = async (formData) => {
     if (!user) {
         throw new Error("User not found");
     }
+
     // Remove references to this user in restaurants' owners array
-    const Restaurant = (await import('@/model/restaurant')).default;
-    await Restaurant.updateMany(
+    await restaurant.updateMany(
         { owners: userId },
         { $pull: { owners: userId } }
     );

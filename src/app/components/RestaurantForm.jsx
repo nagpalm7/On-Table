@@ -2,7 +2,7 @@ import React from "react";
 import ServerErrorMessage from "@/app/components/ServerErrorMessage";
 import MultiSelect from "@/app/components/MultiSelect";
 
-const RestaurantForm = ({ state, action, isPending, users }) => {
+const RestaurantForm = ({ state, action, isPending, users, buttonText, id=null }) => {
     const ALLOWED_FILE_TYPES = ".jpeg,.jpg,.png,.webp,image/jpeg,image/jpg," +
         "image/png,image/webp";
     return (
@@ -10,6 +10,7 @@ const RestaurantForm = ({ state, action, isPending, users }) => {
             action={action}
             className="card w-full gap-6 my-4"
         >
+            <input name="id" className="hidden" value={id} />
             <label className="floating-label">
                 <span>Restaurant Name</span>
                 <input
@@ -82,7 +83,7 @@ const RestaurantForm = ({ state, action, isPending, users }) => {
                 className="btn btn-primary w-full"
                 disabled={isPending}
             >
-                Add Restaurant
+                {buttonText}
             </button>
         </form>
     )

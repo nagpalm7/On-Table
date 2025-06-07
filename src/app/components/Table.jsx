@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-const Table = ({header, rows, deleteAction, editAction}) => {
+const Table = ({header, rows, deleteAction}) => {
 
     return (
         <div>

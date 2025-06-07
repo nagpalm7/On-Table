@@ -7,7 +7,7 @@ import getAuthUser from '@/lib/getAuthUser';
 const Header = async () => {
     const authUser = await getAuthUser();
     return (
-        <header className="sticky top-0 z-1 w-full bg-base-100 backdrop-blur">
+        <header className="sticky top-0 z-20 w-full bg-base-100 backdrop-blur">
             <div className="navbar shadow-xs">
                 {authUser &&
                     <div className="flex-none">

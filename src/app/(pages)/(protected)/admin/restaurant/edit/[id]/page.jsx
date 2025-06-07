@@ -1,22 +1,34 @@
 "use client";
 
-import { addRestaurant } from '@/actions/restaurant';
+import { addRestaurant, editRestaurant, fetchRestaurantById } from '@/actions/restaurant';
 import { fetchUsers } from '@/actions/user';
 import Card from '@/app/components/Card'
+import RestaurantForm from '@/app/components/RestaurantForm';
 import Spinner from '@/app/components/Spinner';
 import React, { useActionState, useEffect, useState } from 'react'
+import { useParams } from 'next/navigation';
 
 const EditUser = () => {
-    const [state, action, isPending] = useActionState(addRestaurant, undefined);
-
+    const [state, action, isPending] = useActionState(editRestaurant, undefined);
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [initialState, setInitialState] = useState({});
+    const params = useParams();
+
+    const id = params.id;
 
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
             const usersData = await fetchUsers("rest_owner");
             setUsers(usersData || []);
+            const restaurant = await fetchRestaurantById(id);
+            setInitialState({
+                name: restaurant.name,
+                location: restaurant.location,
+                owners: restaurant.owners,
+                logo: restaurant.logo
+            })
             setIsLoading(false);
         };
         fetchData();
@@ -28,8 +40,17 @@ const EditUser = () => {
     return (
         <div>
             <Card
-                title = {"Edit Restaurant"}
-                body = {""}
+                title={"Add Restaurant"}
+                body={
+                    <RestaurantForm
+                        state={state ? state : initialState}
+                        action={action}
+                        isPending={isPending}
+                        users={users}
+                        buttonText={"Edit Restaurant"}
+                        id={id}
+                    />
+                }
             />
         </div>
     )

@@ -40,6 +40,7 @@ const AddRestaurant = () => {
                         action={action}
                         isPending={isPending}
                         users={users}
+                        buttonText={"Add Restaurant"}
                     />
                 }
             />

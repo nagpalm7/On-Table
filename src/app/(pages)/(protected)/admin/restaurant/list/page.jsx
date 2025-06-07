@@ -5,7 +5,6 @@ import React from 'react'
 
 const RestaurantListPage = async () => {
   const restaurants = await fetchRestaurants();
-  console.log(restaurants);
   return (
     <div>
       <Card
@@ -22,7 +21,6 @@ const RestaurantListPage = async () => {
               })
             )}
             deleteAction={deleteRestaurant}
-            editAction={""}
         />
         }
       />
