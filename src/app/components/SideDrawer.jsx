@@ -1,5 +1,7 @@
+"use client";
+
 import Link from 'next/link'
-import React from 'react'
+import React, { useRef } from 'react'
 import { FaUser, FaUsers, FaUserPlus, FaPlus, FaListUl } from "react-icons/fa";
 import { IoRestaurant, IoStatsChartSharp } from "react-icons/io5";
 import { MdFastfood } from "react-icons/md";
@@ -7,9 +9,14 @@ import { RiDrinksFill } from "react-icons/ri";
 import { PiWineFill } from "react-icons/pi";
 
 const SideDrawer = ({ pageContent }) => {
+  const drawerRef = useRef(null);
+  const closeDrawer = () => {
+    if (drawerRef.current) drawerRef.current.checked = false;
+  };
+
   return (
     <div className="drawer lg:drawer-open">
-      <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+      <input id="my-drawer-2" type="checkbox" className="drawer-toggle" ref={drawerRef} />
       <div className="drawer-content flex flex-col">
         {/* Page content here */}
         {pageContent}
@@ -25,9 +32,9 @@ const SideDrawer = ({ pageContent }) => {
           <ul className="menu backdrop-blur min-h-full px-4 py-0 w-full">
             {/* User Nav Links */}
             <li>
-              <a href="/admin/dashboard">
+              <Link href="/admin/dashboard" onClick={closeDrawer}>
                 <IoStatsChartSharp /> Dashboard
-              </a>
+              </Link>
             </li>
             {/* User Nav Links */}
             <li>
@@ -37,14 +44,14 @@ const SideDrawer = ({ pageContent }) => {
                 </summary>
                 <ul>
                   <li>
-                    <a href="/admin/user/list" className="flex items-center gap-2">
+                    <Link href="/admin/user/list" onClick={closeDrawer}>
                       <FaUsers /> <span>View Users</span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/admin/user/add" className="flex items-center gap-2">
+                    <Link href="/admin/user/add" onClick={closeDrawer}>
                       <FaUserPlus /> <span>Add User</span>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </details>
@@ -55,8 +62,8 @@ const SideDrawer = ({ pageContent }) => {
                   <span><IoRestaurant /></span> Restaurant
                 </summary>
                 <ul>
-                <li><a href="/admin/restaurant/list"><FaListUl /> View Restaurants</a></li>
-                <li><a href="/admin/restaurant/add"><FaPlus /> Add Restaurant</a></li>
+                <li><Link href="/admin/restaurant/list" onClick={closeDrawer}><FaListUl /> View Restaurants</Link></li>
+                <li><Link href="/admin/restaurant/add" onClick={closeDrawer}><FaPlus /> Add Restaurant</Link></li>
               </ul>
               </details>
               
@@ -67,8 +74,8 @@ const SideDrawer = ({ pageContent }) => {
                   <span><MdFastfood /></span> Food Menu
                 </summary>
                 <ul>
-                <li><a href="/admin/menu/category/add"><RiDrinksFill /> Add Category</a></li>
-                <li><a href="/admin/menu/menu-item/add"><PiWineFill /> Add Food Item</a></li>
+                <li><Link href="/admin/menu/category/add" onClick={closeDrawer}><RiDrinksFill /> Add Category</Link></li>
+                <li><Link href="/admin/menu/menu-item/add" onClick={closeDrawer}><PiWineFill /> Add Food Item</Link></li>
               </ul>
               </details>
               

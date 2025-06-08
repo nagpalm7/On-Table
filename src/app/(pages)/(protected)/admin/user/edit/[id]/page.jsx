@@ -20,17 +20,17 @@ const EditUser = () => {
       setIsLoading(true);
       const user = await fetchUserById(id);
       setInitialState({
-        name: user.name,
-        email: user.email,
-        mobile: user.mobile,
-        userType: user.userType        
+        name: user?.name,
+        email: user?.email,
+        mobile: user?.mobile,
+        userType: user?.userType        
       })
       setIsLoading(false);
     };
     fetchData();
   }, []);
 
-  if (isLoading) {
+  if (isLoading || isPending) {
     return <Spinner />
   }
 

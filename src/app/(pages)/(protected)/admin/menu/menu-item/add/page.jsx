@@ -26,7 +26,7 @@ const AddRestaurant = () => {
         fetchData();
     }, []);
 
-    if (isLoading) {
+    if (isLoading || isPending) {
         return <Spinner />;
     }
 

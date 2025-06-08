@@ -2,10 +2,11 @@ import React from "react";
 import ServerErrorMessage from "@/app/components/ServerErrorMessage";
 import MultiSelect from "@/app/components/MultiSelect";
 import Spinner from "./Spinner";
+import { CldImage } from "next-cloudinary";
 
 const RestaurantForm = ({ state, action, isPending, users, buttonText, id="" }) => {
-    const ALLOWED_FILE_TYPES = ".jpeg,.jpg,.png,.webp,image/jpeg,image/jpg," +
-        "image/png,image/webp";
+    const ALLOWED_FILE_TYPES = ".jpeg,.jpg,.png,.webp,.svg,image/jpeg,image/jpg," +
+        "image/png,image/webp,image/svg";
 
     if (isPending) return <Spinner />
     return (
@@ -67,18 +68,29 @@ const RestaurantForm = ({ state, action, isPending, users, buttonText, id="" }) 
             }
 
             {/* // logo upload */}
+            <input name="logo" value={state?.logo} type={"hidden"}/>
             <fieldset className="fieldset">
                 <legend className="fieldset-legend">Upload Logo</legend>
                 <input
                     type="file"
                     className="file-input w-full file-input-bordered"
-                    name="logo"
+                    name="logoFile"
                     accept={ALLOWED_FILE_TYPES}
                 />
                 <label className="label">Max Size (2MB)</label>
                 <ul className="validator-hint hidden">
                     <li>Only jpg, png, svg and webp files are supported.</li>
                 </ul>
+                {state?.logo &&
+                    <CldImage
+                        src={state?.logo || "image-icon-trendy-flat-style-600nw-643080895-removebg-preview_ullmiu"}
+                        width={100}
+                        height={100}
+                        alt="logo"
+                        crop="fill"
+                        className="rounded shadow-md"
+                    />
+                }
             </fieldset>
 
             <button

@@ -1,6 +1,6 @@
 "use client";
 
-import { addRestaurant, editRestaurant, fetchRestaurantById } from '@/actions/restaurant';
+import { editRestaurant, fetchRestaurantById } from '@/actions/restaurant';
 import { fetchUsers } from '@/actions/user';
 import Card from '@/app/components/Card'
 import RestaurantForm from '@/app/components/RestaurantForm';
@@ -15,7 +15,7 @@ const EditUser = () => {
     const [initialState, setInitialState] = useState({});
     const params = useParams();
 
-    const id = params.id;
+    const id = params.id.toString();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,17 +24,17 @@ const EditUser = () => {
             setUsers(usersData || []);
             const restaurant = await fetchRestaurantById(id);
             setInitialState({
-                name: restaurant.name,
-                location: restaurant.location,
-                owners: restaurant.owners,
-                logo: restaurant.logo
+                name: restaurant?.name,
+                location: restaurant?.location,
+                owners: restaurant?.owners,
+                logo: restaurant?.logo
             })
             setIsLoading(false);
         };
         fetchData();
     }, []);
 
-    if (isLoading) {
+    if (isLoading || isPending) {
         return <Spinner />;
     }
     return (

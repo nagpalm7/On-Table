@@ -18,7 +18,6 @@ async function connectToDatabase() {
             dbName: "OnTable"
         });
         cachedConnection = conn.connection;
-        console.log("Connected to MongoDB with Mongoose");
         return cachedConnection;
     } catch (error) {
         console.error("Failed to connect to MongoDB:", error);

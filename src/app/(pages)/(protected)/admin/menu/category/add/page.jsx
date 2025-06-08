@@ -23,9 +23,10 @@ const AddCategory = () => {
         fetchData();
     }, []);
 
-    if (isLoading) {
+    if (isLoading || isPending) {
         return <Spinner />;
     }
+
     return (
         <div>
             <Card

@@ -3,7 +3,7 @@ import React from 'react'
 import ServerErrorMessage from "@/app/components/ServerErrorMessage";
 import Spinner from './Spinner';
 
-const UserForm = ({action, state, isPending, buttonText, id = null, allowPasswordUpdate = true}) => {
+const UserForm = ({action, state, isPending, buttonText, id = "", allowPasswordUpdate = true}) => {
 
     if (isPending) {
         return <Spinner />

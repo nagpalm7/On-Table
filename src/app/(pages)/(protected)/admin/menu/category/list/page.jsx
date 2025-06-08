@@ -1,5 +1,5 @@
 import React from 'react'
-import { fetchCategories } from '@/actions/menu';
+import { delteCategory, fetchCategories } from '@/actions/menu';
 import Card from '@/app/components/Card'
 import Table from '@/app/components/Table';
 
@@ -9,7 +9,7 @@ const RestaurantListPage = async ({searchParams}) => {
     return (
         <div>
             <Card
-                title={"Restaurants"}
+                title={"Categories"}
                 body={
                     <Table
                         header={["Name", "Restaurant Name", "Restaurant Location"]}
@@ -20,7 +20,7 @@ const RestaurantListPage = async ({searchParams}) => {
                                 "ID": category._id,
                             })
                         )}
-                        deleteAction={null}
+                        deleteAction={delteCategory}
                     />
                 }
             />

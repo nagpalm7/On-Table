@@ -1,9 +1,8 @@
-
+"use client";
 import Link from 'next/link'
 import React from 'react'
 
 const Table = ({header, rows, deleteAction, actionLink = null, actionText = ""}) => {
-
     return (
         <div>
             <div className="overflow-x-auto">
@@ -31,6 +30,11 @@ const Table = ({header, rows, deleteAction, actionLink = null, actionText = ""})
                                 }
                                 <th>
                                     <div className="flex gap-2">
+                                        {actionLink &&
+                                            <Link href={`${actionLink}${row.ID}`}>
+                                                <button className="btn btn-xs btn-soft btn-primary">{actionText}</button>
+                                            </Link>
+                                        }
                                         <Link href={`edit/${row.ID}`}>
                                             <button className="btn btn-xs btn-soft btn-primary">Edit</button>
                                         </Link>
@@ -38,11 +42,6 @@ const Table = ({header, rows, deleteAction, actionLink = null, actionText = ""})
                                             <input type="hidden" name="id" value={row.ID} />
                                             <button className="btn btn-xs btn-soft btn-error">Delete</button>
                                         </form>
-                                        {actionLink &&
-                                            <Link href={`${actionLink}${row.ID}`}>
-                                                <button className="btn btn-xs btn-soft btn-primary">{actionText}</button>
-                                            </Link>
-                                        }
                                     </div>
                                 </th>
                             </tr>

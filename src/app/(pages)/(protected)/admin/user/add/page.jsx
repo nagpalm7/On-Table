@@ -4,11 +4,13 @@ import UserForm from '@/app/components/UserForm';
 import React , { useActionState } from "react";
 import { addUser } from "@/actions/user";
 import Card from '@/app/components/Card';
+import Spinner from '@/app/components/Spinner';
 
 const AddUser = () => {
 
     const [state, action, isPending] = useActionState(addUser, undefined);
     
+    if (isPending) return <Spinner />
     return (
         <div>
             <Card 

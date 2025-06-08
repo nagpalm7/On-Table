@@ -6,6 +6,8 @@ import Restaurant from "@/model/restaurant";
 import user from "@/model/user";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { convertFileToDataUrl } from "./utils";
+import cloudinary from "@/lib/cloudinary";
 
 export const fetchRestaurants = async () => {
     await getDatabaseConnection();
@@ -24,6 +26,7 @@ export const addRestaurant = async (state, formData) => {
         location: formData.get('location'),
         owners: formData.getAll('owners'),
         logo: formData.get('logo'),
+        logoFile: formData.get('logoFile'),
     });
 
     // If any form fields are invalid
@@ -33,12 +36,13 @@ export const addRestaurant = async (state, formData) => {
             location: formData.get('location'),
             owners: formData.getAll('owners'),
             logo: formData.get('logo'),
+            logoFile: formData.get('logoFile'),
             errors: validatedFields.error.flatten().fieldErrors,
         };
     }
 
     // Extract form fields
-    const { name, location, owners, logo } = validatedFields.data;
+    const { name, location, owners, logo, logoFile } = validatedFields.data;
 
     // Check if user exists and is restaurant owner
     await getDatabaseConnection();
@@ -64,13 +68,27 @@ export const addRestaurant = async (state, formData) => {
             location: formData.get('location'),
             owners: formData.getAll('owner'),
             logo: formData.get('logo'),
+            logoFile: formData.get('logoFile'),
             errors: {
                 owners: errors
             }
         };
+    
+    const dataUrl = await convertFileToDataUrl(logoFile);
+    let logoPublicId = logo;
+    if (dataUrl !== null) {
+        const upload = await cloudinary.uploader.upload(dataUrl, {
+            folder: 'restaurant-logos',
+        })
+        logoPublicId = upload.public_id;
+    }
+
+    if (logo && logoPublicId !== logo) {
+        await cloudinary.uploader.destroy(logo);
+    }
 
     // Add restaurant
-    const restaurant = new Restaurant({ name, location, owners, logo });
+    const restaurant = new Restaurant({ name, location, owners, logo: logoPublicId});
     await restaurant.save();
 
     // Redirect
@@ -85,6 +103,10 @@ export const deleteRestaurant = async (formData) => {
     const restaurant = await Restaurant.findByIdAndDelete(restaurantId);
     if (!restaurant) {
         throw new Error("Restaurant not found");
+    }
+
+    if (restaurant.logo) {
+        await cloudinary.uploader.destroy(restaurant.logo);
     }
 
     // Revalidate the restaurant list page
@@ -108,6 +130,7 @@ export const editRestaurant = async (state, formData) => {
         location: formData.get('location'),
         owners: formData.getAll('owners'),
         logo: formData.get('logo'),
+        logoFile: formData.get('logoFile')
     });
 
     // If any form fields are invalid
@@ -117,12 +140,13 @@ export const editRestaurant = async (state, formData) => {
             location: formData.get('location'),
             owners: formData.getAll('owners'),
             logo: formData.get('logo'),
+            logoFile: formData.get('logoFile'),
             errors: validatedFields.error.flatten().fieldErrors,
         };
     }
 
     // Extract form fields
-    const { name, location, owners, logo } = validatedFields.data;
+    const { name, location, owners, logo, logoFile } = validatedFields.data;
 
     // Check if user exists and is restaurant owner
     await getDatabaseConnection();
@@ -148,16 +172,30 @@ export const editRestaurant = async (state, formData) => {
             location: formData.get('location'),
             owners: formData.getAll('owners'),
             logo: formData.get('logo'),
+            logoFile: formData.get('logoFile'),
             errors: {
                 owners: errors
             }
         };
 
+    const dataUrl = await convertFileToDataUrl(logoFile);
+    let logoPublicId = logo;
+    if (dataUrl) {
+        const upload = await cloudinary.uploader.upload(dataUrl, {
+            folder: 'restaurant-logos',
+        })
+        logoPublicId = upload.public_id;
+    }
+
+    if (logo && logoPublicId !== logo) {
+        await cloudinary.uploader.destroy(logo);
+    }
+
     const id = formData.get("id");
     // Update restaurant
     const updated = await Restaurant.findByIdAndUpdate(
         id,
-        { name, location, owners, logo },
+        { name, location, owners, logo:logoPublicId },
         { new: true }
     );
 

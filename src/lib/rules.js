@@ -69,6 +69,8 @@ export const RestaurantFormSchema = z.object({
     owners: z
         .array(z.string())
         .min(1, { message: "At least one owner must be selected." }),
+    logoFile: z.instanceof(File).optional(),
+    logo: z.string().optional()
 });
 
 export const CategoryFormSchema = z.object({
