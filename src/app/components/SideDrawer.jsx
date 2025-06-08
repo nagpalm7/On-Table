@@ -62,8 +62,16 @@ const SideDrawer = ({ pageContent }) => {
                   <span><IoRestaurant /></span> Restaurant
                 </summary>
                 <ul>
-                <li><Link href="/admin/restaurant/list" onClick={closeDrawer}><FaListUl /> View Restaurants</Link></li>
-                <li><Link href="/admin/restaurant/add" onClick={closeDrawer}><FaPlus /> Add Restaurant</Link></li>
+                <li>
+                  <Link href="/admin/restaurant/list" onClick={closeDrawer}>
+                    <FaListUl /> View Restaurants
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/admin/restaurant/add" onClick={closeDrawer}>
+                    <FaPlus /> Add Restaurant
+                  </Link>
+                </li>
               </ul>
               </details>
               
@@ -74,9 +82,38 @@ const SideDrawer = ({ pageContent }) => {
                   <span><MdFastfood /></span> Food Menu
                 </summary>
                 <ul>
-                <li><Link href="/admin/menu/category/add" onClick={closeDrawer}><RiDrinksFill /> Add Category</Link></li>
-                <li><Link href="/admin/menu/menu-item/add" onClick={closeDrawer}><PiWineFill /> Add Food Item</Link></li>
-              </ul>
+                  <li>
+                    <li className="menu-title">Food Category</li>
+                    <ul>
+                      <li>
+                        <Link href="/admin/menu/category/list" onClick={closeDrawer}>
+                          <FaListUl /> List Categories
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/admin/menu/category/add" onClick={closeDrawer}>
+                          <RiDrinksFill /> Add Category
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <li className="menu-title">Food Item</li>
+                    <ul>
+                      <li>
+                        <Link href="/admin/menu/menu-item/add" onClick={closeDrawer}>
+                          <PiWineFill /> Add Food Item
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/admin/menu/menu-item/list" onClick={closeDrawer}>
+                          <RiDrinksFill /> List Food Items
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+                  
+                </ul>
               </details>
               
             </li>

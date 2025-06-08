@@ -31,8 +31,9 @@ const getMenuByRestaurant = async (restaurantId) => {
 };
 
 export const fetchCategories = async (rid) => {
+    const query = rid ? { restaurant: rid } : {}
     await getDatabaseConnection();
-    const categories = await Category.find({ restaurant: rid })
+    const categories = await Category.find(query)
         .sort({ name: 1 })
         .populate("restaurant", "name location")
         .lean();
