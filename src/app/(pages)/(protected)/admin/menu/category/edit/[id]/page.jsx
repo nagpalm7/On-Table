@@ -5,7 +5,7 @@ import Card from "@/app/components/Card";
 import CategoryForm from "@/app/components/CategoryForm";
 import Spinner from "@/app/components/Spinner";
 import { fetchRestaurants } from "@/actions/restaurant";
-import { fetchCategoryById, updateCategory } from "@/actions/menu";
+import { fetchCategoryById, updateCategory } from "@/actions/category";
 import { useParams } from "next/navigation";
 
 const EditCategory = () => {

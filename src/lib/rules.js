@@ -75,5 +75,26 @@ export const RestaurantFormSchema = z.object({
 
 export const CategoryFormSchema = z.object({
     name: z.string().min(1, { message: "Category name is required." }).trim(),
-    restaurant: z.string().min(1, { message: "Location is required." }).trim(),
+    restaurant: z.string().min(1, { message: "Restaurant is required." }).trim(),
 });
+
+export const MenuItemFormSchema = z.object({
+    name: z.string().min(1, { message: "Menu item name is required." }).trim(),
+    description: z.string().min(1, { message: "Menu item description is required." }).trim(),
+    restaurant: z.string().min(1, { message: "Restaurant is required." }).trim(),
+    categories: z
+        .array(z.string())
+        .min(1, { message: "At least one category must be selected." }),
+    variants: z.array(
+        z.object({
+            name: z.string().min(1, { message: "Variant name is required." }).trim(),
+            price: z
+                .string()
+                .min(1, { message: "Variant price is required." })
+                .regex(/^\d+(\.\d{1,2})?$/, { message: "Variant price must be a valid number." })
+                .trim(),
+        })
+    ).min(1, { message: "At least one variant is required." }),
+    imageFile: z.instanceof(File).optional(),
+    image: z.string().optional()
+})

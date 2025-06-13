@@ -9,6 +9,15 @@ import { redirect } from "next/navigation";
 import { convertFileToDataUrl } from "./utils";
 import cloudinary from "@/lib/cloudinary";
 
+export const getFieldsFromFormData = async (formData) => {
+    return {
+        name: formData.get('name'),
+        location: formData.get('location'),
+        owners: formData.getAll('owners'),
+        logo: formData.get('logo'),
+        logoFile: formData.get('logoFile'),
+    };
+}
 export const fetchRestaurants = async () => {
     await getDatabaseConnection();
     const restaurants = await Restaurant.find({})
@@ -20,23 +29,14 @@ export const fetchRestaurants = async () => {
 };
 
 export const addRestaurant = async (state, formData) => {
+    const data = await getFieldsFromFormData(formData);
     // validate form data
-    const validatedFields = RestaurantFormSchema.safeParse({
-        name: formData.get('name'),
-        location: formData.get('location'),
-        owners: formData.getAll('owners'),
-        logo: formData.get('logo'),
-        logoFile: formData.get('logoFile'),
-    });
+    const validatedFields = RestaurantFormSchema.safeParse();
 
     // If any form fields are invalid
     if (!validatedFields.success) {
         return {
-            name: formData.get('name'),
-            location: formData.get('location'),
-            owners: formData.getAll('owners'),
-            logo: formData.get('logo'),
-            logoFile: formData.get('logoFile'),
+            ...data,
             errors: validatedFields.error.flatten().fieldErrors,
         };
     }
@@ -64,11 +64,7 @@ export const addRestaurant = async (state, formData) => {
 
     if (errors.length > 0)
         return {
-            name: formData.get('name'),
-            location: formData.get('location'),
-            owners: formData.getAll('owner'),
-            logo: formData.get('logo'),
-            logoFile: formData.get('logoFile'),
+            ...data,
             errors: {
                 owners: errors
             }
@@ -124,23 +120,16 @@ export const fetchRestaurantById = async (id) => {
 };
 
 export const editRestaurant = async (state, formData) => {
+    const data = await getFieldsFromFormData(formData);
     // validate form data
     const validatedFields = RestaurantFormSchema.safeParse({
-        name: formData.get('name'),
-        location: formData.get('location'),
-        owners: formData.getAll('owners'),
-        logo: formData.get('logo'),
-        logoFile: formData.get('logoFile')
+        ...data
     });
 
     // If any form fields are invalid
     if (!validatedFields.success) {
         return {
-            name: formData.get('name'),
-            location: formData.get('location'),
-            owners: formData.getAll('owners'),
-            logo: formData.get('logo'),
-            logoFile: formData.get('logoFile'),
+            ...data,
             errors: validatedFields.error.flatten().fieldErrors,
         };
     }
@@ -168,11 +157,7 @@ export const editRestaurant = async (state, formData) => {
 
     if (errors.length > 0)
         return {
-            name: formData.get('name'),
-            location: formData.get('location'),
-            owners: formData.getAll('owners'),
-            logo: formData.get('logo'),
-            logoFile: formData.get('logoFile'),
+            ...data,
             errors: {
                 owners: errors
             }

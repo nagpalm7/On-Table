@@ -21,6 +21,8 @@ export default function MultiSelect({
   useEffect(() => {
     if (defaultValues && defaultValues.length > 0) {
       handleDefaultValues(defaultValues);
+    } else {
+      clearSelectedValues();
     }
   }, [defaultValues]);
 
@@ -44,7 +46,6 @@ export default function MultiSelect({
     }
 
     const newSelectedOptions = Array.from(selectedOptionSet);
-
     setSelectedOptions(newSelectedOptions);
     onChange(newSelectedOptions);
   };
@@ -64,7 +65,6 @@ export default function MultiSelect({
         }
     });
     setSelectedOptions([...defaultOptions]);
-    onChange([...defaultOptions]);
   };
 
   const handleSelectAllClick = (e) => {
@@ -84,13 +84,17 @@ export default function MultiSelect({
   const handleClearSelectionClick = (e) => {
     e.preventDefault();
 
+    clearSelectedValues()
+    onChange([]);
+  };
+
+  const clearSelectedValues = () => {
     const optionsInputs = optionsListRef.current.querySelectorAll("input");
     optionsInputs.forEach((input) => {
       input.checked = false;
     });
 
     setSelectedOptions([]);
-    onChange([]);
   };
 
   return (

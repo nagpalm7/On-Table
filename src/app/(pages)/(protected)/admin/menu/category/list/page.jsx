@@ -1,9 +1,9 @@
 import React from 'react'
-import { delteCategory, fetchCategories } from '@/actions/menu';
+import { delteCategory, fetchCategories } from '@/actions/category';
 import Card from '@/app/components/Card'
 import Table from '@/app/components/Table';
 
-const RestaurantListPage = async ({searchParams}) => {
+const CategoryListPage = async ({searchParams}) => {
     const { rid } = await searchParams;
     const categories = await fetchCategories(rid);
     return (
@@ -28,4 +28,4 @@ const RestaurantListPage = async ({searchParams}) => {
     )
 }
 
-export default RestaurantListPage;
+export default CategoryListPage;

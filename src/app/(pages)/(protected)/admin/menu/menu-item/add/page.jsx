@@ -2,23 +2,23 @@
 
 import React, { useActionState } from "react";
 import { useEffect, useState } from "react";
-import { addRestaurant } from "@/actions/restaurant";
+import { fetchRestaurants } from "@/actions/restaurant";
 import Spinner from "@/app/components/Spinner";
 import Card from "@/app/components/Card";
-import RestaurantForm from "@/app/components/RestaurantForm";
-import { fetchCategories } from "@/actions/menu";
+import MenuItemForm from "@/app/components/MenuItemForm";
+import { addMenuItem } from "@/actions/menuItem";
 
 const AddMenuItem = () => {
 
-    const [state, action, isPending] = useActionState(addRestaurant, undefined);
-    const [categories, setCategories] = useState([]);
+    const [state, action, isPending] = useActionState(addMenuItem,undefined);
+    const [restaurants, setRestaurants] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            const categoriesData = await fetchCategories();
-            setCategories(categoriesData || []);
+            const restaurantsData = await fetchRestaurants();
+            setRestaurants(restaurantsData);
             setIsLoading(false);
         };
         fetchData();
@@ -33,12 +33,12 @@ const AddMenuItem = () => {
             <Card
                 title={"Add Food Item"}
                 body={
-                    <RestaurantForm
+                    <MenuItemForm
                         state={state}
                         action={action}
                         isPending={isPending}
-                        users={categories}
-                        buttonText={"Add Restaurant"}
+                        restaurants={restaurants}
+                        buttonText={"Add Food Item"}
                     />
                 }
             />

@@ -83,11 +83,11 @@ const SideDrawer = ({ pageContent }) => {
                 </summary>
                 <ul>
                   <li>
-                    <li className="menu-title">Food Category</li>
+                    <div className="menu-title">Food Category</div>
                     <ul>
                       <li>
                         <Link href="/admin/menu/category/list" onClick={closeDrawer}>
-                          <FaListUl /> List Categories
+                          <FaListUl /> View Categories
                         </Link>
                       </li>
                       <li>
@@ -98,7 +98,7 @@ const SideDrawer = ({ pageContent }) => {
                     </ul>
                   </li>
                   <li>
-                    <li className="menu-title">Food Item</li>
+                    <div className="menu-title">Food Item</div>
                     <ul>
                       <li>
                         <Link href="/admin/menu/menu-item/add" onClick={closeDrawer}>
@@ -107,7 +107,7 @@ const SideDrawer = ({ pageContent }) => {
                       </li>
                       <li>
                         <Link href="/admin/menu/menu-item/list" onClick={closeDrawer}>
-                          <RiDrinksFill /> List Food Items
+                          <RiDrinksFill /> View Food Items
                         </Link>
                       </li>
                     </ul>

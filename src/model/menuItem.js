@@ -3,19 +3,16 @@ const { default: mongoose } = require("mongoose");
 const menuItemSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: String,
-    imageUrl: String,
+    image: String,
     available: { type: Boolean, default: true },
-
     restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
-    category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
-
+    categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
     variants: [
         {
             name: { type: String, required: true }, // e.g., Small, Medium, Full
             price: { type: Number, required: true }
         }
     ],
-
     addons: [
         {
             name: { type: String, required: true },
