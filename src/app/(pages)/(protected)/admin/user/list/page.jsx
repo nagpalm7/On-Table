@@ -4,7 +4,6 @@ import Table from '@/app/components/Table';
 import React from 'react'
 
 const UserListPage = async () => {
-  console.log("user list page rendering")
   const users = await fetchUsers();
   return (
     <div>

@@ -13,7 +13,7 @@ const getFieldsFromFormData = async (formData) => {
         description: formData.get('description'),
         restaurant: formData.get('restaurant'),
         categories: formData.getAll('categories'),
-        variants: getVariantsFromFormData(formData),
+        variants: await getVariantsFromFormData(formData),
         image: formData.get('image'),
         imageFile: formData.get('imageFile')
     };
@@ -64,7 +64,7 @@ export const addMenuItem = async (state, formData) => {
     }
 
     // Add Menu Item
-    const menuItem = new MenuItem({ name, description, restaurant, categories, variants, image });
+    const menuItem = new MenuItem({ name, description, restaurant, categories, variants, image:imagePublicId });
     await menuItem.save();
 
     // Redirect

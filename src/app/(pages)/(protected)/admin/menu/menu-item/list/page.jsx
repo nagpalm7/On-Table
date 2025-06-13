@@ -9,7 +9,6 @@ import { base_url_cloudinary } from '@/app/utils/constants';
 const MenuItemListPage = async ({searchParams}) => {
     const { rid } = await searchParams;
     const menuItems = await fetchMenuItems(rid);
-
     return (
         <div>
             <Card
@@ -38,7 +37,7 @@ const MenuItemListPage = async ({searchParams}) => {
                                         {menuItem?.variants.map(variant => (`${variant?.name} [ ₹${variant?.price} ]`)).join("\n")}
                                     </span>
                                 ),
-                                "Image": menuItem?.image && <Link href={base_url_cloudinary + menuItem?.image + ".webp"} target="_blank" className='link link-primary'>{menuItem?.image}</Link>,
+                                "Image": menuItem?.image && <Link href={base_url_cloudinary + menuItem?.image + ".webp"} target="_blank" className='link link-primary'>Image Link</Link>,
                                 "ID": menuItem?._id,
                             })
                         )}
