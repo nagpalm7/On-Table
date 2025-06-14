@@ -1,8 +1,10 @@
 "use server";
 
 import { getDatabaseConnection } from "@/lib/db";
+import getAuthUser from "@/lib/getAuthUser";
 import { CategoryFormSchema } from "@/lib/rules";
 import Category from "@/model/category";
+import restaurant from "@/model/restaurant";
 import Restaurant from "@/model/restaurant";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -10,6 +12,26 @@ import { redirect } from "next/navigation";
 export const fetchCategories = async (rid) => {
     const query = rid ? { restaurant: rid } : {}
     await getDatabaseConnection();
+    const categories = await Category.find(query)
+        .sort({ name: 1 })
+        .populate("restaurant", "name location")
+        .lean();
+    return JSON.parse(JSON.stringify(categories));
+}
+
+export const fetchCategoriesByOwner = async (rid) => {
+    const user = await getAuthUser();
+    await getDatabaseConnection();
+
+    // For owner-based filtering:
+    const ownedRestaurants = await Restaurant.find({ owners: user.userId }).select('_id');
+    const ownedRestaurantIds = ownedRestaurants.map(r => r._id);
+
+    const query = {
+        restaurant: { $in: ownedRestaurantIds }
+    };
+    if (rid) query.restaurant = rid;
+
     const categories = await Category.find(query)
         .sort({ name: 1 })
         .populate("restaurant", "name location")

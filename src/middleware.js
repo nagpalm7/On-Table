@@ -9,7 +9,7 @@ const protectedAdminRoutes = [
 ];
 
 const protectedRestaurantRoutes = [
-  "/restaurant",
+  "/client",
 ];
 
 const authRoutes = [
@@ -38,7 +38,7 @@ export default async function middleware(req) {
   }
 
   if (isAuthenticated && isRestaurantOwner && isAdminProtectedRoute) {
-    return NextResponse.redirect(new URL("/restaurant/dashboard", req.nextUrl));
+    return NextResponse.redirect(new URL(path.replace("admin", "client"), req.nextUrl));
   }
 
   // handle home page redirection
@@ -46,7 +46,7 @@ export default async function middleware(req) {
     if (isAuthenticated && isAdmin)
       return NextResponse.redirect(new URL("/admin/dashboard", req.nextUrl));
     else if (isAuthenticated && isRestaurantOwner)
-      return NextResponse.redirect(new URL("/restaurant/dashboard", req.nextUrl));
+      return NextResponse.redirect(new URL("/client/dashboard", req.nextUrl));
     else
       return NextResponse.redirect(new URL("/auth/login", req.nextUrl));
   }

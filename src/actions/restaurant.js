@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { convertFileToDataUrl } from "./utils";
 import cloudinary from "@/lib/cloudinary";
+import getAuthUser from "@/lib/getAuthUser";
 
 export const getFieldsFromFormData = async (formData) => {
     return {
@@ -18,9 +19,21 @@ export const getFieldsFromFormData = async (formData) => {
         logoFile: formData.get('logoFile'),
     };
 }
+
 export const fetchRestaurants = async () => {
     await getDatabaseConnection();
     const restaurants = await Restaurant.find({})
+        .sort({name: 1})
+        .select("-__v")
+        .populate("owners", "-password -__v")
+        .lean();
+    return JSON.parse(JSON.stringify(restaurants));
+};
+
+export const fetchRestaurantsByOwner = async () => {
+    const user = await getAuthUser();
+    await getDatabaseConnection();
+    const restaurants = await Restaurant.find({ owners: user?.userId })
         .sort({name: 1})
         .select("-__v")
         .populate("owners", "-password -__v")

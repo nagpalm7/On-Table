@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d out --nojekyll"
   },
   "dependencies": {
+    "@next/bundle-analyzer": "^15.3.3",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.6.1",
     "fs": "^0.0.1-security",

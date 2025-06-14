@@ -1,18 +1,15 @@
 /** @type {import('next').NextConfig} */
+import withBundleAnalyzer from '@next/bundle-analyzer';
+
 const nextConfig = {
   reactStrictMode: true,
   images: {
     unoptimized: true, // Disable default image optimization
   },
   assetPrefix: '',
-  basePath: '',
-  logger: {
-    level: 'info',
-    // You can add more logger options here if needed
-    timestamp: true,
-    color: true,
-    db: true
-  }
+  basePath: ''
 };
 
-export default nextConfig;
+export default withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})(nextConfig);

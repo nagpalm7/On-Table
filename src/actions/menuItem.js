@@ -7,6 +7,8 @@ import MenuItem from "@/model/menuItem";
 import { redirect } from "next/navigation";
 import cloudinary from "@/lib/cloudinary";
 import { revalidatePath } from "next/cache";
+import getAuthUser from "@/lib/getAuthUser";
+import Restaurant from "@/model/restaurant";
 
 const getFieldsFromFormData = async (formData) => {
     return {
@@ -35,6 +37,26 @@ export const fetchMenuItems = async (rid = null, cid = null) => {
     if (rid) query.restaurant = rid;
     if (cid) query.categories = cid;
     await getDatabaseConnection();
+    const menuItems = await MenuItem.find(query)
+        .sort({ name: 1 })
+        .populate("restaurant", "name location")
+        .populate("categories", "name")
+        .lean();
+    return JSON.parse(JSON.stringify(menuItems));
+}
+
+export const fetchMenuItemsByOwner = async (rid = null, cid = null) => {
+    const user = await getAuthUser();
+    await getDatabaseConnection();
+    // For owner-based filtering:
+    const ownedRestaurants = await Restaurant.find({ owners: user.userId }).select('_id');
+    const ownedRestaurantIds = ownedRestaurants.map(r => r._id);
+
+    const query = {
+        restaurant: { $in: ownedRestaurantIds }
+    };
+    if (rid) query.restaurant = rid;
+    if (cid) query.categories = cid;
     const menuItems = await MenuItem.find(query)
         .sort({ name: 1 })
         .populate("restaurant", "name location")

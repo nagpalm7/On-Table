@@ -18,6 +18,7 @@ export default function AdminSideDrawerContent({ closeDrawer }) {
                     closeDrawer={closeDrawer}
                 />
             </li>
+            <li/>
             {/* User Nav Links */}
             <li>
                 <details open={true}>
@@ -102,17 +103,17 @@ export default function AdminSideDrawerContent({ closeDrawer }) {
                             <ul>
                                 <li>
                                     <NavLink
-                                        label={"Add Food Item"}
-                                        href={"/admin/menu/menu-item/add"}
-                                        icon={<PiWineFill />}
+                                        label={"View Food Items"}
+                                        href={"/admin/menu/menu-item/list"}
+                                        icon={<RiDrinksFill />}
                                         closeDrawer={closeDrawer}
                                     />
                                 </li>
                                 <li>
                                     <NavLink
-                                        label={"View Food Items"}
-                                        href={"/admin/menu/menu-item/list"}
-                                        icon={<RiDrinksFill />}
+                                        label={"Add Food Item"}
+                                        href={"/admin/menu/menu-item/add"}
+                                        icon={<PiWineFill />}
                                         closeDrawer={closeDrawer}
                                     />
                                 </li>
