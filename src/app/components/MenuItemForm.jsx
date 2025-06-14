@@ -18,12 +18,17 @@ const MenuItemForm = ({ state, action, isPending, restaurants, buttonText, id = 
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        setSelectedCategories([]);
         const fetchData = async () => {
             if (selectedRestaurant && selectedRestaurant != "") {
                 setLoadingCategories(true);
                 const categoriesData = await fetchCategories(selectedRestaurant);
                 setCategories(categoriesData || []);
+                if (state?.restaurant === selectedRestaurant) {
+                    setSelectedCategories(state?.categories ?? []);
+                }
+                else {
+                    setSelectedCategories([]);
+                }
                 setLoadingCategories(false);
             }
         };
@@ -89,7 +94,7 @@ const MenuItemForm = ({ state, action, isPending, restaurants, buttonText, id = 
                 }
             </select>
 
-            <div className="w-full z-2">
+            <div className="w-full z-3">
                 <MultiSelect
                     formFieldName={"categories"}
                     options={categories.map(category => ({ name: `${category.name}`, value: category._id }))}

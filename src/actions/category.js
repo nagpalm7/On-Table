@@ -116,10 +116,10 @@ export const updateCategory = async (state, formData) => {
 
 export const delteCategory = async (formData) => {
     await getDatabaseConnection();
-    const restaurantId = formData.get('id');
+    const categoryId = formData.get('id');
 
     // Find and delete the restaurant, returning the owners
-    const category = await Category.findByIdAndDelete(restaurantId);
+    const category = await Category.findByIdAndDelete(categoryId);
     if (!category) {
         throw new Error("Category not found");
     }

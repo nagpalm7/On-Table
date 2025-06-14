@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-const Table = ({header, rows, deleteAction, actionLink = null, actionText = ""}) => {
+const Table = ({header, rows, deleteAction, actions = []}) => {
     return (
         <div>
             <div className="overflow-x-auto">
@@ -30,10 +30,12 @@ const Table = ({header, rows, deleteAction, actionLink = null, actionText = ""})
                                 }
                                 <th>
                                     <div className="flex gap-2">
-                                        {actionLink &&
-                                            <Link href={`${actionLink}${row.ID}`}>
-                                                <button className="btn btn-xs btn-soft btn-primary">{actionText}</button>
-                                            </Link>
+                                        {actions &&
+                                            actions.map((action, idx) => (
+                                                <Link href={`${action.link}${row.ID}`} key={idx}>
+                                                    <button className="btn btn-xs btn-soft btn-primary">{action.text}</button>
+                                                </Link>
+                                            ))
                                         }
                                         <Link href={`edit/${row.ID}`}>
                                             <button className="btn btn-xs btn-soft btn-primary">Edit</button>

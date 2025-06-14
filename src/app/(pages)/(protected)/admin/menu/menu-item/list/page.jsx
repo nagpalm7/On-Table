@@ -1,14 +1,13 @@
 import React from 'react'
-import { delteCategory } from '@/actions/category';
 import Card from '@/app/components/Card'
 import Table from '@/app/components/Table';
-import { fetchMenuItems } from '@/actions/menuItem';
+import { deletMenuItem, fetchMenuItems } from '@/actions/menuItem';
 import Link from 'next/link';
 import { base_url_cloudinary } from '@/app/utils/constants';
 
 const MenuItemListPage = async ({searchParams}) => {
-    const { rid } = await searchParams;
-    const menuItems = await fetchMenuItems(rid);
+    const { rid, cid } = await searchParams;
+    const menuItems = await fetchMenuItems(rid, cid);
     return (
         <div>
             <Card
@@ -41,7 +40,7 @@ const MenuItemListPage = async ({searchParams}) => {
                                 "ID": menuItem?._id,
                             })
                         )}
-                        deleteAction={delteCategory}
+                        deleteAction={deletMenuItem}
                     />
                 }
             />

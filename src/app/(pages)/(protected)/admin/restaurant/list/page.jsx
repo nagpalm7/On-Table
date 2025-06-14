@@ -23,14 +23,18 @@ const RestaurantListPage = async () => {
                         {restaurant?.owners.map(owner => `${owner.name} [ ${owner.email} ]`).join('\n')}
                     </span>
                 ),
-                "Logo": restaurant?.logo && <Link href={base_url_cloudinary + restaurant.logo + ".webp"} target="_blank" className='link link-primary'>{restaurant.logo}</Link>,
+                "Logo": restaurant?.logo && <Link href={base_url_cloudinary + restaurant.logo + ".webp"} target="_blank" className='link link-primary'>Image Link</Link>,
                 "ID": restaurant?._id,
                 "Status": restaurant?.status === "active" ? "Active" : "Inactive"
               })
             )}
             deleteAction={deleteRestaurant}
-            actionLink={"/admin/menu/category/list?rid="}
-            actionText={"Categories"}
+            actions={
+              [
+                { link: "/admin/menu/category/list?rid=", text: "Categories" },
+                { link: "/admin/menu/menu-item/list?rid=", text: "Food Items" }
+              ]
+            }
           />
         }
       />

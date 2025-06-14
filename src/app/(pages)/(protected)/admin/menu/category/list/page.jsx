@@ -21,6 +21,11 @@ const CategoryListPage = async ({searchParams}) => {
                             })
                         )}
                         deleteAction={delteCategory}
+                        actions={
+                            [
+                                { link: "/admin/menu/menu-item/list?cid=", text: "Food Items" }
+                            ]
+                        }
                     />
                 }
             />
