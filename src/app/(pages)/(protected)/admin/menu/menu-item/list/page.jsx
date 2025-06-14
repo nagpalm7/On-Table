@@ -1,10 +1,10 @@
 import React from 'react'
-import Card from '@/app/components/Card'
+import Card from '@/app/components/common/Card'
 import Table from '@/app/components/Table';
 import { deletMenuItem, fetchMenuItems, updateMenuItemAvailability } from '@/actions/menuItem';
 import Link from 'next/link';
 import { base_url_cloudinary } from '@/app/utils/constants';
-import ToggleForm from '@/app/components/ToggleForm';
+import ToggleForm from '@/app/components/common/ToggleForm';
 
 const MenuItemListPage = async ({searchParams}) => {
     const { rid, cid } = await searchParams;

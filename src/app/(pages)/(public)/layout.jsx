@@ -1,5 +1,5 @@
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
+import Header from "@/app/components/common/Header";
+import Footer from "@/app/components/common/Footer";
 import React from "react";
 
 export default function RootLayout({ children }) {

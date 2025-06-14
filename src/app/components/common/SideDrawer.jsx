@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import React, { useRef } from 'react'
-import AdminSideDrawerContent from './admin/AdminSideDrawerContent';
-import RestaurantSideDrawerContent from './restaurant/RestaurantSideDrawerContent';
+import AdminSideDrawerContent from '@/app/components/admin/AdminSideDrawerContent';
+import RestaurantSideDrawerContent from '@/app/components/restaurant/RestaurantSideDrawerContent';
 
 const SideDrawer = ({ pageContent, userType }) => {
   const drawerRef = useRef(null);

@@ -1,7 +1,7 @@
 import React from "react";
-import ServerErrorMessage from "@/app/components/ServerErrorMessage";
-import MultiSelect from "@/app/components/MultiSelect";
-import Spinner from "./Spinner";
+import ServerErrorMessage from "@/app/components/common/ServerErrorMessage";
+import MultiSelect from "@/app/components/common/MultiSelect";
+import Spinner from "./common/Spinner";
 import { CldImage } from "next-cloudinary";
 
 const RestaurantForm = ({ state, action, isPending, users, buttonText, id="" }) => {

@@ -1,14 +1,17 @@
-const { default: CategoryForm } = require("@/app/components/CategoryForm");
-const { default: MenuItemForm } = require("@/app/components/MenuItemForm");
-const { getDatabaseConnection } = require("@/lib/db");
+"use server";
 
-const getMenuByRestaurant = async (restaurantId) => {
+import MenuItem from "@/model/menuItem";
+import Category from "@/model/category";
+import { getDatabaseConnection } from "@/lib/db";
+import Restaurant from "@/model/restaurant";
+
+export const getMenuByRestaurant = async (restaurantId) => {
     await getDatabaseConnection();
-    const categories = await CategoryForm.find({ restaurant: restaurantId })
+    const categories = await Category.find({ restaurant: restaurantId })
         .sort({ order: 1 })
         .lean();
 
-    const menuItems = await MenuItemForm.find({
+    const menuItems = await MenuItem.find({
         restaurant: restaurantId,
         available: true
     }).lean();
@@ -17,9 +20,9 @@ const getMenuByRestaurant = async (restaurantId) => {
     const menu = categories.map(category => ({
         ...category,
         items: menuItems.filter(item =>
-            item.category.some(catId => catId.toString() === category._id.toString())
+            item.categories.some(catId => catId.toString() === category._id.toString())
         )
     }));
 
-    return menu;
+    return JSON.parse(JSON.stringify(menu));
 };

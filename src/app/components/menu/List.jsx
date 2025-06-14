@@ -1,23 +1,26 @@
 import React from 'react';
 import ListCard from '@/app/components/menu/ListCard';
-import { food } from '@/app/data/menu';
 
-const List = ({order, addOrIncreaseQuantity, decreaseQuantity}) => {
+const List = ({menu}) => {
     return (
         <div>
-            <ul className="list bg-base-100 rounded-box shadow-md">
-                <li className="p-4 pb-2 text-2xl opacity-70 tracking-wide">Best Sellers</li>
-            {
-                food.map((item) => (
-                    <ListCard 
-                        item={item} 
-                        key={item.id}
-                        addOrIncreaseQuantity={addOrIncreaseQuantity}
-                        decreaseQuantity={decreaseQuantity}
-                        order={order}
-                    />
-                ))  
-            }
+            <ul className="list">
+                {menu.map((category) => (
+                    <div key={category.name} className="collapse collapse-arrow">
+                        <input type="checkbox" className="peer" defaultChecked={true} /> 
+                        <div className="collapse-title font-semibold" id={category.name}>
+                            {category.name}
+                        </div>
+                        <div className="collapse-content gap-2 grid grid-cols-2 sm:grid-cols-3 sm:gap-4">
+                            {category.items.map((item) => (
+                                <ListCard 
+                                    item={item} 
+                                    key={item._id}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </ul>
         </div>
     );

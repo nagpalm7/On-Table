@@ -2,11 +2,10 @@ import React from 'react';
 import { LuMinus } from "react-icons/lu";
 import { LuPlus } from "react-icons/lu";
 
-const QuantityButton = ({item, quantity, decreaseQuantity, addOrIncreaseQuantity}) => (
+const QuantityButton = ({item, quantity}) => (
     <div className='join'>
         <button 
             className="btn btn-soft btn-success join-item rounded-t-none"
-            onClick={() => decreaseQuantity(item)}
         >
             <span className='text-error'><LuMinus /></span>
         </button>
@@ -15,7 +14,6 @@ const QuantityButton = ({item, quantity, decreaseQuantity, addOrIncreaseQuantity
         </div>
         <button 
             className="btn btn-soft btn-success join-item rounded-t-none"
-            onClick={() => addOrIncreaseQuantity(item)}
         >
             <LuPlus />
         </button>

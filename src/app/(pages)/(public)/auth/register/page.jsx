@@ -3,7 +3,7 @@
 import React, { useActionState } from "react";
 import { signup } from "@/actions/auth";
 import UserForm from "@/app/components/UserForm";
-import Card from "@/app/components/Card";
+import Card from "@/app/components/common/Card";
 
 const Register = () => {
 

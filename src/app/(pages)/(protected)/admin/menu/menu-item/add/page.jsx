@@ -3,8 +3,8 @@
 import React, { useActionState } from "react";
 import { useEffect, useState } from "react";
 import { fetchRestaurants } from "@/actions/restaurant";
-import Spinner from "@/app/components/Spinner";
-import Card from "@/app/components/Card";
+import Spinner from "@/app/components/common/Spinner";
+import Card from "@/app/components/common/Card";
 import MenuItemForm from "@/app/components/MenuItemForm";
 import { addMenuItem } from "@/actions/menuItem";
 

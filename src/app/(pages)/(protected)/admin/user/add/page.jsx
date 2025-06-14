@@ -3,8 +3,8 @@
 import UserForm from '@/app/components/UserForm';
 import React , { useActionState } from "react";
 import { addUser } from "@/actions/user";
-import Card from '@/app/components/Card';
-import Spinner from '@/app/components/Spinner';
+import Card from '@/app/components/common/Card';
+import Spinner from '@/app/components/common/Spinner';
 
 const AddUser = () => {
 

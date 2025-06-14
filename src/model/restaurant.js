@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import slugify from 'slugify';
 
 const restaurantSchema = new Schema(
     {

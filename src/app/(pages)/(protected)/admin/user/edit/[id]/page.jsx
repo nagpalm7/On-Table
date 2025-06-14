@@ -1,8 +1,8 @@
 "use client";
 
 import { fetchUserById, updateUser } from '@/actions/user';
-import Card from '@/app/components/Card'
-import Spinner from '@/app/components/Spinner';
+import Card from '@/app/components/common/Card'
+import Spinner from '@/app/components/common/Spinner';
 import UserForm from '@/app/components/UserForm'
 import { useParams } from 'next/navigation';
 import React, { useActionState, useEffect, useState } from 'react'

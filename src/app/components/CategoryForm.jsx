@@ -1,5 +1,5 @@
 import React from "react";
-import ServerErrorMessage from "@/app/components/ServerErrorMessage";
+import ServerErrorMessage from "@/app/components/common/ServerErrorMessage";
 
 const CategoryForm = ({ state, action, isPending, restaurants, buttonText, id = "" }) => {
     return (

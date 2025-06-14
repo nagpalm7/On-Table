@@ -1,5 +1,5 @@
 import React from "react";
-import NavLink from "@/app/components/NavLink";
+import NavLink from "@/app/components/common/NavLink";
 import { FaUser, FaUsers, FaUserPlus, FaPlus, FaListUl } from "react-icons/fa";
 import { IoRestaurant, IoStatsChartSharp } from "react-icons/io5";
 import { MdFastfood } from "react-icons/md";

@@ -1,6 +1,6 @@
 import React from 'react'
 import { delteCategory, fetchCategories } from '@/actions/category';
-import Card from '@/app/components/Card'
+import Card from '@/app/components/common/Card'
 import Table from '@/app/components/Table';
 
 const CategoryListPage = async ({searchParams}) => {

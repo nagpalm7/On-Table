@@ -4,8 +4,8 @@ import React, { useActionState } from "react";
 import { useEffect, useState } from "react";
 import { fetchUsers } from "@/actions/user";
 import { addRestaurant } from "@/actions/restaurant";
-import Spinner from "@/app/components/Spinner";
-import Card from "@/app/components/Card";
+import Spinner from "@/app/components/common/Spinner";
+import Card from "@/app/components/common/Card";
 import RestaurantForm from "@/app/components/RestaurantForm";
 
 const AddRestaurant = () => {

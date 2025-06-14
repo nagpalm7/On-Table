@@ -1,7 +1,7 @@
 import { deleteRestaurant, fetchRestaurants, updateRestaurantStatus } from '@/actions/restaurant';
-import Card from '@/app/components/Card'
+import Card from '@/app/components/common/Card'
 import Table from '@/app/components/Table';
-import ToggleForm from '@/app/components/ToggleForm';
+import ToggleForm from '@/app/components/common/ToggleForm';
 import { base_url_cloudinary } from '@/app/utils/constants';
 import Link from 'next/link';
 import React from 'react'

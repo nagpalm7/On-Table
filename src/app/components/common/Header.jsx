@@ -1,13 +1,13 @@
 import React from 'react';
 import { AiOutlineMenu } from "react-icons/ai";
-import LogoutButton from '@/app/components/LogoutButton';
+import LogoutButton from '@/app/components/common/LogoutButton';
 import Link from 'next/link';
 import getAuthUser from '@/lib/getAuthUser';
 
 const Header = async () => {
     const authUser = await getAuthUser();
     return (
-        <header className="sticky top-0 z-20 w-full bg-base-100 backdrop-blur">
+        <header className="sticky top-0 z-20 w-full bg-base-100">
             <div className="navbar shadow-xs">
                 {authUser &&
                     <div className="flex-none">

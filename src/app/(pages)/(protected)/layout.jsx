@@ -1,7 +1,7 @@
 import React from "react";
-import SideDrawer from "@/app/components/SideDrawer";
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
+import SideDrawer from "@/app/components/common/SideDrawer";
+import Header from "@/app/components/common/Header";
+import Footer from "@/app/components/common/Footer";
 import getAuthUser from "@/lib/getAuthUser";
 
 export default async function MainLayout({ children }) {

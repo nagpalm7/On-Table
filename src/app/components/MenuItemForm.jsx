@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ServerErrorMessage from "@/app/components/ServerErrorMessage";
-import MultiSelect from "@/app/components/MultiSelect";
-import Spinner from "./Spinner";
+import ServerErrorMessage from "@/app/components/common/ServerErrorMessage";
+import MultiSelect from "@/app/components/common/MultiSelect";
+import Spinner from "./common/Spinner";
 import { CldImage } from "next-cloudinary";
 import { fetchCategories } from "@/actions/category";
-import VariantsInput from "./VariantsInput";
+import VariantsInput from "./common/VariantsInput";
 
 const MenuItemForm = ({ state, action, isPending, restaurants, buttonText, id = "" }) => {
     const ALLOWED_FILE_TYPES = ".jpeg,.jpg,.png,.webp,.svg,image/jpeg,image/jpg," +

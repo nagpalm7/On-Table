@@ -2,9 +2,9 @@
 
 import { editRestaurant, fetchRestaurantById } from '@/actions/restaurant';
 import { fetchUsers } from '@/actions/user';
-import Card from '@/app/components/Card'
+import Card from '@/app/components/common/Card'
 import RestaurantForm from '@/app/components/RestaurantForm';
-import Spinner from '@/app/components/Spinner';
+import Spinner from '@/app/components/common/Spinner';
 import React, { useActionState, useEffect, useState } from 'react'
 import { useParams } from 'next/navigation';
 

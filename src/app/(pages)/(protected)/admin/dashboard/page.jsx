@@ -1,5 +1,5 @@
 
-import Toast from '@/app/components/Toast';
+import Toast from '@/app/components/common/Toast';
 import React from 'react'
 
 const Dashboard = async ({searchParams}) => {

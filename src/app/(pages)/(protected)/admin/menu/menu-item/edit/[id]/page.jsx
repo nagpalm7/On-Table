@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useActionState, useEffect, useState } from "react";
-import Card from "@/app/components/Card";
-import Spinner from "@/app/components/Spinner";
+import Card from "@/app/components/common/Card";
+import Spinner from "@/app/components/common/Spinner";
 import { fetchRestaurants } from "@/actions/restaurant";
 import { useParams } from "next/navigation";
 import MenuItemForm from "@/app/components/MenuItemForm";

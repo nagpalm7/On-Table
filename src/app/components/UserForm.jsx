@@ -1,7 +1,7 @@
 import React from 'react'
 
-import ServerErrorMessage from "@/app/components/ServerErrorMessage";
-import Spinner from './Spinner';
+import ServerErrorMessage from "@/app/components/common/ServerErrorMessage";
+import Spinner from './common/Spinner';
 
 const UserForm = ({action, state, isPending, buttonText, id = "", allowPasswordUpdate = true}) => {
 

@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useActionState } from "react";
-import ServerErrorMessage from "@/app/components/ServerErrorMessage";
-import Toast from "@/app/components/Toast";
+import ServerErrorMessage from "@/app/components/common/ServerErrorMessage";
+import Toast from "@/app/components/common/Toast";
 import { login } from "@/actions/auth";
 import { useSearchParams } from "next/navigation";
 
@@ -13,7 +13,7 @@ const Login = () => {
     const alertMessage = searchParams.get("alertMessage");
 
     return (
-        <div className="min-h-[80vh] bg-base-100 flex items-center justify-center p-4 ">
+        <div className="flex items-center justify-center bg-base-100 p-4 my-12">
             {alertMessage && <Toast message={alertMessage} />}
             <form
                 action={action}

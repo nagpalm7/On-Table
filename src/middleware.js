@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import getAuthUser from "@/lib/getAuthUser";
+import { getAuthUserFromMiddleware } from "@/lib/getAuthUser";
+import { v4 as uuidv4 } from "uuid";
 
 const homePage = "/";
 
@@ -16,13 +17,18 @@ const authRoutes = [
   "/auth/login"
 ]
 
+const publicRoutes = [
+  "/restaurant",
+]
+
 export default async function middleware(req) {
   const path = req.nextUrl.pathname;
   const isAdminProtectedRoute = protectedAdminRoutes.some(route => path.startsWith(route));
   const isRestaurantProtectedRoute = protectedRestaurantRoutes.some(route => path.startsWith(route));
+  const isPublicRoute = publicRoutes.some(route => path.startsWith(route));
   const isAuthRoute = authRoutes.some(route => path.startsWith(route));
 
-  const user = await getAuthUser();;
+  const user = await getAuthUserFromMiddleware(req);;
   const isAuthenticated = user?.userId;
   const isAdmin = user?.userType === 'admin';
   const isRestaurantOwner = user?.userType === 'rest_owner';
@@ -37,6 +43,7 @@ export default async function middleware(req) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 
+  // If the user is rest_owner and try to access admin path
   if (isAuthenticated && isRestaurantOwner && isAdminProtectedRoute) {
     return NextResponse.redirect(new URL(path.replace("admin", "client"), req.nextUrl));
   }
@@ -49,6 +56,23 @@ export default async function middleware(req) {
       return NextResponse.redirect(new URL("/client/dashboard", req.nextUrl));
     else
       return NextResponse.redirect(new URL("/auth/login", req.nextUrl));
+  }
+
+  // if user is anonymous and trying to access public path
+  if (isPublicRoute) {
+    const sessionId = req.cookies.get("sessionId")?.value;
+    if (!sessionId) {
+      const newSessionId = uuidv4();
+      const response = NextResponse.next();
+      response.cookies.set('sessionId', newSessionId, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+        path: '/',
+      });
+      return response;
+    }
   }
 
   return NextResponse.next();

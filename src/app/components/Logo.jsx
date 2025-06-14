@@ -1,10 +1,14 @@
+import { CldImage } from 'next-cloudinary';
 import React from 'react';
 
-const Logo = () => {
+const Logo = ({logo}) => {
     return (
-        <div className="flex flex-col items-center justify-center">
-            <img className="max-w-60" src="https://www.logo.wine/a/logo/Haldiram's/Haldiram's-Logo.wine.svg" />
-        </div>
+        <CldImage
+            src={logo}
+            width={200}
+            height={200}
+            alt="Logo"
+        />
     );
 };
 

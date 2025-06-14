@@ -11,3 +11,12 @@ export default async function getAuthUser() {
     return user;
   }
 }
+
+// For middleware
+export async function getAuthUserFromMiddleware(req) {
+  const session = req.cookies.get('session')?.value;
+  if (session) {
+    return await decrypt(session);
+  }
+  return null;
+}

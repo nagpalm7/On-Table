@@ -1,5 +1,5 @@
 import { deleteUser, fetchUsers } from '@/actions/user';
-import Card from '@/app/components/Card'
+import Card from '@/app/components/common/Card'
 import Table from '@/app/components/Table';
 import React from 'react'
 
