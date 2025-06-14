@@ -7,6 +7,7 @@ import { IoRestaurant, IoStatsChartSharp } from "react-icons/io5";
 import { MdFastfood } from "react-icons/md";
 import { RiDrinksFill } from "react-icons/ri";
 import { PiWineFill } from "react-icons/pi";
+import NavLink from './NavLink';
 
 const SideDrawer = ({ pageContent }) => {
   const drawerRef = useRef(null);
@@ -44,14 +45,20 @@ const SideDrawer = ({ pageContent }) => {
                 </summary>
                 <ul>
                   <li>
-                    <Link href="/admin/user/list" onClick={closeDrawer}>
-                      <FaUsers /> <span>View Users</span>
-                    </Link>
+                    <NavLink
+                      label={"View Users"}
+                      href={"/admin/user/list"}
+                      icon={<FaUsers />}
+                      closeDrawer={closeDrawer}
+                    />
                   </li>
                   <li>
-                    <Link href="/admin/user/add" onClick={closeDrawer}>
-                      <FaUserPlus /> <span>Add User</span>
-                    </Link>
+                    <NavLink
+                      label={"Add User"}
+                      href={"/admin/user/add"}
+                      icon={<FaUserPlus />}
+                      closeDrawer={closeDrawer}
+                    />
                   </li>
                 </ul>
               </details>
@@ -63,14 +70,20 @@ const SideDrawer = ({ pageContent }) => {
                 </summary>
                 <ul>
                 <li>
-                  <Link href="/admin/restaurant/list" onClick={closeDrawer}>
-                    <FaListUl /> View Restaurants
-                  </Link>
+                  <NavLink
+                    label={"View Restaurants"}
+                    href={"/admin/restaurant/list"}
+                    icon={<FaListUl />}
+                    closeDrawer={closeDrawer}
+                  />
                 </li>
                 <li>
-                  <Link href="/admin/restaurant/add" onClick={closeDrawer}>
-                    <FaPlus /> Add Restaurant
-                  </Link>
+                  <NavLink
+                    label={"Add Restaurant"}
+                    href={"/admin/restaurant/add"}
+                    icon={<FaPlus />}
+                    closeDrawer={closeDrawer}
+                  />
                 </li>
               </ul>
               </details>
@@ -86,14 +99,20 @@ const SideDrawer = ({ pageContent }) => {
                     <div className="menu-title">Food Category</div>
                     <ul>
                       <li>
-                        <Link href="/admin/menu/category/list" onClick={closeDrawer}>
-                          <FaListUl /> View Categories
-                        </Link>
+                        <NavLink
+                          label={"View Categories"}
+                          href={"/admin/menu/category/list"}
+                          icon={<FaListUl />}
+                          closeDrawer={closeDrawer}
+                        />
                       </li>
                       <li>
-                        <Link href="/admin/menu/category/add" onClick={closeDrawer}>
-                          <RiDrinksFill /> Add Category
-                        </Link>
+                        <NavLink
+                          label={"Add Category"}
+                          href={"/admin/menu/category/add"}
+                          icon={<RiDrinksFill />}
+                          closeDrawer={closeDrawer}
+                        />
                       </li>
                     </ul>
                   </li>
@@ -101,14 +120,20 @@ const SideDrawer = ({ pageContent }) => {
                     <div className="menu-title">Food Item</div>
                     <ul>
                       <li>
-                        <Link href="/admin/menu/menu-item/add" onClick={closeDrawer}>
-                          <PiWineFill /> Add Food Item
-                        </Link>
+                        <NavLink
+                          label={"Add Food Item"}
+                          href={"/admin/menu/menu-item/add"}
+                          icon={<PiWineFill />}
+                          closeDrawer={closeDrawer}
+                        />
                       </li>
                       <li>
-                        <Link href="/admin/menu/menu-item/list" onClick={closeDrawer}>
-                          <RiDrinksFill /> View Food Items
-                        </Link>
+                        <NavLink
+                          label={"View Food Items"}
+                          href={"/admin/menu/menu-item/list"}
+                          icon={<RiDrinksFill />}
+                          closeDrawer={closeDrawer}
+                        />
                       </li>
                     </ul>
                   </li>

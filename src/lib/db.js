@@ -13,8 +13,6 @@ async function connectToDatabase() {
     }
     try {
         const conn = await mongoose.connect(process.env.DB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
             dbName: "OnTable"
         });
         cachedConnection = conn.connection;
@@ -27,9 +25,7 @@ async function connectToDatabase() {
 
 export async function getDatabaseConnection() {
     if (!cachedConnection) {
-        console.log("Establishing new database connection...");
         return await connectToDatabase();
     }
-    console.log("Using cached database connection");
     return cachedConnection;
 }
