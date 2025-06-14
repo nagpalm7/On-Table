@@ -119,6 +119,24 @@ export const fetchRestaurantById = async (id) => {
     return JSON.parse(JSON.stringify(restaurant));
 };
 
+export const updateRestaurantStatus = async (formData) => {
+    const id = formData.get('id');
+    const active = formData.get('active') === "on";
+    await getDatabaseConnection();
+    const updated = await Restaurant.findByIdAndUpdate(
+        id,
+        { active },
+        { new: true }
+    );
+
+    if (!updated) {
+        throw new Error("Restaurant not found");
+    }
+
+    // Redirect
+    revalidatePath(`/admin/restaurant/list`);
+};
+
 export const editRestaurant = async (state, formData) => {
     const data = await getFieldsFromFormData(formData);
     // validate form data

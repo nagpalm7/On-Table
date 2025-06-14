@@ -4,7 +4,7 @@ const menuItemSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: String,
     image: String,
-    available: { type: Boolean, default: true },
+    available: { type: Boolean, default: false },
     restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
     categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
     variants: [

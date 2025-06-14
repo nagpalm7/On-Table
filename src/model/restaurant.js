@@ -10,11 +10,7 @@ const restaurantSchema = new Schema(
             type: String,
             required: true
         },
-        status: {
-            type: String,
-            enum: ['active', 'inactive'],
-            default: 'inactive',
-        },
+        active: { type: Boolean, default: false },
         onboardingStatus: {
             type: String,
             enum: ['pending', 'approved', 'rejected', 'revoked'],

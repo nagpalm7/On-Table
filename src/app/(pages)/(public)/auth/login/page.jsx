@@ -13,7 +13,7 @@ const Login = () => {
     const alertMessage = searchParams.get("alertMessage");
 
     return (
-        <div className="min-h-[80vh] flex items-center justify-center bg-base-200 p-4 ">
+        <div className="min-h-[80vh] bg-base-100 flex items-center justify-center p-4 ">
             {alertMessage && <Toast message={alertMessage} />}
             <form
                 action={action}

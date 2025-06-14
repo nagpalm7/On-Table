@@ -1,6 +1,7 @@
-import { deleteRestaurant, fetchRestaurants } from '@/actions/restaurant';
+import { deleteRestaurant, fetchRestaurants, updateRestaurantStatus } from '@/actions/restaurant';
 import Card from '@/app/components/Card'
 import Table from '@/app/components/Table';
+import ToggleForm from '@/app/components/ToggleForm';
 import { base_url_cloudinary } from '@/app/utils/constants';
 import Link from 'next/link';
 import React from 'react'
@@ -14,7 +15,7 @@ const RestaurantListPage = async () => {
         title={"Restaurants"}
         body={
           <Table
-            header={["Name", "Location", "Owner", "Logo", "Status"]}
+            header={["Name", "Location", "Owner", "Logo", "Active"]}
             rows={restaurants.map(restaurant => ({
                 "Name": restaurant?.name,
                 "Location": restaurant?.location,
@@ -25,7 +26,12 @@ const RestaurantListPage = async () => {
                 ),
                 "Logo": restaurant?.logo && <Link href={base_url_cloudinary + restaurant.logo + ".webp"} target="_blank" className='link link-primary'>Image Link</Link>,
                 "ID": restaurant?._id,
-                "Status": restaurant?.status === "active" ? "Active" : "Inactive"
+                "Active": <ToggleForm
+                            name={"active"}
+                            id={restaurant?._id}
+                            action={updateRestaurantStatus}
+                            defaultValue={restaurant?.active}
+                          />,
               })
             )}
             deleteAction={deleteRestaurant}

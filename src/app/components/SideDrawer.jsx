@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import React, { useRef } from 'react'
 import AdminSideDrawerContent from './admin/AdminSideDrawerContent';
+import RestaurantSideDrawerContent from './restaurant/RestaurantSideDrawerContent';
 
 const SideDrawer = ({ pageContent, userType }) => {
   const drawerRef = useRef(null);
@@ -26,6 +27,7 @@ const SideDrawer = ({ pageContent, userType }) => {
           </div>
           <div className='h-4' />
           {userType === 'admin' && <AdminSideDrawerContent closeDrawer={closeDrawer} />}
+          {userType === 'rest_owner' && <RestaurantSideDrawerContent closeDrawer={closeDrawer} />}
         </aside>
       </div>
     </div>

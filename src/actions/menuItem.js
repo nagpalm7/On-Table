@@ -77,12 +77,31 @@ export const addMenuItem = async (state, formData) => {
     }
 
     // Add Menu Item
-    const menuItem = new MenuItem({ name, description, restaurant, categories, variants, image:imagePublicId });
+    const menuItem = new MenuItem({ name, description, restaurant, categories, variants, image: imagePublicId });
     await menuItem.save();
 
     // Redirect
     redirect(`/admin/menu/menu-item/list?rid=${restaurant}`);
 };
+
+export const updateMenuItemAvailability = async (formData) => {
+    const id = formData.get('id');
+    const available = formData.get('available') === "on";
+    await getDatabaseConnection();
+    const updated = await MenuItem.findByIdAndUpdate(
+        id,
+        { available },
+        { new: true }
+    );
+
+    if (!updated) {
+        throw new Error("Menu Item not found");
+    }
+
+    // Redirect
+    revalidatePath(`/admin/menu/menu-item/list`);
+    return;
+}
 
 export const updateMenuItem = async (state, formData) => {
     const data = await getFieldsFromFormData(formData);
@@ -121,7 +140,7 @@ export const updateMenuItem = async (state, formData) => {
     // Update restaurant
     const updated = await MenuItem.findByIdAndUpdate(
         id,
-        { name, description, restaurant, categories, variants, image:imagePublicId },
+        { name, description, restaurant, categories, variants, image: imagePublicId },
         { new: true }
     );
 

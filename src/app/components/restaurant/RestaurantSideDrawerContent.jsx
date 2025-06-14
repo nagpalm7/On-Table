@@ -7,19 +7,19 @@ import { RiDrinksFill } from "react-icons/ri";
 import { PiWineFill } from "react-icons/pi";
 
 
-export default function AdminSideDrawerContent({ closeDrawer }) {
+export default function RestaurantSideDrawerContent({ closeDrawer }) {
     return (
         <ul className="menu backdrop-blur min-h-full px-4 py-0 w-full">
             <li>
                 <NavLink
                     label={"Dashboard"}
-                    href={"/admin/dashboard"}
+                    href={"/restaurant/dashboard"}
                     icon={<IoStatsChartSharp />}
                     closeDrawer={closeDrawer}
                 />
             </li>
             {/* User Nav Links */}
-            <li>
+            {/* <li>
                 <details open={true}>
                     <summary className="group">
                         <span><FaUser /></span> User
@@ -121,7 +121,7 @@ export default function AdminSideDrawerContent({ closeDrawer }) {
 
                     </ul>
                 </details>
-            </li>
+            </li> */}
         </ul>
     )
 }
