@@ -3,9 +3,13 @@ import getAuthUser from "@/lib/getAuthUser";
 
 const homePage = "/";
 
-const protectedRoutes = [
+const protectedAdminRoutes = [
   "/admin",
   "/auth/register"
+];
+
+const protectedRestaurantRoutes = [
+  "/restaurant",
 ];
 
 const authRoutes = [
@@ -14,25 +18,35 @@ const authRoutes = [
 
 export default async function middleware(req) {
   const path = req.nextUrl.pathname;
-  const isProtected = protectedRoutes.some(route => path.startsWith(route));  
-  const isAuth = authRoutes.some(route => path.startsWith(route));
+  const isAdminProtectedRoute = protectedAdminRoutes.some(route => path.startsWith(route));
+  const isRestaurantProtectedRoute = protectedRestaurantRoutes.some(route => path.startsWith(route));
+  const isAuthRoute = authRoutes.some(route => path.startsWith(route));
 
-  const user = await getAuthUser();
-  const userId = user?.userId;
+  const user = await getAuthUser();;
+  const isAuthenticated = user?.userId;
+  const isAdmin = user?.userType === 'admin';
+  const isRestaurantOwner = user?.userType === 'rest_owner';
 
-  if (isProtected && !userId) {
-    // If the user is not authenticated and trying to access a protected route
+  // If the user is not authenticated and trying to access a protected route (admin or restaurant)
+  if ((isAdminProtectedRoute || isRestaurantProtectedRoute) && !isAuthenticated) {
     return NextResponse.redirect(new URL("/auth/login", req.nextUrl));
   }
 
-  if (isAuth && userId) {
-    // If the user is authenticated and trying to access an auth route
-    return NextResponse.redirect(new URL("/admin/dashboard", req.nextUrl));
+  // If the user is authenticated and trying to access an login route
+  if (isAuthRoute && isAuthenticated) {
+    return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 
+  if (isAuthenticated && isRestaurantOwner && isAdminProtectedRoute) {
+    return NextResponse.redirect(new URL("/restaurant/dashboard", req.nextUrl));
+  }
+
+  // handle home page redirection
   if (homePage === path) {
-    if (userId)
+    if (isAuthenticated && isAdmin)
       return NextResponse.redirect(new URL("/admin/dashboard", req.nextUrl));
+    else if (isAuthenticated && isRestaurantOwner)
+      return NextResponse.redirect(new URL("/restaurant/dashboard", req.nextUrl));
     else
       return NextResponse.redirect(new URL("/auth/login", req.nextUrl));
   }

@@ -113,7 +113,7 @@ export const login = async (state, formData ) => {
     // Create a session
     await createSession(user._id.toString(), user.userType);
     
-    redirect(`/admin/dashboard?alertMessage=Login successful! Welcome back, ${user.name}.`);
+    redirect(`/`);
 };
 
 export async function logout() {
