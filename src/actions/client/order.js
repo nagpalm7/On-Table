@@ -3,16 +3,22 @@
 import { getOrCreateSession } from "@/lib/guest";
 import AppSettings from "@/model/appSettings";
 import Order from "@/model/order";
-import { revalidatePath } from "next/cache";
-
+import MenuItem from "@/model/menuItem";
+import { redirect } from "next/navigation";
+import { getDatabaseConnection } from "@/lib/db";
 
 // create draft order
 export async function getOrCreateDraftOrder(restaurantId) {
+    await getDatabaseConnection();
     const { sessionId } = await getOrCreateSession();
     let order = await Order.findOne({
         sessionId,
         restaurant: restaurantId,
-        orderStatus: 'draft'
+        orderStatus: { $in: ['draft', 'review'] }
+    }).populate({
+        path: 'items.menuItem',
+        model: 'MenuItem',
+        select: 'name description image'
     });
 
     if (!order) {
@@ -63,7 +69,7 @@ export const removeOrDecreaseItemFromOrder = async (orderId, menuItemId, variant
         item.variant === variant
     );
 
-    if (index === -1) return order;
+    if (index === -1) return JSON.parse(JSON.stringify(order));
 
     const item = order.items[index];
 
@@ -77,37 +83,70 @@ export const removeOrDecreaseItemFromOrder = async (orderId, menuItemId, variant
     return JSON.parse(JSON.stringify(order));
 };
 
-
-// Checkout
-export async function checkoutOrder(orderId) {
+export async function removeUnavailableItemsFromOrder(orderId) {
     const order = await Order.findById(orderId);
-    if (!order) throw new Error('Order not found');
-    if (order.orderStatus !== 'draft') throw new Error('Order already finalized');
+    if (!order) throw new Error("Order not found")
+    const menuItemIds = order.items.map(item => item.menuItem);
+    const availableMenuItems = await MenuItem.find({
+        _id: { $in: menuItemIds },
+        available: true,
+    }).select('_id');
 
-    // Calculate total
-    let total = 0;
-    for (const item of order.items) {
-        total += (item.price) * item.quantity;
-    }
+    const availableIds = new Set(availableMenuItems.map(i => i._id.toString()));
 
-    // Get commission settings
-    const settings = await AppSettings.findOne({ restaurant: order.restaurant });
-    const commissionType = settings?.commissionType || 'percentage';
-    const commissionValue = settings?.commissionValue ?? 10;
-
-    let commissionAmount = 0;
-    if (commissionType === 'percentage') {
-        commissionAmount = (total * commissionValue) / 100;
-    } else if (commissionType === 'flat') {
-        commissionAmount = commissionValue;
-    }
-
-    // Finalize order
-    order.totalAmount = total;
-    order.commissionAmount = commissionAmount;
-    order.orderStatus = 'placed';
-    order.expireAt = undefined;
+    order.items = order.items.filter(item => availableIds.has(item.menuItem.toString()));
 
     await order.save();
     return JSON.parse(JSON.stringify(order));
+}
+
+export async function markOrderAsDraft(orderId) {
+    const order = await Order.findById(orderId);
+    if (!order) throw new Error("Order not found");
+    if (order.orderStatus === 'review') {
+        order.orderStatus = 'draft';
+        await order.save();
+    }
+
+    return JSON.parse(JSON.stringify(order));
+}
+
+// Checkout
+export async function finalizeOrder(orderId) {
+    try {
+        const order = await Order.findById(orderId);
+        if (!order) throw new Error('Order not found');
+        if (order.orderStatus !== 'draft') throw new Error('Order already finalized');
+
+        // Calculate total
+        let total = 0;
+        for (const item of order.items) {
+            total += (item.price) * item.quantity;
+        }
+
+        // Get commission settings
+        const settings = await AppSettings.findOne({ restaurant: order.restaurant });
+        const commissionType = settings?.commissionType || 'percentage';
+        const commissionValue = settings?.commissionValue ?? 10;
+
+        let commissionAmount = 0;
+        if (commissionType === 'percentage') {
+            commissionAmount = (total * commissionValue) / 100;
+        } else if (commissionType === 'flat') {
+            commissionAmount = commissionValue;
+        }
+
+        // Finalize order
+        order.totalAmount = total;
+        order.commissionAmount = commissionAmount;
+        order.orderStatus = 'review';
+        order.expireAt = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24 hrs
+
+        await order.save();
+        // redirect("/restaurant/" + order.restaurant + "/review/");
+    }
+    catch (e) {
+        console.log(e);
+        throw e;
+    }
 }

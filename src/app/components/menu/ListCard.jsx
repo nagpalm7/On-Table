@@ -43,45 +43,6 @@ const ListCard = ({ item, order, handleAddItem, handleRemoveItem }) => {
             </div>
         </div>
     );
-
-    // return (
-    //     <li className="list-row" key={item._id}>
-    //         <div>
-    //             <div className='text-xl font-bold'>{item.name}</div>
-    //             <p className="text-xs font-semibold opacity-60 mt-2">
-    //                 {item.description && item.description}
-    //             </p>
-    //             <div className="text-l font-bold opacity-60 mt-2">₹{item?.variants[0]?.price}</div>
-    //         </div>
-    //         <p></p>
-    //         <div className="flex flex-col items-center relative">
-    //         <div className='size-34 rounded-t-box'>
-    //             {item?.image && (
-    //                 <CldImage
-    //                     src={item.image}
-    //                     width={150}
-    //                     height={150}
-    //                     crop={"fill"}
-    //                     alt="Image"
-    //                 />
-    //             )}
-    //         </div>
-    //             {orderItem ? (
-    //                 <QuantityButton 
-    //                     addOrIncreaseQuantity={addOrIncreaseQuantity}
-    //                     decreaseQuantity={decreaseQuantity}
-    //                     item={item}
-    //                     quantity={orderItem.quantity}
-    //                 />
-    //             ) : (
-    //                 <AddButton 
-    //                     addOrIncreaseQuantity={addOrIncreaseQuantity} 
-    //                     item={item}
-    //                 />
-    //             )}
-    //         </div>
-    //     </li>
-    // );
 };
 
 export default ListCard;

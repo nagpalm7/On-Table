@@ -11,7 +11,8 @@ import {
     getOrCreateDraftOrder,
     addOrUpdateItemToOrder,
     removeOrDecreaseItemFromOrder,
-    checkoutOrder
+    finalizeOrder,
+    removeUnavailableItemsFromOrder
 } from '@/actions/client/order';
 
 const Order = () => {
@@ -26,16 +27,21 @@ const Order = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            // create or load draft order
+            const order = await getOrCreateDraftOrder(rid);
+            if (order.orderStatus === 'review') {
+                router.push(`/restaurant/${rid}/review`);
+                return;
+            }
+            const updatedOrder = await removeUnavailableItemsFromOrder(order?._id);
+            setOrderId(order?._id);
+            setOrder(updatedOrder);
+
             // load data
             const menu = await getMenuByRestaurant(rid);
             setMenu(menu);
             const restaurantData = await fetchRestaurantById(rid);
             setRestaurant(restaurantData);
-
-            // create or load draft order
-            const order = await getOrCreateDraftOrder(rid);
-            setOrderId(order?._id);
-            setOrder(order);
 
             // stop loading
             setIsLoading(false);
@@ -61,6 +67,7 @@ const Order = () => {
         }
     };
 
+
     const handleRemoveItem = async (menuItemId, variant) => {
         if (!orderId) return;
 
@@ -76,10 +83,16 @@ const Order = () => {
         if (!orderId) return;
 
         try {
-            const placedOrder = await checkoutOrder(orderId);
-            // Save order to localStorage/session if needed
-            // Redirect to payment or review page
-            router.push(`/restaurant/${rid}/review?orderId=${placedOrder._id}`);
+            const updatedOrder = await removeUnavailableItemsFromOrder(orderId);
+            // check if updated order is different from original
+            if (JSON.stringify(updatedOrder) !== JSON.stringify(order)) {
+                setOrder(updatedOrder);
+                alert("Some items were not available and have been removed from your order.");
+                return;
+            }
+            await finalizeOrder(orderId);
+            router.push(`/restaurant/${rid}/review`);
+            return;
         } catch (err) {
             alert('Could not finalize order. Please try again.');
             console.error(err);

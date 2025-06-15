@@ -66,7 +66,7 @@ export default async function middleware(req) {
       const response = NextResponse.next();
       response.cookies.set('sessionId', newSessionId, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: "lax",
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: '/',

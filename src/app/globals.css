@@ -11,3 +11,7 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+
+.btn-sxm {
+  @apply px-2 py-[1/2];
+}
