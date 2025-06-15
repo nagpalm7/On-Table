@@ -42,7 +42,7 @@ const EditCategory = () => {
                 title={"Edit Category"}
                 body={
                     <CategoryForm
-                        state={state ?? initialState}
+                        state={state || initialState}
                         action={action}
                         isPending={isPending}
                         buttonText={"Edit Category"}

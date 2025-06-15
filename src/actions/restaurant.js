@@ -58,7 +58,6 @@ export const addRestaurant = async (state, formData) => {
 
     // Extract form fields
     const { name, location, owners, logo, logoFile } = validatedFields.data;
-    console.log("Adsadsa")
 
     // Check if user exists and is restaurant owner
     await getDatabaseConnection();
@@ -77,7 +76,6 @@ export const addRestaurant = async (state, formData) => {
             validatedOwners.push(existingUser);
         }
     }
-    console.log("Adsadsa")
 
     if (errors.length > 0)
         return {
@@ -86,7 +84,6 @@ export const addRestaurant = async (state, formData) => {
                 owners: errors
             }
         };
-    console.log("Adsadsa")
     
     const dataUrl = await convertFileToDataUrl(logoFile);
     let logoPublicId = logo;

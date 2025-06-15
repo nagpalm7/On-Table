@@ -3,6 +3,7 @@ import ServerErrorMessage from "@/app/components/common/ServerErrorMessage";
 import MultiSelect from "@/app/components/common/MultiSelect";
 import Spinner from "./common/Spinner";
 import { CldImage } from "next-cloudinary";
+import { PLACEHOLDER_PUBLIC_ID } from "../utils/constants";
 
 const RestaurantForm = ({ state, action, isPending, users, buttonText, id="" }) => {
     const ALLOWED_FILE_TYPES = ".jpeg,.jpg,.png,.webp,.svg,image/jpeg,image/jpg," +
@@ -81,16 +82,14 @@ const RestaurantForm = ({ state, action, isPending, users, buttonText, id="" }) 
                 <ul className="validator-hint hidden">
                     <li>Only jpg, png, svg and webp files are supported.</li>
                 </ul>
-                {state?.logo &&
-                    <CldImage
-                        src={state?.logo || "image-icon-trendy-flat-style-600nw-643080895-removebg-preview_ullmiu"}
-                        width={100}
-                        height={100}
-                        alt="logo"
-                        crop="fill"
-                        className="rounded shadow-md"
-                    />
-                }
+                <CldImage
+                    src={state?.logo || PLACEHOLDER_PUBLIC_ID}
+                    width={100}
+                    height={100}
+                    alt="logo"
+                    crop="fill"
+                    className="rounded shadow-md"
+                />
             </fieldset>
 
             <button

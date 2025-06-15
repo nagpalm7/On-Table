@@ -1,26 +1,23 @@
 import React from 'react';
 import AddButton from '@/app/components/common/AddButton';
 import QuantityButton from '@/app/components/common/QuantityButton';
-import Logo from '../Logo';
 import { CldImage } from 'next-cloudinary';
+import { PLACEHOLDER_PUBLIC_ID } from '@/app/utils/constants';
 
-const ListCard = ({ item }) => {
+const ListCard = ({ item, order, handleAddItem, handleRemoveItem }) => {
     // Check if item is in the order
-    const orderItem = null;
-
+    const orderItem = order.items.find(orderItem => orderItem.menuItem === item._id);
     return (
         <div className="card shadow-md w-full" key={item._id}>
             <figure>
-                {item.image && (
-                    <CldImage
-                        src={item.image}
-                        width={800}
-                        height={800}
-                        crop={"fill"}
-                        alt="Food Image"
-                        className="w-full h-auto"
-                    />
-                )}
+                <CldImage
+                    src={item?.image || PLACEHOLDER_PUBLIC_ID}
+                    width={800}
+                    height={800}
+                    crop={"fill"}
+                    alt="Food Image"
+                    className="w-full h-auto"
+                />
             </figure>
             <div className="card-body p-2">
                 <h2 className="card-title text-sm">{item.name}</h2>
@@ -32,10 +29,13 @@ const ListCard = ({ item }) => {
                             <QuantityButton
                                 item={item}
                                 quantity={orderItem.quantity}
+                                handleAddItem={handleAddItem}
+                                handleRemoveItem={handleRemoveItem}
                             />
                         ) : (
                             <AddButton
                                 item={item}
+                                handleAddItem={handleAddItem}
                             />
                         )}
                     </div>

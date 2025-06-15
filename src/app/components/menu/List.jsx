@@ -1,7 +1,7 @@
 import React from 'react';
 import ListCard from '@/app/components/menu/ListCard';
 
-const List = ({menu}) => {
+const List = ({menu, order, handleAddItem, handleRemoveItem }) => {
     return (
         <div>
             <ul className="list">
@@ -16,6 +16,9 @@ const List = ({menu}) => {
                                 <ListCard 
                                     item={item} 
                                     key={item._id}
+                                    order={order}
+                                    handleAddItem={handleAddItem}
+                                    handleRemoveItem={handleRemoveItem}
                                 />
                             ))}
                         </div>

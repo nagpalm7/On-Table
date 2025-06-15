@@ -7,6 +7,7 @@ import Spinner from "./common/Spinner";
 import { CldImage } from "next-cloudinary";
 import { fetchCategories } from "@/actions/category";
 import VariantsInput from "./common/VariantsInput";
+import { PLACEHOLDER_PUBLIC_ID } from "../utils/constants";
 
 const MenuItemForm = ({ state, action, isPending, restaurants, buttonText, id = "" }) => {
     const ALLOWED_FILE_TYPES = ".jpeg,.jpg,.png,.webp,.svg,image/jpeg,image/jpg," +
@@ -24,7 +25,7 @@ const MenuItemForm = ({ state, action, isPending, restaurants, buttonText, id = 
                 const categoriesData = await fetchCategories(selectedRestaurant);
                 setCategories(categoriesData || []);
                 if (state?.restaurant === selectedRestaurant) {
-                    setSelectedCategories(state?.categories ?? []);
+                    setSelectedCategories(state?.categories || []);
                 }
                 else {
                     setSelectedCategories([]);
@@ -136,16 +137,14 @@ const MenuItemForm = ({ state, action, isPending, restaurants, buttonText, id = 
                 <ul className="validator-hint hidden">
                     <li>Only jpg, png, svg and webp files are supported.</li>
                 </ul>
-                {state?.image &&
-                    <CldImage
-                        src={state?.image || "image-icon-trendy-flat-style-600nw-643080895-removebg-preview_ullmiu"}
-                        width={100}
-                        height={100}
-                        alt="image"
-                        crop="fill"
-                        className="rounded shadow-md"
-                    />
-                }
+                <CldImage
+                    src={state?.image || PLACEHOLDER_PUBLIC_ID}
+                    width={100}
+                    height={100}
+                    alt="image"
+                    crop="fill"
+                    className="rounded shadow-md"
+                />
             </fieldset>
 
             <button

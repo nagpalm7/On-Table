@@ -43,7 +43,7 @@ const EditCategory = () => {
                 title={"Edit Food Item"}
                 body={
                     <MenuItemForm
-                        state={state ?? initialState}
+                        state={state || initialState}
                         action={action}
                         isPending={isPending}
                         buttonText={"Edit Food Item"}
