@@ -59,11 +59,31 @@ const Order = () => {
             quantity
         };
 
+        const prevOrder = order;
+
+        const existingItemIndex = order.items.findIndex(
+            (i) => i.menuItem.toString() === menuItemId && i.variant === variant
+        );
+        const updatedItems = [...order.items];
+        if (existingItemIndex >= 0) {
+            updatedItems[existingItemIndex] = {
+                ...updatedItems[existingItemIndex],
+                quantity: updatedItems[existingItemIndex].quantity + quantity,
+            };
+        } else {
+            updatedItems.push(item);
+        }
+        const updatedOrder = {
+            ...order,
+            items: updatedItems,
+        };
+        setOrder(updatedOrder);
+
         try {
-            const updatedOrder = await addOrUpdateItemToOrder(orderId, item);
-            setOrder(updatedOrder)
+            const newOrder = await addOrUpdateItemToOrder(orderId, item);
         } catch (err) {
             console.error("Failed to add item:", err);
+            setOrder(prevOrder); // Revert to previous state on error
         }
     };
 
@@ -71,11 +91,26 @@ const Order = () => {
     const handleRemoveItem = async (menuItemId, variant) => {
         if (!orderId) return;
 
+        const prevOrder = order;
+
+        const index = order.items.findIndex(
+            (i) => i.menuItem.toString() === menuItemId && i.variant === variant
+        );
+        if (index >= 0) {
+            const items = [...order.items];
+            const item = items[index];
+            if (item.quantity - 1 <= 0) {
+                items.splice(index, 1);
+            } else {
+                items[index] = { ...item, quantity: item.quantity - 1 };
+            }
+            setOrder({ ...order, items });
+        }
         try {
             const updatedOrder = await removeOrDecreaseItemFromOrder(orderId, menuItemId, variant);
-            setOrder(updatedOrder);
         } catch (err) {
             console.error("Failed to remove item:", err);
+            setOrder(prevOrder);
         }
     };
 
