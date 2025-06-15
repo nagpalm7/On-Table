@@ -41,6 +41,7 @@ export async function getOrCreateDraftOrder(restaurantId) {
 
 // add item to order
 export async function addOrUpdateItemToOrder(orderId, newItem) {
+    await getDatabaseConnection();
     const order = await Order.findById(orderId);
     if (!order) throw new Error('Order not found');
 
@@ -61,6 +62,7 @@ export async function addOrUpdateItemToOrder(orderId, newItem) {
 
 // remove item from cart
 export const removeOrDecreaseItemFromOrder = async (orderId, menuItemId, variant) => {
+    await getDatabaseConnection();
     const order = await Order.findById(orderId);
     if (!order) throw new Error("Order not found");
 
@@ -84,6 +86,7 @@ export const removeOrDecreaseItemFromOrder = async (orderId, menuItemId, variant
 };
 
 export async function removeUnavailableItemsFromOrder(orderId) {
+    await getDatabaseConnection();
     const order = await Order.findById(orderId);
     if (!order) throw new Error("Order not found")
     const menuItemIds = order.items.map(item => item.menuItem);
@@ -101,6 +104,7 @@ export async function removeUnavailableItemsFromOrder(orderId) {
 }
 
 export async function markOrderAsDraft(orderId) {
+    await getDatabaseConnection();
     const order = await Order.findById(orderId);
     if (!order) throw new Error("Order not found");
     if (order.orderStatus === 'review') {
@@ -113,6 +117,7 @@ export async function markOrderAsDraft(orderId) {
 
 // Checkout
 export async function finalizeOrder(orderId) {
+    await getDatabaseConnection();
     try {
         const order = await Order.findById(orderId);
         if (!order) throw new Error('Order not found');
