@@ -19,7 +19,7 @@ const Header = async () => {
                 <div className="flex-1">
                     <Link className={"text-xl mx-4 font-semibold" + (authUser ? " lg:hidden" : "")} href="/">On Table</Link>
                 </div>
-                <LogoutButton />
+                <LogoutButton authUser={authUser}/>
             </div>
         </header>
     );

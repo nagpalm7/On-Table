@@ -178,13 +178,13 @@ const Order = () => {
                     handleRemoveItem={handleRemoveItem}
                 />
                 {order.items.length > 0 && (
-                    <div className="sticky bottom-0 w-full p-4 bg-transparent bg-none">
+                    <div className="sticky bottom-0 w-full p-4 bg-transparent">
                         <button 
-                            className='btn btn-block btn-soft btn-primary' 
+                            className='btn btn-block btn-soft btn-primary disabled:bg-opacity-100 disabled:opacity-100 disabled:bg-base-100' 
                             onClick={handleContinue}
-                            disabled={isFinalizing}
+                            disabled={true}
                         >
-                            {isFinalizing ? <span className="loading loading-spinner"></span> : ''} CONTINUE
+                            {isFinalizing && <span className="loading loading-spinner"></span>} CONTINUE
                         </button>
                     </div>
                 )}

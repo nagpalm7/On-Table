@@ -112,8 +112,8 @@ export const login = async (state, formData ) => {
 
     // Create a session
     await createSession(user._id.toString(), user.userType);
-    
-    redirect(`/`);
+    const redirectTo = user.userType === "admin" ? "/admin" : "/restaurant";
+    redirect(`${redirectTo}/dashboard`);
 };
 
 export async function logout() {

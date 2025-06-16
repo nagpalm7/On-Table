@@ -83,6 +83,7 @@ export const config = {
       "/admin/:path*", 
       "/client/:path*", 
       "/restaurant/:path*",
-      "/auth/:path*"
+      "/auth/:path*",
+      "/"
     ]
 };

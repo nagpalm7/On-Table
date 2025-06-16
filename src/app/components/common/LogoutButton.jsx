@@ -1,11 +1,10 @@
-"use server";
+"use client";
 
 import { logout } from '@/actions/auth';
-import getAuthUser from '@/lib/getAuthUser';
-import React from 'react'
+import React, { useActionState } from 'react'
 
-const LogoutButton = async () => {
-  const authUser = await getAuthUser();
+const LogoutButton = ({ authUser }) => {
+  const [state, action, isPending] = useActionState(logout, undefined);
 
   if (!authUser) {
     return null;
@@ -13,9 +12,9 @@ const LogoutButton = async () => {
 
   return (
     <div className="flex-none margin-right-4">
-        <form action={logout}>
-            <button className="btn btn-ghost">
-                Log out
+        <form action={action}>
+            <button className="btn btn-ghost" disabled={isPending}>
+                {isPending && <span className="loading loading-spinner"></span>}LOG OUT
             </button>
         </form>
     </div>

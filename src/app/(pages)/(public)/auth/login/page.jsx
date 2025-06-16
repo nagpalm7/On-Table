@@ -57,7 +57,7 @@ const Login = () => {
                     className="btn btn-primary w-full"
                     disabled={isPending}
                 >
-                    Login
+                     {isPending && <span className="loading loading-spinner"></span>} Login
                 </button>
             </form>
         </div>
