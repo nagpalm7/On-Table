@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useActionState, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getOrCreateDraftOrder, markOrderAsDraft } from '@/actions/client/order';
 import Spinner from '@/app/components/common/Spinner';
@@ -12,6 +12,8 @@ const Review = () => {
     const router = useRouter();
     const params = useParams();
     const rid = params.id.toString();
+
+    const [state, action, isPending] = useActionState(markOrderAsDraft, { rid: rid});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,20 +33,20 @@ const Review = () => {
         fetchData();
     }, []);
 
-    const handleEditOrder = async () => {
-        if (!orderId) return;
+    // const handleEditOrder = async () => {
+    //     if (!orderId) return;
 
-        try {
-            const updatedOrder = await markOrderAsDraft(orderId);
-            router.push(`/restaurant/${rid}/order`);
-            return;
-        } catch (err) {
-            alert('Could not edit the order. Please try again.');
-            console.error(err);
-        }
-    };
+    //     try {
+    //         const updatedOrder = await markOrderAsDraft(orderId);
+    //         router.push(`/restaurant/${rid}/order`);
+    //         return;
+    //     } catch (err) {
+    //         alert('Could not edit the order. Please try again.');
+    //         console.error(err);
+    //     }
+    // };
 
-    if (isLoading)
+    if (isLoading || isPending)
         return <Spinner />;
 
     return (
@@ -52,13 +54,16 @@ const Review = () => {
             <div className="card-body">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="card-title text-xl">Order Summary</h2>
-                    <button
-                        className="btn btn-link p-0 no-underline"
-                        aria-label="Edit Order"
-                        onClick={handleEditOrder}
-                    >
-                        EDIT
-                    </button>
+                    <form action={action}>
+                        <input type="hidden" name="id" value={orderId} />
+                        <button
+                            className="btn btn-link p-0 no-underline"
+                            aria-label="Edit Order"
+                            disabled={isPending}
+                        >
+                            EDIT
+                        </button>
+                    </form>
                 </div>
                 {!order || order?.items.length === 0 ? (
                     <div className="text-gray-500">No items in your order.</div>

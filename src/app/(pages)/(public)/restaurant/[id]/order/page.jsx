@@ -17,6 +17,7 @@ import {
 
 const Order = () => {
     const [isLoading, setIsLoading] = useState(true);
+    const [isFinalizing, setIsFinalizing] = useState(false);
     const [menu, setMenu] = useState([]);
     const [restaurant, setRestaurant] = useState({});
     const [orderId, setOrderId] = useState(null);
@@ -33,7 +34,7 @@ const Order = () => {
                 router.push(`/restaurant/${rid}/review`);
                 return;
             }
-            const updatedOrder = await removeUnavailableItemsFromOrder(order?._id);
+            const { updatedOrder, removed} = await removeUnavailableItemsFromOrder(order?._id);
             setOrderId(order?._id);
             setOrder(updatedOrder);
 
@@ -115,22 +116,26 @@ const Order = () => {
     };
 
     const handleContinue = async () => {
+        setIsFinalizing(true);
+    
         if (!orderId) return;
-
+    
         try {
-            const updatedOrder = await removeUnavailableItemsFromOrder(orderId);
+            const { updatedOrder, removed } = await removeUnavailableItemsFromOrder(orderId);
             // check if updated order is different from original
-            if (JSON.stringify(updatedOrder) !== JSON.stringify(order)) {
+            await finalizeOrder(orderId);
+            if (removed) {
                 setOrder(updatedOrder);
                 alert("Some items were not available and have been removed from your order.");
-                return;
             }
-            await finalizeOrder(orderId);
             router.push(`/restaurant/${rid}/review`);
+            setIsLoading(true);
             return;
         } catch (err) {
             alert('Could not finalize order. Please try again.');
             console.error(err);
+        } finally {
+            setIsFinalizing(false);
         }
     };
 
@@ -174,8 +179,12 @@ const Order = () => {
                 />
                 {order.items.length > 0 && (
                     <div className="sticky bottom-0 w-full p-4 bg-transparent bg-none">
-                        <button className='btn btn-block btn-soft btn-primary' onClick={handleContinue}>
-                            CONTINUE
+                        <button 
+                            className='btn btn-block btn-soft btn-primary' 
+                            onClick={handleContinue}
+                            disabled={isFinalizing}
+                        >
+                            {isFinalizing ? <span className="loading loading-spinner"></span> : ''} CONTINUE
                         </button>
                     </div>
                 )}

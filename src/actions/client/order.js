@@ -87,7 +87,7 @@ export const removeOrDecreaseItemFromOrder = async (orderId, menuItemId, variant
 
 export async function removeUnavailableItemsFromOrder(orderId) {
     await getDatabaseConnection();
-    const order = await Order.findById(orderId);
+    const order = await Order.findById(orderId).select("-__v");
     if (!order) throw new Error("Order not found")
     const menuItemIds = order.items.map(item => item.menuItem);
     const availableMenuItems = await MenuItem.find({
@@ -97,13 +97,18 @@ export async function removeUnavailableItemsFromOrder(orderId) {
 
     const availableIds = new Set(availableMenuItems.map(i => i._id.toString()));
 
+    const removedItems = order.items.filter(item => !availableIds.has(item.menuItem.toString()));
     order.items = order.items.filter(item => availableIds.has(item.menuItem.toString()));
 
     await order.save();
-    return JSON.parse(JSON.stringify(order));
+    return {
+        updatedOrder: JSON.parse(JSON.stringify(order)),
+        removed: removedItems.length > 0
+    };
 }
 
-export async function markOrderAsDraft(orderId) {
+export async function markOrderAsDraft(state, formData) {
+    const orderId = formData.get('id');
     await getDatabaseConnection();
     const order = await Order.findById(orderId);
     if (!order) throw new Error("Order not found");
@@ -112,7 +117,7 @@ export async function markOrderAsDraft(orderId) {
         await order.save();
     }
 
-    return JSON.parse(JSON.stringify(order));
+    redirect(`/restaurant/${state.rid}/order`);
 }
 
 // Checkout
