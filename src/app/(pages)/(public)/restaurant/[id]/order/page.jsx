@@ -180,9 +180,9 @@ const Order = () => {
                 {order.items.length > 0 && (
                     <div className="sticky bottom-0 w-full p-4 bg-transparent">
                         <button 
-                            className='btn btn-block btn-soft btn-primary disabled:bg-opacity-100 disabled:opacity-100 disabled:bg-base-100' 
+                            className='btn btn-block btn-soft btn-primary' 
                             onClick={handleContinue}
-                            disabled={true}
+                            disabled={isFinalizing}
                         >
                             {isFinalizing && <span className="loading loading-spinner"></span>} CONTINUE
                         </button>
