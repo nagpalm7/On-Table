@@ -22,9 +22,9 @@ const ListCard = ({ item, order, handleAddItem, handleRemoveItem }) => {
             <div className="card-body p-2">
                 <h2 className="card-title text-sm">{item.name}</h2>
                 <p className="line-clamp-2 text-xs opacity-60">{item.description}</p>
-                <div className="text-sm font-semibold opacity-70 flex items-center">
+                    <div className="text-sm font-semibold opacity-70 flex items-center">
                     <div className="flex-1">₹{item.variants[0].price}</div>
-                    <div className="flex-1">
+                    <div className="flex flex-1 justify-end">
                         {orderItem ? (
                             <QuantityButton
                                 item={item}

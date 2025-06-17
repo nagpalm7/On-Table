@@ -11,7 +11,7 @@ const List = ({menu, order, handleAddItem, handleRemoveItem }) => {
                         <div className="collapse-title font-semibold" id={category.name}>
                             {category.name}
                         </div>
-                        <div className="collapse-content gap-2 grid grid-cols-2 sm:grid-cols-3 sm:gap-4">
+                        <div className="collapse-content gap-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 sm:gap-4">
                             {category.items.map((item) => (
                                 <ListCard 
                                     item={item} 

@@ -52,14 +52,14 @@ const Review = () => {
 
     return (
         <><Steps currentStep={2}/>
-        <div className="m-4 shadow-md card bg-base-100">
+        <div className="m-4 shadow-md card bg-base-100 rounded-2xl md:mx-auto md:max-w-2xl ">
             <div className="card-body">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="card-title text-xl">Order Summary</h2>
                     <form action={action}>
                         <input type="hidden" name="id" value={orderId} />
                         <button
-                            className="btn btn-link p-0 no-underline"
+                            className="btn btn-link text-success p-0 no-underline"
                             aria-label="Edit Order"
                             disabled={isPending}
                         >
@@ -88,7 +88,7 @@ const Review = () => {
 
             </div>
             <div className="card-actions justify-center p-4">
-                <button className="btn btn-primary btn-block">PAY</button>
+                <button className="btn btn-success btn-soft btn-block rounded-full">PAY</button>
             </div>
 
         </div></>

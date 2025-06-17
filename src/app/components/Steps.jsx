@@ -4,12 +4,12 @@ import { orderingSteps } from '../utils/constants';
 const Steps = ({ currentStep }) => {
 
     return (
-        <div className="p-4 bg-base-100 shadow-md rounded-xl my-2 w-full max-w-2xl mx-auto">
+        <div className="m-4 p-4 bg-base-100 shadow-md rounded-2xl md:mx-auto md:max-w-2xl">
             <ul className="steps w-full">
                 {orderingSteps.map((label, idx) => (
                     <li
                         key={label}
-                        className={`step text-xs sm:text-sm ${currentStep >= idx + 1 ? "step-primary" : ""}`}
+                        className={`step text-xs sm:text-sm ${currentStep >= idx + 1 ? "step-success" : ""}`}
                     >
                         {label}
                     </li>
