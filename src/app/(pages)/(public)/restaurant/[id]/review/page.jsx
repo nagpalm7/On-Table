@@ -4,6 +4,7 @@ import React, { useActionState, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getOrCreateDraftOrder, markOrderAsDraft } from '@/actions/client/order';
 import Spinner from '@/app/components/common/Spinner';
+import Steps from '@/app/components/Steps';
 
 const Review = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -50,6 +51,7 @@ const Review = () => {
         return <Spinner />;
 
     return (
+        <><Steps currentStep={2}/>
         <div className="m-4 shadow-md card bg-base-100">
             <div className="card-body">
                 <div className="flex items-center justify-between mb-4">
@@ -89,7 +91,7 @@ const Review = () => {
                 <button className="btn btn-primary btn-block">PAY</button>
             </div>
 
-        </div>
+        </div></>
     );
 };
 

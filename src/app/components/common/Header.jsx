@@ -4,12 +4,12 @@ import LogoutButton from '@/app/components/common/LogoutButton';
 import Link from 'next/link';
 import getAuthUser from '@/lib/getAuthUser';
 
-const Header = async () => {
+const Header = async ({ publicRoute = false}) => {
     const authUser = await getAuthUser();
     return (
         <header className="sticky top-0 z-20 w-full bg-base-100">
             <div className="navbar shadow-xs">
-                {authUser &&
+                {authUser && !publicRoute &&
                     <div className="flex-none">
                         <label htmlFor="my-drawer-2" className="btn btn-square btn-ghost drawer-button lg:hidden">
                             <AiOutlineMenu className="text-xl" />
@@ -17,9 +17,9 @@ const Header = async () => {
                     </div>
                 }
                 <div className="flex-1">
-                    <Link className={"text-xl mx-4 font-semibold" + (authUser ? " lg:hidden" : "")} href="/">On Table</Link>
+                    <Link className={"text-xl mx-4 font-semibold" + (authUser && !publicRoute ? " lg:hidden" : "")} href="/">On Table</Link>
                 </div>
-                <LogoutButton authUser={authUser}/>
+                {!publicRoute &&<LogoutButton authUser={authUser}/>}
             </div>
         </header>
     );

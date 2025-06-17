@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Steps from "@/app/components/Steps";
 import { useRouter } from 'next/navigation';
 
 const Pay = () => {
@@ -12,7 +11,6 @@ const Pay = () => {
 
     return (
         <div>
-            <Steps currentStep={3} />
             <div className="flex flex-col items-center my-8 min-h-[40vh]">
                 <h2 className="text-lg font-semibold mb-6">How would you like to pay?</h2>
                 <button className="btn btn-outline btn-primary w-64 mb-4" type="button" onClick={handleButtonClick}>

@@ -17,7 +17,7 @@ const Login = () => {
             {alertMessage && <Toast message={alertMessage} />}
             <form
                 action={action}
-                className="card w-full max-w-md shadow-xl bg-base-100 p-8 gap-8"
+                className="card w-full max-w-md shadow-md bg-base-100 p-8 gap-8"
             >   
                 <h2 className="text-2xl font-bold text-center">Login</h2>
                 <label className="floating-label">

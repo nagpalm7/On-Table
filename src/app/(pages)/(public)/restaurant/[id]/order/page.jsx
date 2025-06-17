@@ -14,6 +14,9 @@ import {
     finalizeOrder,
     removeUnavailableItemsFromOrder
 } from '@/actions/client/order';
+import Steps from '@/app/components/Steps';
+import { orderingSteps, PLACEHOLDER_PUBLIC_ID } from '@/app/utils/constants';
+import { CldImage } from 'next-cloudinary';
 
 const Order = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +37,7 @@ const Order = () => {
                 router.push(`/restaurant/${rid}/review`);
                 return;
             }
-            const { updatedOrder, removed} = await removeUnavailableItemsFromOrder(order?._id);
+            const { updatedOrder, removed } = await removeUnavailableItemsFromOrder(order?._id);
             setOrderId(order?._id);
             setOrder(updatedOrder);
 
@@ -117,9 +120,9 @@ const Order = () => {
 
     const handleContinue = async () => {
         setIsFinalizing(true);
-    
+
         if (!orderId) return;
-    
+
         try {
             const { updatedOrder, removed } = await removeUnavailableItemsFromOrder(orderId);
             // check if updated order is different from original
@@ -142,24 +145,27 @@ const Order = () => {
     if (isLoading)
         return <Spinner />;
 
+
+    const logo = "https://upload.wikimedia.org/wikipedia/commons/2/25/Haldiram%27s_Logo_SVG.svg";
+
     return (
         <div>
-            <div className="banner flex items-center justify-center bg-base-200 py-2">
+            {/* <div className="banner flex items-center justify-center bg-base-200 py-2">
                 {restaurant.logo &&
                     <Logo
                         logo={restaurant?.logo}
                     />
                 }
-            </div>
+            </div> */}
             {/* <div className='shadow-sm'>
                 <Steps currentStep={1} />
             </div> */}
-            <div className="sticky top-16 z-10 bg-base-100 py-4 shadow-sm">
-                <div className="flex gap-4 overflow-x-auto no-scrollbar px-4">
+            <div className="sticky top-0 z-10 bg-base-100">
+                <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 py-4">
                     {menu.map((category) => (
                         <button
                             key={category.name}
-                            className="btn btn-sm btn-outline whitespace-nowrap min-w-fit"
+                            className="btn btn-sm shadow-md rounded-full bg-gray-100 whitespace-nowrap min-w-fit"
                             onClick={() => {
                                 const element = document.getElementById(category.name);
                                 if (element) element.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -178,9 +184,9 @@ const Order = () => {
                     handleRemoveItem={handleRemoveItem}
                 />
                 {order.items.length > 0 && (
-                    <div className="sticky bottom-0 w-full p-4 bg-transparent">
-                        <button 
-                            className='btn btn-block btn-soft btn-primary' 
+                    <div className="sticky bottom-0 w-full py-4 px-8 bg-transparent">
+                        <button
+                            className='btn btn-block btn-soft btn-success rounded-full shadow-md'
                             onClick={handleContinue}
                             disabled={isFinalizing}
                         >
