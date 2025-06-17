@@ -17,6 +17,7 @@ import {
 import Steps from '@/app/components/Steps';
 import { orderingSteps, PLACEHOLDER_PUBLIC_ID } from '@/app/utils/constants';
 import { CldImage } from 'next-cloudinary';
+import CategoryList from '@/app/components/menu/CategoryList';
 
 const Order = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -145,37 +146,9 @@ const Order = () => {
     if (isLoading)
         return <Spinner />;
 
-
-    const logo = "https://upload.wikimedia.org/wikipedia/commons/2/25/Haldiram%27s_Logo_SVG.svg";
-
     return (
         <div>
-            {/* <div className="banner flex items-center justify-center bg-base-200 py-2">
-                {restaurant.logo &&
-                    <Logo
-                        logo={restaurant?.logo}
-                    />
-                }
-            </div> */}
-            {/* <div className='shadow-sm'>
-                <Steps currentStep={1} />
-            </div> */}
-            <div className="sticky top-0 z-10 bg-base-100">
-                <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 py-4">
-                    {menu.map((category) => (
-                        <button
-                            key={category.name}
-                            className="btn btn-sm shadow-md rounded-full bg-gray-100 whitespace-nowrap min-w-fit"
-                            onClick={() => {
-                                const element = document.getElementById(category.name);
-                                if (element) element.scrollIntoView({ behavior: "smooth", block: "center" });
-                            }}
-                        >
-                            {category.name}
-                        </button>
-                    ))}
-                </div>
-            </div>
+            <CategoryList menu={menu} />
             <div className="flex w-full flex-col flex-1">
                 <List
                     menu={menu}
