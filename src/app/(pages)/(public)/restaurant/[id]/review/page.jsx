@@ -88,7 +88,7 @@ const Review = () => {
 
             </div>
             <div className="card-actions justify-center p-4">
-                <button className="btn btn-success btn-soft btn-block rounded-full">PAY</button>
+                <button className="btn btn-success btn-block rounded-full">PAY</button>
             </div>
 
         </div></>

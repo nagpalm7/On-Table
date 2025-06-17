@@ -159,7 +159,7 @@ const Order = () => {
                 {order.items.length > 0 && (
                     <div className="sticky bottom-0 w-full py-4 px-8 bg-transparent">
                         <button
-                            className='btn btn-block btn-soft btn-success rounded-full shadow-md'
+                            className='btn btn-block btn-success rounded-full shadow-md'
                             onClick={handleContinue}
                             disabled={isFinalizing}
                         >
