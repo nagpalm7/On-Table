@@ -10,17 +10,24 @@ const CategoryList = ({ menu }) => {
     useEffect(() => {
         const options = {
             root: null,
-            rootMargin: '0px 0px -60% 0px', // Adjust based on header height
+            rootMargin: '0px 0px -60% 0px',
             threshold: 0.1,
         }
 
         const callback = (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    setActiveCategory(entry.target.id)
-                }
-            })
-        }
+            // Get all intersecting entries and sort them top-to-bottom
+            const visibleEntries = entries
+                .filter((entry) => entry.isIntersecting)
+                .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+            if (visibleEntries.length > 0) {
+                // Always pick the topmost intersecting section
+                const topEntry = visibleEntries[0];
+                
+                setActiveCategory(topEntry.target.id);
+            }
+        };
+
 
         observerRef.current = new IntersectionObserver(callback, options)
 
@@ -34,8 +41,10 @@ const CategoryList = ({ menu }) => {
         }
     }, [menu])
 
+
     // Auto-scroll active tab into view
     useEffect(() => {
+        console.log(activeCategory)
         const activeBtn = buttonsRef.current[activeCategory]
         const scrollContainer = scrollContainerRef.current
         if (activeBtn && scrollContainer) {
@@ -61,8 +70,8 @@ const CategoryList = ({ menu }) => {
                         key={category.name}
                         ref={(el) => (buttonsRef.current[category.name] = el)}
                         className={`btn btn-sm rounded-full min-w-fit shadow-md whitespace-nowrap snap-start ${activeCategory === category.name
-                                ? 'btn-success btn-soft shadow-sm'
-                                : 'bg-gray-100 text-black'
+                            ? 'btn-success btn-soft shadow-sm'
+                            : 'bg-gray-100 text-black'
                             }`}
                         onClick={() => {
                             const element = document.getElementById(category.name)
