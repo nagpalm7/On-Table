@@ -88,9 +88,8 @@ const RestaurantClient = ({ orderId: initialOrderId, initialOrder, menu, rid }) 
             }
             router.push(`/restaurant/${rid}/review`);
         } catch (err) {
-            alert('Could not finalize order. Please try again.');
-        } finally {
             setIsFinalizing(false);
+            alert('Could not finalize order. Please try again.');
         }
     };
 
