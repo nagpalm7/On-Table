@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import List from '@/app/components/menu/List';
+import List from '@/app/components/menu/List.server';
 import { useRouter } from 'next/navigation';
 import {
     addOrUpdateItemToOrder,
@@ -15,7 +15,6 @@ const RestaurantClient = ({
     orderId: initialOrderId,
     initialOrder,
     menu,
-    restaurant,
     rid
 }) => {
     const [order, setOrder] = useState(initialOrder);

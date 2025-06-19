@@ -1,9 +1,8 @@
-import { fetchRestaurantById } from '@/actions/restaurant';
+import React from 'react';
 import { getMenuByRestaurant } from '@/actions/menu';
 import { getOrCreateDraftOrder, removeUnavailableItemsFromOrder } from '@/actions/client/order';
 import { redirect } from 'next/navigation';
-import RestaurantClient from './orderClient';
-import React from 'react';
+import RestaurantClient from '@/app/(pages)/(public)/restaurant/[id]/order/orderClient';
 
 const Page = async ({ params }) => {
   const rid = params.id.toString();
@@ -16,14 +15,12 @@ const Page = async ({ params }) => {
 
   const { updatedOrder, removed } = await removeUnavailableItemsFromOrder(order?._id);
   const menu = await getMenuByRestaurant(rid);
-  const restaurant = await fetchRestaurantById(rid);
 
   return (
     <RestaurantClient
       orderId={order._id}
       initialOrder={updatedOrder}
       menu={menu}
-      restaurant={restaurant}
       rid={rid}
     />
   );
