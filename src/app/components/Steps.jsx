@@ -4,7 +4,7 @@ import { orderingSteps } from '../utils/constants';
 const Steps = ({ currentStep }) => {
 
     return (
-        <div className="m-4 p-4 bg-base-100 shadow-md rounded-2xl md:mx-auto md:max-w-2xl">
+        <div className="m-4 p-4 bg-base-100 shadow-md rounded-2xl">
             <ul className="steps w-full">
                 {orderingSteps.map((label, idx) => (
                     <li

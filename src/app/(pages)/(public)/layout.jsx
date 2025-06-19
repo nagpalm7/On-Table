@@ -11,10 +11,9 @@ export default function RootLayout({ children }) {
             <h1 className="font-bold text-xl text-success">On Table</h1>
             <p className="text-sm text-success-content">Order your favourite food!</p>
           </div>
-
         </div>
 
-        <main>
+        <main className="md:mx-auto md:max-w-2xl">
           {children}
         </main>
       </div>

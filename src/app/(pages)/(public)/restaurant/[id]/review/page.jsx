@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { getOrCreateDraftOrder, markOrderAsDraft } from '@/actions/client/order';
 import Spinner from '@/app/components/common/Spinner';
 import Steps from '@/app/components/Steps';
+import Account from '@/app/components/user/Account';
 
 const Review = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -38,9 +39,10 @@ const Review = () => {
         return <Spinner />;
 
     return (
-        <>
+        <>  
+            <Account />
             <Steps currentStep={2} />
-            <div className="m-4 shadow-md card bg-base-100 rounded-2xl md:mx-auto md:max-w-2xl ">
+            <div className="m-4 shadow-md card bg-base-100 rounded-2xl">
                 <div className="card-body">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="card-title text-xl">Order Summary</h2>
@@ -77,7 +79,7 @@ const Review = () => {
                 </div>
                 <div className="card-actions justify-center p-4">
                     <button
-                        onClick={() => router.push(`/restaurant/${rid}/pay`)}
+                        onClick={() => router.push(`/order/${orderId}/pay`)}
                         className="btn btn-success btn-block rounded-full">
                         PROCEED TO PAY
                     </button>

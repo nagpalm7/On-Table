@@ -7,6 +7,11 @@ const orderSchema = new mongoose.Schema({
   items: [orderItemSchema],
   totalAmount: { type: Number, required: true, default: 0 },
   commissionAmount: { type: Number, required: true, default: 0 },
+  paymentMode: {
+    type: String,
+    enum: ['cash', 'online'],
+    default: 'cash'
+  },
   paymentStatus: {
     type: String,
     enum: ['pending', 'paid', 'failed'],

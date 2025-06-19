@@ -94,7 +94,7 @@ const RestaurantClient = ({ orderId: initialOrderId, initialOrder, menu, rid }) 
     };
 
     return (
-        <div className='md:mx-auto md:max-w-2xl'>
+        <div>
             <CategoryList menu={menu} />
             <div className="flex w-full flex-col flex-1">
                 <div>

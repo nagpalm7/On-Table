@@ -22,7 +22,7 @@ export async function getOrCreateDraftOrder(restaurantId) {
     });
 
     if (!order) {
-        const expireAt = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24 hrs
+        const expireAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7); // 7 days
 
         order = await Order.create({
             sessionId,
@@ -150,7 +150,6 @@ export async function finalizeOrder(orderId) {
         order.totalAmount = total;
         order.commissionAmount = commissionAmount;
         order.orderStatus = 'review';
-        order.expireAt = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24 hrs
 
         await order.save();
         // redirect("/restaurant/" + order.restaurant + "/review/");
@@ -160,3 +159,44 @@ export async function finalizeOrder(orderId) {
         throw e;
     }
 }
+
+export async function placeOrder(formData) {
+    const orderId = await formData.get('orderId');
+    const paymentMode = await formData.get('paymentMode');
+
+    switch(paymentMode) {
+        case 'cash':
+            await placeCashOrder(orderId);
+            break;
+        case 'online':
+            await placeOnlineOrder(orderId);
+            break;
+    }
+}
+
+export async function placeCashOrder(orderId) {
+    await getDatabaseConnection();
+    const order = await Order.findById(orderId);
+    if (!order) throw new Error("Order not found");
+
+    order.orderStatus = "placed";
+    order.paymentMode = "cash";
+    order.paymentStatus = "pending";
+
+    await order.save();
+    redirect(`/order/${orderId}/track`);
+}
+
+export async function placeOnlineOrder(orderId) {
+    await getDatabaseConnection();
+    const order = await Order.findById(orderId);
+    if (!order) throw new Error("Order not found");
+
+    order.orderStatus = "placed";
+    order.paymentMode = "online";
+    order.paymentStatus = "pending";
+
+    await order.save();
+    redirect(`/order/${orderId}/track`);
+}
+
