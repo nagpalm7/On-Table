@@ -44,7 +44,6 @@ const CategoryList = ({ menu }) => {
 
     // Auto-scroll active tab into view
     useEffect(() => {
-        console.log(activeCategory)
         const activeBtn = buttonsRef.current[activeCategory]
         const scrollContainer = scrollContainerRef.current
         if (activeBtn && scrollContainer) {

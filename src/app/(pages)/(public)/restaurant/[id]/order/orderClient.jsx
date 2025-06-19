@@ -94,7 +94,7 @@ const RestaurantClient = ({ orderId: initialOrderId, initialOrder, menu, rid }) 
     };
 
     return (
-        <div>
+        <div className='md:mx-auto md:max-w-2xl'>
             <CategoryList menu={menu} />
             <div className="flex w-full flex-col flex-1">
                 <div>
@@ -109,7 +109,7 @@ const RestaurantClient = ({ orderId: initialOrderId, initialOrder, menu, rid }) 
                                 <div className="collapse-title font-semibold">
                                     {category.name}
                                 </div>
-                                <div className="collapse-content gap-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 sm:gap-4">
+                                <div className="collapse-content gap-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 sm:gap-4">
                                     <LazyCategoryItems
                                         items={category.items}
                                         order={order}
