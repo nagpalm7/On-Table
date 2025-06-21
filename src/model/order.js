@@ -25,7 +25,7 @@ const orderSchema = new mongoose.Schema({
   phone: { type: String, required: false },
   email: { type: String, required: false },
   createdAt: { type: Date, default: Date.now },
-  expireAt: { type: Date, default: undefined } // ⏰ Optional, only for drafts
+  expireAt: { type: Date, default: undefined }
 });
 
 // TTL index (expires document once `expireAt` < now)

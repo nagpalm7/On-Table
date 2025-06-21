@@ -1,4 +1,5 @@
 import Footer from "@/app/components/common/Footer";
+import Account from "@/app/components/user/Account";
 import Providers from "@/app/Providers";
 import React from "react";
 
@@ -12,6 +13,7 @@ export default function RootLayout({ children }) {
             <div>
               <h1 className="font-bold text-xl text-success">On Table</h1>
               <p className="text-sm text-success-content">Order your favourite food!</p>
+              <Account />
             </div>
           </div>
 

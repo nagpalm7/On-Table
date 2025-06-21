@@ -12,7 +12,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      redirect('/');
+      console.log("authenticated");
     }
   }, [status]);
 
