@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const sessionSchema = new mongoose.Schema({
     sessionId: { type: String, required: true, unique: true },
     phone: { type: String, required: false },
+    email: { type: String, required: false },
     userAgent: { type: String },
     ip: { type: String },
     createdAt: { type: Date, default: Date.now },

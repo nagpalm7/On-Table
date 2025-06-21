@@ -23,6 +23,7 @@ const orderSchema = new mongoose.Schema({
     default: 'draft'
   },
   phone: { type: String, required: false },
+  email: { type: String, required: false },
   createdAt: { type: Date, default: Date.now },
   expireAt: { type: Date, default: undefined } // ⏰ Optional, only for drafts
 });

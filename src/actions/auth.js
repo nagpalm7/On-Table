@@ -116,13 +116,14 @@ export const login = async (state, formData ) => {
     redirect(`${redirectTo}/dashboard`);
 };
 
-export async function getCustomerPhone() {
+export async function getCustomerEmail() {
   await getDatabaseConnection();
-  const sessionId = cookies().get('sessionId')?.value;
+  const cookiesStore = await cookies();
+  const sessionId = cookiesStore.get('sessionId')?.value;
   if (!sessionId) return null;
 
   const session = await Session.findOne({ sessionId });
-  return session?.phone ?? null;
+  return session?.email ?? null;
 }
 
 export async function logout() {

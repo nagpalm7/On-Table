@@ -1,6 +1,6 @@
 "use server";
 
-import { getOrCreateSession } from "@/lib/guest";
+import { getOrCreateSession } from "@/actions/guest";
 import AppSettings from "@/model/appSettings";
 import Order from "@/model/order";
 import MenuItem from "@/model/menuItem";
@@ -15,10 +15,21 @@ export async function getOrCreateDraftOrder(restaurantId) {
     await getDatabaseConnection();
     // Ensure session exists
     const sessionId = await getOrCreateSession();
-    // Use phone if logged in, otherwise sessionId
-    const userId = await getUserIdentifier();
+    // Use email if logged in, otherwise sessionId
+    const user = await getUserIdentifier();
+
+    const filters = [];
+
+    if (user?.type === 'email') {
+        filters.push({ email: user.value });
+    } else if (user?.type === 'session') {
+        filters.push({ sessionId: user.value });
+    } else {
+        filters.push({ sessionId }); // fallback
+    }
+
     let order = await Order.findOne({
-        $or: [{ phone: userId }, { sessionId: userId }],
+        $or: filters,
         restaurant: restaurantId,
         orderStatus: { $in: ['draft', 'review'] }
     }).populate({
@@ -32,7 +43,7 @@ export async function getOrCreateDraftOrder(restaurantId) {
 
         order = await Order.create({
             sessionId,
-            phone: userId?.length === 10 ? userId : undefined,
+            email: user?.type === 'email' ? user.value : undefined,
             restaurant: restaurantId,
             items: [],
             totalAmount: 0,
@@ -53,21 +64,20 @@ export async function getOrderDetails(orderId) {
     if (!sessionId) return null;
 
     const session = await Session.findOne({ sessionId });
-    const userPhone = session?.phone;
+    const userEmail = session?.email;
 
     const order = await Order.findById(orderId);
 
     if (!order) return null;
 
-    if (order.phone) {
-        // If order has phone, but session doesn't — ask user to re-verify
-        if (!userPhone) return null;
-        return order.phone === userPhone ? JSON.parse(JSON.stringify(order)) : null;
+    if (order.email) {
+        // If order has email, but session doesn't — ask user to re-verify
+        if (!userEmail) return null;
+        return order.email === userEmail ? JSON.parse(JSON.stringify(order)) : null;
     } else {
         // For guest orders
         return order.sessionId === sessionId ? JSON.parse(JSON.stringify(order)) : null;
     }
-
 }
 
 // add item to order

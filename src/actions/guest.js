@@ -1,4 +1,5 @@
-import 'server-only';
+"use server";
+
 import { cookies, headers } from "next/headers";
 import { v4 as uuidv4 } from 'uuid';
 import Session from '@/model/session';
@@ -17,7 +18,6 @@ export async function getOrCreateSession() {
 
         if (session) return sessionId;
     }
-
 
     // create new session
     sessionId = uuidv4();

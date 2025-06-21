@@ -3,23 +3,22 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import PaymentMode from '@/app/(pages)/(public)/order/[id]/pay/paymentMode';
-import { getCustomerPhone } from '@/actions/auth';
+import { getCustomerEmail } from '@/actions/auth';
 import Spinner from '@/app/components/common/Spinner';
-import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 export default function PayClient({ order }) {
-    const [isVerified, setIsVerified] = useState(!!order.phone);
-    const [isLoading, setIsLoading] = useState(!order.phone); // check again if phone is not present
-    const router = useRouter();
+    const [isVerified, setIsVerified] = useState(!!order.email);
+    const [isLoading, setIsLoading] = useState(!order.email); // check again if phone is not present
 
     useEffect(() => {
-        getCustomerPhone().then((phone) => {
-            if (phone && order.phone === phone) {
+        getCustomerEmail().then((email) => {
+            if (email && order.email === email) {
                 setIsVerified(true);
                 setIsLoading(false);
             }
             else {
-                router.replace(`/verify?redirect=/order/${order._id}/order/pay`);
+                signIn("google", { callbackUrl: window.location.href });
             }
         });
     }, []);

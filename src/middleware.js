@@ -60,19 +60,6 @@ export default async function middleware(req) {
 
   // if user is anonymous and trying to access public path
   if (isPublicRoute) {
-    const sessionId = req.cookies.get("sessionId")?.value;
-    if (!sessionId) {
-      const newSessionId = uuidv4();
-      const response = NextResponse.next();
-      response.cookies.set('sessionId', newSessionId, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-        path: '/',
-      });
-      return response;
-    }
   }
 
   return NextResponse.next();
