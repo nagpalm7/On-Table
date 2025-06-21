@@ -6,13 +6,19 @@ import Order from "@/model/order";
 import MenuItem from "@/model/menuItem";
 import { redirect } from "next/navigation";
 import { getDatabaseConnection } from "@/lib/db";
+import { getUserIdentifier } from "@/lib/getUserIdentifier";
+import { cookies } from "next/headers";
+import Session from "@/model/session";
 
 // create draft order
 export async function getOrCreateDraftOrder(restaurantId) {
     await getDatabaseConnection();
-    const { sessionId } = await getOrCreateSession();
+    // Ensure session exists
+    const sessionId = await getOrCreateSession();
+    // Use phone if logged in, otherwise sessionId
+    const userId = await getUserIdentifier();
     let order = await Order.findOne({
-        sessionId,
+        $or: [{ phone: userId }, { sessionId: userId }],
         restaurant: restaurantId,
         orderStatus: { $in: ['draft', 'review'] }
     }).populate({
@@ -26,6 +32,7 @@ export async function getOrCreateDraftOrder(restaurantId) {
 
         order = await Order.create({
             sessionId,
+            phone: userId?.length === 10 ? userId : undefined,
             restaurant: restaurantId,
             items: [],
             totalAmount: 0,
@@ -37,6 +44,30 @@ export async function getOrCreateDraftOrder(restaurantId) {
     }
 
     return JSON.parse(JSON.stringify(order));
+}
+
+export async function getOrderDetails(orderId) {
+    await getDatabaseConnection();
+    const cookieStore = await cookies();
+    const sessionId = cookieStore.get('sessionId')?.value;
+    if (!sessionId) return null;
+
+    const session = await Session.findOne({ sessionId });
+    const userPhone = session?.phone;
+
+    const order = await Order.findById(orderId);
+
+    if (!order) return null;
+
+    if (order.phone) {
+        // If order has phone, but session doesn't — ask user to re-verify
+        if (!userPhone) return null;
+        return order.phone === userPhone ? JSON.parse(JSON.stringify(order)) : null;
+    } else {
+        // For guest orders
+        return order.sessionId === sessionId ? JSON.parse(JSON.stringify(order)) : null;
+    }
+
 }
 
 // add item to order
@@ -164,7 +195,7 @@ export async function placeOrder(formData) {
     const orderId = await formData.get('orderId');
     const paymentMode = await formData.get('paymentMode');
 
-    switch(paymentMode) {
+    switch (paymentMode) {
         case 'cash':
             await placeCashOrder(orderId);
             break;

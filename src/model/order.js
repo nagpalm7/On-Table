@@ -22,6 +22,7 @@ const orderSchema = new mongoose.Schema({
     enum: ['draft', 'review', 'placed', 'preparing', 'delivered'],
     default: 'draft'
   },
+  phone: { type: String, required: false },
   createdAt: { type: Date, default: Date.now },
   expireAt: { type: Date, default: undefined } // ⏰ Optional, only for drafts
 });

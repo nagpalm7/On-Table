@@ -1,28 +1,38 @@
-"use server";
-import { cookies } from "next/headers";
+import 'server-only';
+import { cookies, headers } from "next/headers";
 import { v4 as uuidv4 } from 'uuid';
 import Session from '@/model/session';
 
 export async function getOrCreateSession() {
-    const expiresIn = 60 * 60 * 24 * 7 * 1000 // 7 days
     const now = new Date();
     const cookieStore = await cookies();
+    const headerStore = await headers();
     let sessionId = cookieStore.get('sessionId')?.value;
 
-    if (!sessionId) {
-        sessionId = uuidv4();
-        // optionally set cookie here if using in API route
-        cookieStore.set('sessionId', sessionId, {
-            httpOnly: true,
-            secure: true,
-            maxAge: 60 * 60 * 24 * 7,
-            path: '/',
-        });
-    }
-    let session = await Session.findOne({ sessionId });
-    if (!session) {
-        session = await Session.create({ sessionId, expiresAt: new Date(now.getTime() + expiresIn) });
+    if (sessionId) {
+        const session = await Session.findOneAndUpdate(
+            { sessionId },
+            { lastSeen: now }
+        );
+
+        if (session) return sessionId;
     }
 
-    return { sessionId, session };
+
+    // create new session
+    sessionId = uuidv4();
+    const userAgent = headerStore.get('user-agent') || '';
+    const ip = headerStore.get('x-forwarded-for') || '';
+
+    await Session.create({ sessionId, userAgent, ip });
+
+    cookieStore.set('sessionId', sessionId, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+        path: '/',
+        sameSite: "lax",
+    });
+
+    return sessionId;
 }

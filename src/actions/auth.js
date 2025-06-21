@@ -6,7 +6,7 @@ import { getDatabaseConnection } from '@/lib/db';
 import { createSession } from "@/lib/session";
 import { cookies } from "next/headers";
 import { LoginFormSchema, RegisterFormSchema } from "@/lib/rules";
-
+import Session from "@/model/session";
 import User from '@/model/user';
 
 // Signup action
@@ -115,6 +115,15 @@ export const login = async (state, formData ) => {
     const redirectTo = user.userType === "admin" ? "/admin" : "/restaurant";
     redirect(`${redirectTo}/dashboard`);
 };
+
+export async function getCustomerPhone() {
+  await getDatabaseConnection();
+  const sessionId = cookies().get('sessionId')?.value;
+  if (!sessionId) return null;
+
+  const session = await Session.findOne({ sessionId });
+  return session?.phone ?? null;
+}
 
 export async function logout() {
   const cookieStore = await cookies();

@@ -2,10 +2,16 @@ import mongoose from 'mongoose';
 
 const sessionSchema = new mongoose.Schema({
     sessionId: { type: String, required: true, unique: true },
+    phone: { type: String, required: false },
+    userAgent: { type: String },
+    ip: { type: String },
     createdAt: { type: Date, default: Date.now },
-    expiresAt: { type: Date, required: true }, // optional
-});
+    lastSeen: {
+        type: Date,
+        default: Date.now,
+        index: { expires: '7d' } // 💣 TTL index here
+    },
+}, { timestamps: true });
 
-sessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 export default mongoose.models.Session || mongoose.model('Session', sessionSchema);
