@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { convertFileToDataUrl } from "./utils";
 import cloudinary from "@/lib/cloudinary";
 import getAuthUser from "@/lib/getAuthUser";
+import Owner from "@/model/user";
 
 export const getFieldsFromFormData = async (formData) => {
     return {

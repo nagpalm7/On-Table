@@ -8,16 +8,16 @@ const QuantityButton = ({item, quantity, handleAddItem, handleRemoveItem }) => (
             className="btn btn-sm btn-link join-item px-2"
             onClick={() => handleRemoveItem(item._id, item.variants[0].name, item.variants[0].price)}
         >
-            <span className='text-error text-base'><LuMinus /></span>
+            <span className='text-error'><LuMinus /></span>
         </button>
         <div className='btn btn-sm btn-ghost btn-disabled btn-success join-item px-1'>
-            <span className='text-neutral text-base'>{quantity}</span>
+            <span className='text-base-content font-bold'>{quantity}</span>
         </div>
         <button 
             className="btn btn-sm btn-link join-item px-2"
             onClick={() => handleAddItem(item._id, item.variants[0].name, item.variants[0].price)}
         >
-            <span className='text-success text-base'><LuPlus /></span>
+            <span className='text-success'><LuPlus /></span>
         </button>
     </div>
 );

@@ -6,6 +6,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { redirect } from 'next/navigation';
 import { getDatabaseConnection } from '@/lib/db';
+import MenuItem from '@/model/menuItem';
 
 export default async function OrdersPage() {
   // Get session

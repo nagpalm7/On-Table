@@ -4,6 +4,7 @@ import { getDatabaseConnection } from "@/lib/db";
 import { MenuItemFormSchema } from "@/lib/rules";
 import { convertFileToDataUrl, getVariantsFromFormData } from "./utils";
 import MenuItem from "@/model/menuItem";
+import Category from "@/model/category";
 import { redirect } from "next/navigation";
 import cloudinary from "@/lib/cloudinary";
 import { revalidatePath } from "next/cache";

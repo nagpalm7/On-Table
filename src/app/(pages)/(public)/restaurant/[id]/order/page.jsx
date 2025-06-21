@@ -3,7 +3,6 @@ import { getMenuByRestaurant } from '@/actions/menu';
 import { getOrCreateDraftOrder, removeUnavailableItemsFromOrder } from '@/actions/client/order';
 import { redirect } from 'next/navigation';
 import RestaurantClient from '@/app/(pages)/(public)/restaurant/[id]/order/orderClient';
-import Account from '@/app/components/user/Account';
 
 const Page = async ({ params }) => {
   const rid = params.id.toString();
@@ -19,7 +18,6 @@ const Page = async ({ params }) => {
 
   return (
     <div>
-      <Account />
       <RestaurantClient
         orderId={order._id}
         initialOrder={updatedOrder}

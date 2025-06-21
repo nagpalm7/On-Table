@@ -1,7 +1,6 @@
 import React from 'react';
 import Steps from '@/app/components/Steps';
 import { getOrderDetails } from '@/actions/client/order';
-import Account from '@/app/components/user/Account';
 import PayClient from './pay.client';
 import { redirect } from 'next/navigation';
 
@@ -16,7 +15,6 @@ const Pay = async ({ params }) => {
 
     return (
         <div>
-            <Account />
             <Steps currentStep={3} />
             <PayClient order={order} />
         </div>

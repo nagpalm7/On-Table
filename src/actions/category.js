@@ -4,7 +4,6 @@ import { getDatabaseConnection } from "@/lib/db";
 import getAuthUser from "@/lib/getAuthUser";
 import { CategoryFormSchema } from "@/lib/rules";
 import Category from "@/model/category";
-import restaurant from "@/model/restaurant";
 import Restaurant from "@/model/restaurant";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
