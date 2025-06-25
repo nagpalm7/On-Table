@@ -19,14 +19,16 @@ const Review = () => {
     useEffect(() => {
         const fetchData = async () => {
             // create or load draft order
-            const order = await getOrCreateDraftOrder(rid);
-            if (order.orderStatus === 'draft') {
+            const reviewOrder = await getOrCreateDraftOrder(rid);
+            if (reviewOrder.orderStatus === 'draft') {
                 router.push(`/restaurant/${rid}/order`);
                 return;
+            } else if (reviewOrder.orderStatus !== 'review') {
+                return router.replace(`/order/${reviewOrder._id}/track`);
             }
 
-            setOrderId(order?._id);
-            setOrder(order);
+            setOrderId(reviewOrder?._id);
+            setOrder(reviewOrder);
 
             // stop loading
             setIsLoading(false);
@@ -38,7 +40,7 @@ const Review = () => {
         return <Spinner />;
 
     return (
-        <>  
+        <>
             <Steps currentStep={2} />
             <div className="m-4 shadow-md card bg-base-100 rounded-2xl">
                 <div className="card-body">

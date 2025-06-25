@@ -241,8 +241,6 @@ export async function placeOnlineOrder(orderId) {
         payment_capture: true,
     });
 
-    console.log(razorpayOrder)
-
     order.orderStatus = "placed";
     order.paymentMode = "online";
     order.paymentStatus = "pending";

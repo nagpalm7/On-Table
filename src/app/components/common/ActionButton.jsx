@@ -1,9 +1,11 @@
 'use client'
+import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 
 function ActionButton({ text, state }) {
     const { pending } = useFormStatus();
+    const router = useRouter();
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -28,10 +30,9 @@ function ActionButton({ text, state }) {
                 description: 'Order Payment',
                 order_id: state.razorpayOrderId,
                 handler: (response) => {
-                    console.log('Payment completed', response);
-                    // Optional: call an API to confirm
+                    router.push(`/order/{state.receipt}/track`);
                 },
-                callback_url: `${window.location.origin}/order/success?oid=${state.receipt}`, // ✔️ redirect after intent payment
+                callback_url: `${window.location.origin}/order/{state.receipt}/track`,
                 theme: { color: '#36d399' },
                 modal: {
                     ondismiss: () => {
