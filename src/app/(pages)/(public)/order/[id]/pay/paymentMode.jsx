@@ -17,8 +17,8 @@ const PaymentMode = ( {orderId} ) => {
                             type="radio"
                             name="paymentMode"
                             className="radio radio-success"
-                            defaultChecked
                             value={"cash"}
+                            required
                         />
                         PAY AT COUNTER
                     </label>
@@ -28,6 +28,7 @@ const PaymentMode = ( {orderId} ) => {
                             name="paymentMode"
                             className="radio radio-success"
                             value={"online"}
+                            required
                         />
                         PAY ONLINE
                     </label>

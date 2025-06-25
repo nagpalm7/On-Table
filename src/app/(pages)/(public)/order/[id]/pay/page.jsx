@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import React from 'react';
 import Steps from '@/app/components/Steps';
 import { getOrderDetails } from '@/actions/client/order';

@@ -20,6 +20,8 @@ function ActionButton({ text, state }) {
         }
     }, []);
 
+    console.log(state)
+
     useEffect(() => {
         if (state?.mode === 'online' && typeof window !== 'undefined') {
             const rzp = new window.Razorpay({
@@ -30,9 +32,9 @@ function ActionButton({ text, state }) {
                 description: 'Order Payment',
                 order_id: state.razorpayOrderId,
                 handler: (response) => {
-                    router.push(`/order/{state.receipt}/track`);
+                    router.push(`/order/${state.receipt}/track`);
                 },
-                callback_url: `${window.location.origin}/order/{state.receipt}/track`,
+                callback_url: `${window.location.origin}/order/${state.receipt}/track`,
                 theme: { color: '#36d399' },
                 modal: {
                     ondismiss: () => {

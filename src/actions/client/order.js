@@ -253,6 +253,7 @@ export async function placeOnlineOrder(orderId) {
         razorpayOrderId: razorpayOrder.id,
         currency: razorpayOrder.currency,
         mode: 'online',
+        receipt: order._id.toString(),
     };
 }
 
