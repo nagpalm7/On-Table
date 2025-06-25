@@ -19,6 +19,8 @@ const authRoutes = [
 
 const publicRoutes = [
   "/restaurant",
+  "/order",
+  "/oauth"
 ]
 
 export default async function middleware(req) {
@@ -60,17 +62,33 @@ export default async function middleware(req) {
 
   // if user is anonymous and trying to access public path
   if (isPublicRoute) {
+    const sessionId = req.cookies.get("sessionId")?.value;
+    if (!sessionId) {
+      const newSessionId = uuidv4();
+      const response = NextResponse.next();
+      response.cookies.set('sessionId', newSessionId, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+        path: '/',
+        sameSite: 'lax',
+      });
+
+      return response;
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-    matcher: [
-      "/admin/:path*", 
-      "/client/:path*", 
-      "/restaurant/:path*",
-      "/auth/:path*",
-      "/"
-    ]
+  matcher: [
+    "/admin/:path*",
+    "/client/:path*",
+    "/restaurant/:path*",
+    "/order/:path*",
+    "/oauth/:path*",
+    "/auth/:path*",
+    "/"
+  ]
 };

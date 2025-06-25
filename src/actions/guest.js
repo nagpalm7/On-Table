@@ -13,7 +13,8 @@ export async function getOrCreateSession() {
     if (sessionId) {
         const session = await Session.findOneAndUpdate(
             { sessionId },
-            { lastSeen: now }
+            { $set: { lastSeen: now } },
+            { new: true, upsert: true }
         );
 
         if (session) return sessionId;
