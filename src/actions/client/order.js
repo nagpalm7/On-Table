@@ -72,7 +72,7 @@ export async function getOrderDetails(orderId, callbackUrl=null) {
     } else {
         // If order has email, but session doesn't — ask user to re-verify
         if (order.email) 
-            return redirect("/oauth/login?redirect=/order/" + orderId  + "/pay");
+            return redirect(`/oauth/login?redirect=/order/${orderId}/pay`);
 
         return JSON.parse(JSON.stringify(order));
     }

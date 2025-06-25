@@ -54,7 +54,7 @@ export default function UserDropdown() {
                     <li>
                         <NavLink
                             label={"Login"}
-                            href={`/oauth/login`}
+                            href={`/oauth/login?redirect=${window.location.href}`}
                             icon={<MdLogin className="mr-2" />}
                             closeDrawer={closeDropdown}
                         />

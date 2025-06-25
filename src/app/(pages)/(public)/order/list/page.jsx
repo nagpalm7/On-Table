@@ -24,8 +24,6 @@ export default async function OrdersPage() {
     .populate('items.menuItem', 'name') // limit fields for performance
     .lean();
 
-  console.log("loading my orders")
-
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold mb-6">My Orders</h1>
