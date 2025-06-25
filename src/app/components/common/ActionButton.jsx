@@ -31,6 +31,9 @@ function ActionButton({ text, state }) {
                 name: 'On Table',
                 description: 'Order Payment',
                 order_id: state.razorpayOrderId,
+                prefill: {
+                    email: state?.email, // optional
+                },
                 handler: (response) => {
                     router.push(`/order/${state.receipt}/track`);
                 },

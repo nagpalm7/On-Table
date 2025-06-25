@@ -254,6 +254,6 @@ export async function placeOnlineOrder(orderId) {
         currency: razorpayOrder.currency,
         mode: 'online',
         receipt: order._id.toString(),
+        email: order.email
     };
 }
-
