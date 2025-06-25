@@ -1,9 +1,49 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 
-function ActionButton( { text } ) {
+function ActionButton({ text, state }) {
     const { pending } = useFormStatus();
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const scriptId = 'razorpay-checkout-js';
+            if (!document.getElementById(scriptId)) {
+                const script = document.createElement('script');
+                script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+                script.id = scriptId;
+                script.async = true;
+                document.body.appendChild(script);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (state?.mode === 'online' && typeof window !== 'undefined') {
+            const rzp = new window.Razorpay({
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                amount: state.amount,
+                currency: state.currency,
+                name: 'On Table',
+                description: 'Order Payment',
+                order_id: state.razorpayOrderId,
+                handler: (response) => {
+                    console.log('Payment completed', response);
+                    // Optional: call an API to confirm
+                },
+                callback_url: `${window.location.origin}/order/success?oid=${state.receipt}`, // ✔️ redirect after intent payment
+                theme: { color: '#36d399' },
+                modal: {
+                    ondismiss: () => {
+                        console.log('Razorpay modal closed by user without completing payment');
+                        // Optional: trigger cleanup, redirect, or show warning
+                    },
+                },
+            });
+
+            rzp.open();
+        }
+    }, [state]);
 
     return (
         <button

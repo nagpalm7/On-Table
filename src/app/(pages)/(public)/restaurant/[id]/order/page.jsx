@@ -5,12 +5,15 @@ import { redirect } from 'next/navigation';
 import RestaurantClient from '@/app/(pages)/(public)/restaurant/[id]/order/orderClient';
 
 const Page = async ({ params }) => {
-  const rid = params.id.toString();
+  const paramStore = await params;
+  const rid = paramStore.id.toString();
 
   const order = await getOrCreateDraftOrder(rid);
   if (order.orderStatus === 'review') {
     // redirect to review
     return redirect(`/restaurant/${rid}/review`);
+  } else if (order.orderStatus !== 'draft') {
+    return redirect(`/order/${order._id}/track`);
   }
 
   const { updatedOrder, removed } = await removeUnavailableItemsFromOrder(order?._id);

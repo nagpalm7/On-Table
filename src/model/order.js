@@ -24,6 +24,8 @@ const orderSchema = new mongoose.Schema({
   },
   phone: { type: String, required: false },
   email: { type: String, required: false },
+  razorpayOrderId: String,
+  razorpayPaymentId: String,
   createdAt: { type: Date, default: Date.now },
   expireAt: { type: Date, default: undefined }
 });

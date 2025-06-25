@@ -7,8 +7,7 @@ import MenuItem from "@/model/menuItem";
 import { redirect } from "next/navigation";
 import { getDatabaseConnection } from "@/lib/db";
 import { getUserIdentifier } from "@/lib/getUserIdentifier";
-import { cookies } from "next/headers";
-import Session from "@/model/session";
+import Razorpay from "razorpay";
 
 // create draft order
 export async function getOrCreateDraftOrder(restaurantId) {
@@ -57,26 +56,25 @@ export async function getOrCreateDraftOrder(restaurantId) {
     return JSON.parse(JSON.stringify(order));
 }
 
-export async function getOrderDetails(orderId) {
+export async function getOrderDetails(orderId, callbackUrl=null) {
     await getDatabaseConnection();
-    const cookieStore = await cookies();
-    const sessionId = cookieStore.get('sessionId')?.value;
-    if (!sessionId) return null;
-
-    const session = await Session.findOne({ sessionId });
-    const userEmail = session?.email;
+    const user = await getUserIdentifier();
 
     const order = await Order.findById(orderId);
 
-    if (!order) return null;
+    if (!order) return redirect("/not-found");
 
-    if (order.email) {
-        // If order has email, but session doesn't — ask user to re-verify
-        if (!userEmail) return null;
-        return order.email === userEmail ? JSON.parse(JSON.stringify(order)) : null;
+    if (user?.type === 'email') {
+        if (order.email.toString() === user.value) 
+            return JSON.parse(JSON.stringify(order));
+
+        redirect(`/restaurant/${order.restaurant}/order`)
     } else {
-        // For guest orders
-        return order.sessionId === sessionId ? JSON.parse(JSON.stringify(order)) : null;
+        // If order has email, but session doesn't — ask user to re-verify
+        if (order.email) 
+            return redirect("/oauth/login?redirect=/order/" + orderId  + "/pay");
+
+        return JSON.parse(JSON.stringify(order));
     }
 }
 
@@ -201,17 +199,15 @@ export async function finalizeOrder(orderId) {
     }
 }
 
-export async function placeOrder(formData) {
+export async function placeOrder(state, formData) {
     const orderId = await formData.get('orderId');
     const paymentMode = await formData.get('paymentMode');
 
     switch (paymentMode) {
         case 'cash':
-            await placeCashOrder(orderId);
-            break;
+            return await placeCashOrder(orderId);
         case 'online':
-            await placeOnlineOrder(orderId);
-            break;
+            return await placeOnlineOrder(orderId);
     }
 }
 
@@ -222,22 +218,43 @@ export async function placeCashOrder(orderId) {
 
     order.orderStatus = "placed";
     order.paymentMode = "cash";
-    order.paymentStatus = "pending";
+    order.paymentStatus = "paid";
 
     await order.save();
     redirect(`/order/${orderId}/track`);
 }
+
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_SECRET,
+});
 
 export async function placeOnlineOrder(orderId) {
     await getDatabaseConnection();
     const order = await Order.findById(orderId);
     if (!order) throw new Error("Order not found");
 
+    const razorpayOrder = await razorpay.orders.create({
+        amount: order.totalAmount * 100, // in paisa
+        currency: 'INR',
+        receipt: order._id.toString(),
+        payment_capture: true,
+    });
+
+    console.log(razorpayOrder)
+
     order.orderStatus = "placed";
     order.paymentMode = "online";
     order.paymentStatus = "pending";
-
+    order.razorpayOrderId = razorpayOrder.id;
     await order.save();
-    redirect(`/order/${orderId}/track`);
+
+    return {
+        orderId: order._id.toString(),
+        amount: razorpayOrder.amount,
+        razorpayOrderId: razorpayOrder.id,
+        currency: razorpayOrder.currency,
+        mode: 'online',
+    };
 }
 

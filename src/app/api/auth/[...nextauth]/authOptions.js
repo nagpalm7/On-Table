@@ -1,5 +1,5 @@
 import { getDatabaseConnection } from '@/lib/db';
-import order from '@/model/order';
+import { createSessionWithEmail } from '@/lib/guest';
 import Order from '@/model/order';
 import Session from '@/model/session';
 import GoogleProvider from 'next-auth/providers/google';
@@ -18,48 +18,59 @@ export const authOptions = {
             const email = user.email;
             const cookieStore = await cookies();
             const sessionId = cookieStore.get('sessionId')?.value;
-            console.log(sessionId);
 
-            if (!sessionId || !email) return true;
-            // 1. Upgrade session
-            await Session.findOneAndUpdate(
-                { sessionId },
-                { email },
-                { new: true, upsert: true }
-            );
+            console.log("Signin", email, sessionId);
 
-            // 2. Check orders with this email in draft or email and migrate if required.
-            const orderWithEmail = await Order.findOne({
+            if (!email) return true;
+
+            // create new session with email
+            const updateOrdersWithEmail = [];
+            const deleteOrders = [];
+
+            createSessionWithEmail(email);
+
+            const orderWithEmail = await Order.find({
                 email: email,
                 orderStatus: { $in: ['draft', 'review'] }
             });
 
-            const orderWithSession = await Order.findOne({
+            const orderWithSession = await Order.find({
                 sessionId: sessionId,
                 orderStatus: { $in: ['draft', 'review'] }
             });
 
-            if (orderWithEmail && !orderWithSession) {
-                return true;
-            }
-
-            if (!orderWithEmail && orderWithSession) {
-                orderWithSession.email = email;
-                await orderWithSession.save();
-                return true;
-            }
-
-            if (orderWithEmail && orderWithSession) {
-                if (orderWithSession.orderStatus === 'review') {
-                    orderWithSession.email = email;
-                    orderWithSession.save();
-                    // delete email order
-                    await Order.findByIdAndDelete(orderWithEmail._id);
+            for (const order of orderWithSession) {
+                const rid = order.restaurant.toString();
+                if (order.orderStatus === 'review') {
+                    updateOrdersWithEmail.push(order._id);
+                    orderWithEmail.forEach((o) => {
+                        if (o.restaurant.toString() === rid && o._id !== order._id) {
+                            deleteOrders.push(o._id);
+                        }
+                    });
                 } else {
-                    // delete session order
-                    await Order.findByIdAndDelete(orderWithSession._id);
+                    if (!orderWithEmail.some(o => o.restaurant.toString() === rid)) {
+                        updateOrdersWithEmail.push(order._id);
+                    }
                 }
-                return true;
+            }
+
+            console.log("Order with email", orderWithEmail);
+            console.log("Order with session", orderWithSession);
+            console.log("Update orders with email", updateOrdersWithEmail);
+            console.log("Delete orders", deleteOrders);
+
+            // update orders with email
+            if (updateOrdersWithEmail.length > 0) {
+                await Order.updateMany(
+                    { _id: { $in: updateOrdersWithEmail } },
+                    { $set: { email: email } }
+                );
+            }
+
+            // delete orders
+            if (deleteOrders.length > 0) {
+                await Order.deleteMany({ _id: { $in: deleteOrders } });
             }
 
             return true;
