@@ -81,11 +81,8 @@ export async function getOrderDetails(orderNumber, redirectTo) {
 
         redirect(`/restaurant/${order.restaurant.slug}/order`)
     } else {
-        // If order has email, but session doesn't — ask user to re-verify
-        if (order.email)
-            return redirect(`/oauth/login?redirect=/order/${orderNumber}/${redirectTo}`);
-
-        return JSON.parse(JSON.stringify(order));
+        // ask user to login to tag order with email.
+        return redirect(`/oauth/login?redirect=/order/${orderNumber}/${redirectTo}`);
     }
 }
 

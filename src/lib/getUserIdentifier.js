@@ -19,9 +19,5 @@ export async function getUserIdentifier() {
   const session = await Session.findOne({ sessionId });
   if (!session) return null;
 
-  if (session.email) {
-    return { type: 'email', value: session.email };
-  }
-
   return { type: 'session', value: session.sessionId }
 }
