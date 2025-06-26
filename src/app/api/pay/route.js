@@ -18,7 +18,7 @@ export async function POST(req) {
   const razorpayOrder = await razorpay.orders.create({
     amount: order.amount * 100, // paisa
     currency: 'INR',
-    receipt: order._id.toString(),
+    receipt: order.orderNumber.toString(),
     payment_capture: true,
   });
 

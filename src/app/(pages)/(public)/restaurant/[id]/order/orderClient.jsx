@@ -17,7 +17,7 @@ const LazyCategoryItems = dynamic(() => import('@/app/components/menu/CategoryIt
     loading: () => <SkeletonList />,
 });
 
-const RestaurantClient = ({ orderId: initialOrderId, initialOrder, menu, rid }) => {
+const RestaurantClient = ({ orderId: initialOrderId, initialOrder, menu, slug }) => {
     const [order, setOrder] = useState(initialOrder);
     const [orderId] = useState(initialOrderId);
     const [isFinalizing, setIsFinalizing] = useState(false);
@@ -86,7 +86,7 @@ const RestaurantClient = ({ orderId: initialOrderId, initialOrder, menu, rid }) 
                 setOrder(updatedOrder);
                 alert("Some items were not available and have been removed.");
             }
-            router.push(`/restaurant/${rid}/review`);
+            router.push(`/restaurant/${slug}/review`);
         } catch (err) {
             setIsFinalizing(false);
             alert('Could not finalize order. Please try again.');

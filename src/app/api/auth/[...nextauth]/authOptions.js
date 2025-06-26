@@ -44,7 +44,7 @@ export const authOptions = {
                 if (order.orderStatus === 'review') {
                     updateOrdersWithEmail.push(order._id);
                     orderWithEmail.forEach((o) => {
-                        if (o.restaurant.toString() === rid && o._id !== order._id) {
+                        if (o.restaurant.toString() === rid && o._id.toString() !== order._id.toString()) {
                             deleteOrders.push(o._id);
                         }
                     });
@@ -54,11 +54,6 @@ export const authOptions = {
                     }
                 }
             }
-
-            console.log("Order with email", orderWithEmail);
-            console.log("Order with session", orderWithSession);
-            console.log("Update orders with email", updateOrdersWithEmail);
-            console.log("Delete orders", deleteOrders);
 
             // update orders with email
             if (updateOrdersWithEmail.length > 0) {

@@ -60,7 +60,7 @@ export async function getOrderDetails(orderNumber, redirectTo) {
     await getDatabaseConnection();
     const user = await getUserIdentifier();
 
-    const order = await Order.findOne({orderNumber}).populate([
+    const order = await Order.findOne({ orderNumber }).populate([
         {
             path: 'items.menuItem',
             model: 'MenuItem',
@@ -69,20 +69,20 @@ export async function getOrderDetails(orderNumber, redirectTo) {
         {
             path: 'restaurant',
             model: 'Restaurant',
-            select: 'name location'
+            select: 'name location slug'
         }
     ]);
 
     if (!order) return redirect("/not-found");
 
     if (user?.type === 'email') {
-        if (order.email.toString() === user.value) 
+        if (order.email.toString() === user.value)
             return JSON.parse(JSON.stringify(order));
 
-        redirect(`/restaurant/${order.restaurant}/order`)
+        redirect(`/restaurant/${order.restaurant.slug}/order`)
     } else {
         // If order has email, but session doesn't — ask user to re-verify
-        if (order.email) 
+        if (order.email)
             return redirect(`/oauth/login?redirect=/order/${orderNumber}/${redirectTo}`);
 
         return JSON.parse(JSON.stringify(order));
@@ -167,7 +167,7 @@ export async function markOrderAsDraft(state, formData) {
         await order.save();
     }
 
-    redirect(`/restaurant/${state.rid}/order`);
+    redirect(`/restaurant/${state.slug}/order`);
 }
 
 // Checkout
@@ -264,7 +264,7 @@ export async function placeOnlineOrder(orderId) {
         razorpayOrderId: razorpayOrder.id,
         currency: razorpayOrder.currency,
         mode: 'online',
-        receipt: order._id.toString(),
+        receipt: order.orderNumber.toString(),
         email: order.email
     };
 }
