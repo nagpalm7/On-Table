@@ -4,6 +4,7 @@ import { getOrCreateSession } from "@/actions/guest";
 import AppSettings from "@/model/appSettings";
 import Order from "@/model/order";
 import MenuItem from "@/model/menuItem";
+import Restaurant from "@/model/restaurant";
 import { redirect } from "next/navigation";
 import { getDatabaseConnection } from "@/lib/db";
 import { getUserIdentifier } from "@/lib/getUserIdentifier";

@@ -19,8 +19,6 @@ export const authOptions = {
             const cookieStore = await cookies();
             const sessionId = cookieStore.get('sessionId')?.value;
 
-            console.log("Signin", email, sessionId);
-
             if (!email) return true;
 
             // create new session with email
