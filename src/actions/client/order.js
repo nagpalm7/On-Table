@@ -56,11 +56,22 @@ export async function getOrCreateDraftOrder(restaurantId) {
     return JSON.parse(JSON.stringify(order));
 }
 
-export async function getOrderDetails(orderId, callbackUrl=null) {
+export async function getOrderDetails(orderNumber, redirectTo) {
     await getDatabaseConnection();
     const user = await getUserIdentifier();
 
-    const order = await Order.findById(orderId);
+    const order = await Order.findOne({orderNumber}).populate([
+        {
+            path: 'items.menuItem',
+            model: 'MenuItem',
+            select: 'name price'
+        },
+        {
+            path: 'restaurant',
+            model: 'Restaurant',
+            select: 'name location'
+        }
+    ]);
 
     if (!order) return redirect("/not-found");
 
@@ -72,7 +83,7 @@ export async function getOrderDetails(orderId, callbackUrl=null) {
     } else {
         // If order has email, but session doesn't — ask user to re-verify
         if (order.email) 
-            return redirect(`/oauth/login?redirect=/order/${orderId}/pay`);
+            return redirect(`/oauth/login?redirect=/order/${orderNumber}/${redirectTo}`);
 
         return JSON.parse(JSON.stringify(order));
     }
@@ -221,7 +232,7 @@ export async function placeCashOrder(orderId) {
     order.paymentStatus = "paid";
 
     await order.save();
-    redirect(`/order/${orderId}/track`);
+    redirect(`/order/${order.orderNumber}/track`);
 }
 
 const razorpay = new Razorpay({

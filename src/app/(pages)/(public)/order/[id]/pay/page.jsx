@@ -8,13 +8,13 @@ import { redirect } from 'next/navigation';
 
 const Pay = async ({ params }) => {
     const paramsStore = await params;
-    const orderId = paramsStore.id.toString();
-    const order = await getOrderDetails(orderId);
+    const orderNumber = paramsStore.id.toString();
+    const order = await getOrderDetails(orderNumber, "pay");
 
     if (order.orderStatus === 'draft')
         return redirect(`/restaurant/${order.restaurant}/order`);
     else if (order.orderStatus !== 'review')
-        return redirect(`/order/${order._id}/track`);
+        return redirect(`/order/${orderNumber}/track`);
 
     return (
         <div>

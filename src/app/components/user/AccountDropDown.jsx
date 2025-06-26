@@ -1,29 +1,23 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 import {
     MdAccountCircle,
     MdLogout,
     MdLogin,
     MdShoppingCart
 } from 'react-icons/md';
-import { LuCookingPot } from "react-icons/lu";
 import { AvatarImage } from './Avatar';
 import api from '@/lib/axiosInstance';
-import Link from 'next/link';
 import NavLink from '../common/NavLink';
 
 export default function UserDropdown() {
     const { data: session, status } = useSession();
-    const router = useRouter();
     const isLoggedIn = status === 'authenticated';
     const triggerRef = useRef(null);
 
     const closeDropdown = () => {
-        console.log("Close")
-        console.log(triggerRef.current)
         triggerRef.current?.click();
     }
 
@@ -66,14 +60,6 @@ export default function UserDropdown() {
                                 label={"My Orders"}
                                 href={`/order/list`}
                                 icon={<MdShoppingCart className="mr-2" />}
-                                closeDrawer={closeDropdown}
-                            />
-                        </li>
-                        <li>
-                            <NavLink
-                                label={"Track My Order"}
-                                href={`/order/track`}
-                                icon={<LuCookingPot className="mr-2" />}
                                 closeDrawer={closeDropdown}
                             />
                         </li>

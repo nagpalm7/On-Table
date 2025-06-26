@@ -1,12 +1,15 @@
-import Steps from '@/app/components/Steps'
-import React from 'react'
+import { getOrderDetails } from '@/actions/client/order';
+import { notFound } from 'next/navigation';
+import OrderTrackingClient from '@/app/(pages)/(public)/order/[id]/track/OrderTrackingClient';
+import React from 'react';
 
-const page = ({params}) => {
-  return (
-    <div>
-      <Steps currentStep={4} />
-    </div>
-  )
+export default async function OrderTrackPage({ params }) {
+  const paramsStore = await params;
+  const orderNumber = paramsStore.id.toString();
+
+  const order = await getOrderDetails(orderNumber, "track");
+
+  if (!order) return notFound();
+
+  return <OrderTrackingClient order={order} />;
 }
-
-export default page

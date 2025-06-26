@@ -79,7 +79,7 @@ const Review = () => {
                 </div>
                 <div className="card-actions justify-center p-4">
                     <button
-                        onClick={() => router.push(`/order/${orderId}/pay`)}
+                        onClick={() => router.push(`/order/${order.orderNumber}/pay`)}
                         className="btn btn-success btn-block rounded-full">
                         PROCEED TO PAY
                     </button>

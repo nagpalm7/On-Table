@@ -1,72 +1,97 @@
-// app/orders/page.jsx
+// app/orders/page.tsx (or wherever applicable)
 
 import React from 'react';
+import Link from 'next/link';
 import Order from '@/model/order';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { redirect } from 'next/navigation';
 import { getDatabaseConnection } from '@/lib/db';
-import MenuItem from '@/model/menuItem';
 
 export default async function OrdersPage() {
-  // Get session
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;
 
   if (!email) return redirect('/oauth/login');
-
-  // Connect to DB
   await getDatabaseConnection();
 
-  // Fetch user's orders
   const orders = await Order.find({ email })
     .sort({ createdAt: -1 })
-    .populate('items.menuItem', 'name') // limit fields for performance
+    .populate([
+      { path: 'items.menuItem', select: 'name' },
+      { path: 'restaurant', select: 'name location' },
+    ])
     .lean();
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold mb-6">My Orders</h1>
+    <div className='mx-4'>
+      <h1 className="sticky top-0 z-20 py-4 text-lg font-bold bg-base-100 text-base-content">
+        ORDERS
+      </h1>
 
       {orders.length === 0 ? (
-        <p className="text-gray-500">You have no orders yet.</p>
+        <div className="text-center text-base-content text-opacity-50">
+          You haven’t placed any orders yet.
+        </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4 pb-6">
           {orders.map((order) => (
-            <div
+            <Link
               key={order._id}
-              className="card bg-base-100 shadow-xl p-5 border border-base-200"
+              href={`/order/${order.orderNumber}/track`}
+              className="block card bg-base-100 border border-base-300 hover:shadow-lg transition-shadow rounded-2xl overflow-hidden"
             >
-              <div className="flex justify-between items-center mb-2">
-                <div>
-                  <p className="font-semibold text-lg">
-                    Order #{order._id.toString().slice(-6).toUpperCase()}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    {new Date(order.createdAt).toLocaleString()}
-                  </p>
+              <div className="card-body px-4 sm:px-6 py-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2">
+                  <div>
+                    <p className="text-base sm:text-lg font-semibold text-base-content">
+                      {order.restaurant?.name} — {order.restaurant?.location}
+                    </p>
+                    <p className="text-sm text-base-content text-opacity-60">
+                      {new Date(order.createdAt).toLocaleString()}
+                    </p>
+                  </div>
+                  <span className={`badge text-xs sm:text-sm ${getStatusColor(order.orderStatus)}`}>
+                    {order.orderStatus.toUpperCase()}
+                  </span>
                 </div>
-                <span className="badge badge-info capitalize">
-                  {order.orderStatus}
-                </span>
-              </div>
 
-              <ul className="divide-y divide-gray-200 text-sm mb-3">
-                {order.items.map(({ menuItem, quantity }) => (
-                  <li key={menuItem._id} className="flex justify-between py-1">
-                    <span>{menuItem.name}</span>
-                    <span>x{quantity}</span>
-                  </li>
-                ))}
-              </ul>
+                <p className="text-sm text-base-content text-opacity-80 mb-2">
+                  <strong>Order #:</strong> {order.orderNumber}
+                </p>
 
-              <div className="text-right font-bold text-base">
-                ₹{order.totalAmount.toFixed(2)}
+                <ul className="text-sm divide-y divide-base-300 text-base-content text-opacity-90 mb-3">
+                  {order.items.map(({ menuItem, quantity }) => (
+                    <li key={menuItem._id} className="flex justify-between py-1">
+                      <span>{menuItem.name}</span>
+                      <span>x{quantity}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="text-right text-base font-bold text-success">
+                  ₹{order.totalAmount.toFixed(2)}
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
     </div>
   );
+}
+
+function getStatusColor(status) {
+  switch (status) {
+    case 'draft':
+      return 'badge-outline';
+    case 'review':
+      return 'badge-info';
+    case 'placed':
+      return 'badge-success';
+    case 'cancelled':
+      return 'badge-error';
+    default:
+      return 'badge-neutral';
+  }
 }
