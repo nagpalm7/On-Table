@@ -112,7 +112,7 @@ export const login = async (state, formData ) => {
 
     // Create a session
     await createSession(user._id.toString(), user.userType);
-    const redirectTo = user.userType === "admin" ? "/admin" : "/restaurant";
+    const redirectTo = user.userType === "admin" ? "/admin" : "/client";
     redirect(`${redirectTo}/dashboard`);
 };
 
