@@ -116,16 +116,6 @@ export const login = async (state, formData ) => {
     redirect(`${redirectTo}/dashboard`);
 };
 
-export async function getCustomerEmail() {
-  await getDatabaseConnection();
-  const cookiesStore = await cookies();
-  const sessionId = cookiesStore.get('sessionId')?.value;
-  if (!sessionId) return null;
-
-  const session = await Session.findOne({ sessionId });
-  return session?.email ?? null;
-}
-
 export async function logout() {
   const cookieStore = await cookies();
   await cookieStore.delete("session");
