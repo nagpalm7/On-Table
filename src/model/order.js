@@ -39,7 +39,6 @@ const orderSchema = new mongoose.Schema({
 orderSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
 
 orderSchema.pre('validate', async function (next) {
-  console.log("create");
   if (this.isNew && !this.orderNumber) {
     const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
     this.orderNumber = `OT-${today}-${nanoid()}`;

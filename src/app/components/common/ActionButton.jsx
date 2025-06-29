@@ -37,7 +37,7 @@ function ActionButton({ text, state }) {
                 },
                 handler: async function (response) {
                     // Trigger backend verification
-                    await api.post('/api/pay/verify', {
+                    await api.post('/pay/verify', {
                         razorpay_payment_id: response.razorpay_payment_id,
                         orderNumber: state.receipt,
                     });
