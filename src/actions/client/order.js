@@ -227,7 +227,7 @@ export async function placeCashOrder(orderId) {
 
     order.orderStatus = "placed";
     order.paymentMode = "cash";
-    order.paymentStatus = "paid";
+    order.paymentStatus = "pending";
 
     await order.save();
     redirect(`/order/${order.orderNumber}/track`);

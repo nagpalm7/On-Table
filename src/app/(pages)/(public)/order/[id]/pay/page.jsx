@@ -20,7 +20,7 @@ const Pay = async ({ params }) => {
         <div>
             <Steps currentStep={3} />
             <div className="p-4">
-                <h2 className="text-xl font-bold mb-4">Choose Payment Mode</h2>
+                {/* <h2 className="text-xl font-bold mb-4">Choose Payment Mode</h2> */}
                 <PayClient order={order} />
             </div>
         </div>

@@ -30,6 +30,7 @@ const orderSchema = new mongoose.Schema({
   email: { type: String, required: false },
   razorpayOrderId: String,
   razorpayPaymentId: String,
+  failureReason: String,
   createdAt: { type: Date, default: Date.now },
   expireAt: { type: Date, default: undefined }
 });

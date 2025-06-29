@@ -1,6 +1,6 @@
 import { getOrderDetails } from '@/actions/client/order';
 import { notFound } from 'next/navigation';
-import OrderTrackingClient from '@/app/(pages)/(public)/order/[id]/track/OrderTrackingClient';
+import OrderTrackingServer from '@/app/(pages)/(public)/order/[id]/track/OrderTrackingServer';
 import React from 'react';
 
 export default async function OrderTrackPage({ params }) {
@@ -11,5 +11,5 @@ export default async function OrderTrackPage({ params }) {
 
   if (!order) return notFound();
 
-  return <OrderTrackingClient order={order} />;
+  return <OrderTrackingServer order={order} />;
 }
