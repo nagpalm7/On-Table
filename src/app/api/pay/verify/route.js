@@ -31,8 +31,8 @@ export async function POST(req) {
       await Order.findOneAndUpdate(
         { orderNumber },
         {
-          paymentStatus: 'paid',
-          paymentMode: payment.method,
+          paymentStatus: "paid",
+          orderStatus: "placed",
           razorpayPaymentId: payment.id,
         }
       );
