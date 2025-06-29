@@ -15,7 +15,7 @@ export default async function OrdersPage() {
   if (!email) return redirect('/oauth/login');
   await getDatabaseConnection();
 
-  const orders = await Order.find({ email })
+  const orders = await Order.find({ email, orderStatus: { $not: { $in: ['draft', 'review'] } } })
     .sort({ createdAt: -1 })
     .populate([
       { path: 'items.menuItem', select: 'name' },
