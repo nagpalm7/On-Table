@@ -1,4 +1,5 @@
 'use client'
+import api from '@/lib/axiosInstance';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
@@ -34,7 +35,14 @@ function ActionButton({ text, state }) {
                 prefill: {
                     email: state?.email, // optional
                 },
-                handler: (response) => {
+                handler: async function (response) {
+                    // Trigger backend verification
+                    await api.post('/api/pay/verify', {
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        orderNumber: state.receipt,
+                    });
+
+                    // Redirect to tracking
                     router.push(`/order/${state.receipt}/track`);
                 },
                 // callback_url: `${window.location.origin}/order/${state.receipt}/track`,
