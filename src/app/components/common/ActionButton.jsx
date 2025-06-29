@@ -36,11 +36,15 @@ function ActionButton({ text, state }) {
                     email: state?.email, // optional
                 },
                 handler: async function (response) {
-                    // Trigger backend verification
-                    await api.post('/pay/verify', {
-                        razorpay_payment_id: response.razorpay_payment_id,
-                        orderNumber: state.receipt,
-                    });
+                    try {
+                        // Trigger backend verification
+                        await api.post('/pay/verify', {
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            orderNumber: state.receipt,
+                        });
+                    } catch (err) {
+                        console.log(err);
+                    }
 
                     // Redirect to tracking
                     router.push(`/order/${state.receipt}/track`);
