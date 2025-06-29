@@ -2,12 +2,7 @@
 
 import React, { useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
-import {
-    MdAccountCircle,
-    MdLogout,
-    MdLogin,
-    MdShoppingCart
-} from 'react-icons/md';
+import { MdAccountCircle, MdLogout, MdLogin, MdShoppingCart } from 'react-icons/md';
 import { AvatarImage } from './Avatar';
 import api from '@/lib/axiosInstance';
 import NavLink from '../common/NavLink';
@@ -15,23 +10,26 @@ import NavLink from '../common/NavLink';
 export default function UserDropdown() {
     const { data: session, status } = useSession();
     const isLoggedIn = status === 'authenticated';
-    const triggerRef = useRef(null);
 
-    const closeDropdown = () => {
-        triggerRef.current?.click();
-    }
+    const dropdownRef = useRef(null);
 
     const handleLogout = async () => {
         await api.post('/auth/logout');
         await signOut({ callbackUrl: window.location.href });
-    }
+    };
 
-    if (status === "loading")
-        return <div className='skeleton rounded-full w-10 h-10'></div>
+    const closeDropdown = () => {
+        if (dropdownRef.current) {
+            dropdownRef.current.removeAttribute('open'); // This closes the <details>
+        }
+    };
+
+    if (status === 'loading')
+        return <div className="skeleton rounded-full w-10 h-10" />;
 
     return (
-        <div className="dropdown dropdown-end">
-            <label ref={triggerRef} tabIndex={0} className="btn btn-ghost btn-circle avatar">
+        <details className="dropdown dropdown-end" ref={dropdownRef}>
+            <summary className="btn btn-ghost btn-circle avatar cursor-pointer">
                 {isLoggedIn && session.user?.image ? (
                     <div className="flex items-center justify-center rounded-full bg-base-200 text-base-content ring ring-success ring-offset-2">
                         <AvatarImage src={session.user.image} alt={session.user.name[0]} />
@@ -41,13 +39,13 @@ export default function UserDropdown() {
                         <MdAccountCircle className="text-4xl" />
                     </div>
                 )}
-            </label>
+            </summary>
 
-            <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow-md menu menu-md dropdown-content bg-base-300 rounded-box w-56">
+            <ul className="mt-3 z-[1] p-2 shadow-md menu menu-md dropdown-content bg-base-300 rounded-box w-56">
                 {!isLoggedIn ? (
                     <li>
                         <NavLink
-                            label={"Login"}
+                            label="Login"
                             href={`/oauth/login?redirect=${window.location.href}`}
                             icon={<MdLogin className="mr-2" />}
                             closeDrawer={closeDropdown}
@@ -57,22 +55,20 @@ export default function UserDropdown() {
                     <>
                         <li>
                             <NavLink
-                                label={"My Orders"}
-                                href={`/order/list`}
+                                label="My Orders"
+                                href="/order/list"
                                 icon={<MdShoppingCart className="mr-2" />}
                                 closeDrawer={closeDropdown}
                             />
                         </li>
+                        <li>
+                            <button onClick={handleLogout}>
+                                <MdLogout className="mr-2" /> Logout
+                            </button>
+                        </li>
                     </>
                 )}
-                {isLoggedIn && (
-                    <li>
-                        <button onClick={handleLogout}>
-                            <MdLogout className="mr-2" /> Logout
-                        </button>
-                    </li>
-                )}
             </ul>
-        </div>
+        </details>
     );
 }
