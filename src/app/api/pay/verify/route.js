@@ -13,7 +13,7 @@ export async function POST(req) {
 
     // Fetch payment status from Razorpay
     const auth = Buffer.from(
-      `${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`
+      `${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_SECRET}`
     ).toString('base64');
 
     const razorpayRes = await axios.get(
